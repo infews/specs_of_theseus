@@ -36,9 +36,10 @@ invariants hold.
 ## Artifacts
 
 ```
-docs/subsystems/
-  manifest.md      # coverage index: which subsystems are under management
-  <subsystem>.md      # per subsystem: invariants, specs, non-promises, retired entries
+docs/
+  subsystems.md       # the manifest — coverage index: which subsystems are under management
+  subsystems/
+    <subsystem>.md    # per subsystem: invariants, specs, non-promises, retired entries
 ```
 
 Coverage is **partial by design**. The manifest states what it speaks for; code outside a covered

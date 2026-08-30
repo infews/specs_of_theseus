@@ -1,6 +1,6 @@
 ---
 name: adopting-a-subsystem
-description: Use when an existing subsystem is not yet in docs/subsystems/manifest.md and needs its intent declared — typically a high-entropy subsystem you intend to delete and regrow. Use when asked to extract invariants from existing code, characterize what a subsystem promises, or bring a subsystem under Specs of Theseus management.
+description: Use when an existing subsystem is not yet in docs/subsystems.md and needs its intent declared — typically a high-entropy subsystem you intend to delete and regrow. Use when asked to extract invariants from existing code, characterize what a subsystem promises, or bring a subsystem under Specs of Theseus management.
 ---
 
 # Adopting a Subsystem
@@ -83,9 +83,12 @@ promise is recoverable; a wrongly enshrined one is forever.
 
 ### 4. Write the subsystem file
 
-Create `docs/subsystems/<subsystem>.md` and add the subsystem to `docs/subsystems/manifest.md` with status
-`adopted — not yet regrown`. Follow
+Create `docs/subsystems/<subsystem>.md` and add a row to the manifest at `docs/subsystems.md` with
+status `adopted — not yet regrown`. Follow
 [manifest-format.md](../specs-of-theseus/references/manifest-format.md).
+
+Link both directions: the manifest row links to the subsystem file, and the subsystem file opens with
+a link back to the manifest.
 
 Record the boundary itself in the subsystem file. The cut later depends on it.
 
@@ -110,7 +113,7 @@ reclassify.
 
 Adoption is complete. The subsystem is now under management and its intent survives deletion.
 
-To regrow it, use the `regrowing-a-subsystem` skill.
+To regrow it, use the [regrowing-a-subsystem](../regrowing-a-subsystem/SKILL.md) skill.
 
 ## Common mistakes
 

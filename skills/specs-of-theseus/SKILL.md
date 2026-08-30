@@ -1,6 +1,6 @@
 ---
 name: specs-of-theseus
-description: Use when a subsystem has accumulated too much entropy to keep patching, when new requirements arrive for a subsystem already under management, or when working in a codebase that has a docs/subsystems manifest. Also use when asked about the spec manifest, invariants, binding tests, regenerating or regrowing a subsystem, or Specs of Theseus.
+description: Use when a subsystem has accumulated too much entropy to keep patching, when new requirements arrive for a subsystem already under management, or when working in a codebase that has a docs/subsystems.md manifest. Also use when asked about the spec manifest, invariants, binding tests, regenerating or regrowing a subsystem, or Specs of Theseus.
 ---
 
 # Specs of Theseus
@@ -24,7 +24,7 @@ Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture.
 
 ## Lifecycle of a subsystem
 
-The nodes are the statuses recorded in `docs/subsystems/manifest.md`; the arrows are the things you do.
+The nodes are the statuses recorded in `docs/subsystems.md`; the arrows are the things you do.
 
 ```mermaid
 stateDiagram-v2
@@ -52,7 +52,7 @@ an invariant updates the manifest before a line of code moves.
 
 | Term | Meaning |
 | --- | --- |
-| **Spec manifest** | `docs/subsystems/` — the authoritative record of what the system promises |
+| **Spec manifest** | `docs/subsystems.md` — the coverage index, with one file per subsystem in `docs/subsystems/`. The authoritative record of what the system promises. |
 | **Subsystem** | A named area of the system with a boundary *you draw*; the unit that gets cut and regrown. It need not match an existing module. |
 | **Invariant** | A property that must survive a total rewrite: exterior contract, performance characteristic, or high-level architecture |
 | **Spec** | A behavioral promise, written in EARS |
@@ -73,7 +73,7 @@ Implementation shape matters less — but not zero. It is free to change so long
 
 ## Coverage is partial by design
 
-`docs/subsystems/manifest.md` records which subsystems are under management. Code outside a covered subsystem
+`docs/subsystems.md` records which subsystems are under management. Code outside a covered subsystem
 is **not a violation** — it is simply not yet adopted. Never report unadopted code as drift, and
 never mass-adopt a codebase to make the manifest look complete.
 
@@ -86,9 +86,11 @@ never mass-adopt a codebase to make the manifest look complete.
 
 ## Satellite skills
 
-- **adopting-a-subsystem** — the subsystem is not in `docs/subsystems/manifest.md`
-- **regrowing-a-subsystem** — the subsystem is managed, and the change is large enough that patching it
-  would distort the shape, or entropy has already made it unmaintainable
+- [**adopting-a-subsystem**](../adopting-a-subsystem/SKILL.md) — the subsystem is not in
+  `docs/subsystems.md`
+- [**regrowing-a-subsystem**](../regrowing-a-subsystem/SKILL.md) — the subsystem is managed, and the
+  change is large enough that patching it would distort the shape, or entropy has already made it
+  unmaintainable
 
 Anything smaller is an ordinary change under the existing specs.
 

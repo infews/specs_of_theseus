@@ -22,7 +22,7 @@ Latency at a stated percentile, throughput, memory and connection ceilings, batc
 and retry behavior, startup time.
 
 > Settlement completes in under 200ms at p99 for invoices up to 500 line items, measured by
-> test/binding/billing_perf_test.rb against seeded production-shaped data.
+> `test/binding/billing_perf_test.rb` against seeded production-shaped data.
 
 Not: "settlement should be fast."
 

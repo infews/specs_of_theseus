@@ -1,6 +1,6 @@
 ---
 name: regrowing-a-subsystem
-description: Use when deleting and rebuilding a subsystem that is already in docs/subsystems/manifest.md — because entropy has made it unmaintainable, or because new requirements are large enough that patching would distort it. Use when asked to regrow, regenerate, or rewrite a subsystem from its specs.
+description: Use when deleting and rebuilding a subsystem that is already in docs/subsystems.md — because entropy has made it unmaintainable, or because new requirements are large enough that patching would distort it. Use when asked to regrow, regenerate, or rewrite a subsystem from its specs.
 ---
 
 # Regrowing a Subsystem
@@ -19,7 +19,7 @@ fails. What must not be lost is intent, and intent lives in the manifest.
 
 Verify all of these before deleting anything. If any is unmet, stop and fix it first.
 
-- [ ] The subsystem is in `docs/subsystems/manifest.md` with a drawn boundary
+- [ ] The subsystem is in `docs/subsystems.md` with a drawn boundary
 - [ ] Every invariant has at least one binding test
 - [ ] All binding tests are **green against the current implementation** (run them; do not assume)
 - [ ] The working tree is clean and committed, on a branch
@@ -92,7 +92,7 @@ wrong, and that is their call.
 - Every manifest entry that should be implemented has a tag
 - Specs that no longer apply are **retired visibly**, with what replaced them and why
 - Behavior discovered during regrowth that is not promised is recorded as a non-promise
-- Subsystem status updated in `docs/subsystems/manifest.md`
+- Subsystem status updated in `docs/subsystems.md`
 
 **STOP. Report: invariants verified with evidence, specs implemented, entries retired or added,
 and anything that surprised you.**

@@ -3,12 +3,18 @@
 ## Layout
 
 ```
-docs/subsystems/
-  manifest.md       # coverage index
-  <subsystem>.md    # one file per subsystem
+docs/
+  subsystems.md         # the manifest — coverage index
+  subsystems/
+    billing.md          # one file per subsystem
+    checkout.md
 ```
 
-Flat. Group into subdirectories only when the number of files makes the directory hard to read.
+The manifest sits *beside* the directory it indexes, not inside it. Inside, it sorts alphabetically
+among the subsystem files and gets lost; beside, it is adjacent to the folder and cannot be missed.
+
+Keep the subsystem directory flat. Group into subdirectories only when the number of files makes it
+hard to read.
 
 ## IDs
 
@@ -19,7 +25,7 @@ Types: `INV` (invariant), `SPEC` (behavioral promise), `NON` (non-promise).
 **IDs are permanent and never reused.** A retired entry keeps its ID forever; retirement is a
 status, not a renumbering. Reusing an ID makes every `@spec` tag in git history a lie.
 
-## manifest.md
+## subsystems.md — the manifest
 
 ```markdown
 # Spec Manifest
@@ -29,8 +35,8 @@ Their absence is not drift.**
 
 | Subsystem | File | Status | Adopted | Last regrown |
 | --- | --- | --- | --- | --- |
-| Billing | billing.md | under management | 2026-08-28 | 2026-09-02 |
-| Checkout | checkout.md | adopted — not yet regrown | 2026-09-10 | — |
+| Billing | [subsystems/billing.md](subsystems/billing.md) | under management | 2026-08-28 | 2026-09-02 |
+| Checkout | [subsystems/checkout.md](subsystems/checkout.md) | adopted — not yet regrown | 2026-09-10 | — |
 ```
 
 Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progress`.
@@ -40,10 +46,12 @@ Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progre
 ```markdown
 # Subsystem: Billing
 
+Part of the [spec manifest](../subsystems.md).
+
 ## Boundary
 
-**Inside:** app/billing/**, lib/invoicing.rb
-**Outside:** everything else, notably app/checkout/** which calls in
+**Inside:** [app/billing/](../../app/billing/), [lib/invoicing.rb](../../lib/invoicing.rb)
+**Outside:** everything else, notably [app/checkout/](../../app/checkout/) which calls in
 
 **Callers in:** CheckoutController (creates invoices), NightlyJob (settles)
 **Calls out to:** Stripe API, invoices table, receipts S3 bucket
@@ -56,7 +64,8 @@ Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progre
 - **Category:** contract
 - **Statement:** Once an invoice is settled, its total is immutable; later changes to line item
   prices do not alter it.
-- **Binding test:** test/binding/billing_test.rb:42
+- **Binding test:** [billing_test.rb](../../test/binding/billing_test.rb) —
+  "settled invoice total is immutable when line item prices change"
 - **Evidence:** Finance reconciliation depends on this; discovered via NightlyJob caller analysis.
 - **Status:** active
 
@@ -64,7 +73,8 @@ Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progre
 - **Category:** performance
 - **Statement:** Billing.settle/1 completes in under 200ms at p99 for invoices with up to 500
   line items.
-- **Binding test:** test/binding/billing_perf_test.rb:12
+- **Binding test:** [billing_perf_test.rb](../../test/binding/billing_perf_test.rb) —
+  "settle completes within 200ms at p99"
 - **Evidence:** Checkout blocks on this call; measured 140ms p99 in production.
 - **Status:** active
 
@@ -73,7 +83,8 @@ Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progre
 ### BILLING-SPEC-001 — Invoice creation rejects empty line items
 - **Statement:** When create_invoice is called with no line items, the system shall reject the
   request and return an empty_invoice error.
-- **Tests:** test/binding/billing_test.rb:88
+- **Tests:** [billing_test.rb](../../test/binding/billing_test.rb) —
+  "create_invoice rejects an empty line item list"
 - **Status:** active
 
 ## Non-promises
@@ -104,3 +115,12 @@ Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progre
   later proposal to re-add it meets the reasoning that removed it.
 - **No implementation detail.** If an entry names a class, function, or pattern inside the boundary,
   it is Procrustean — rewrite it as an observable property or delete it.
+- **Every file path is a link.** Code, tests, directories — anything the manifest names, a reader
+  should be able to open from where they are standing. Use paths relative to the file doing the
+  linking (`../../` from `docs/subsystems/`), which resolve in GitHub and in an IDE alike.
+- **Reference tests by name, not line number.** Line numbers are wrong within a week and wrong
+  silently. Link the test file and quote the test's name; the name survives edits and is greppable
+  after a regrowth moves everything.
+- **Link both directions.** The manifest links to each subsystem file; each subsystem file links back
+  to the manifest. Anyone who arrives at a subsystem file by grep — which is most arrivals — must be
+  able to find the index from where they landed. An entry in one direction only is half-wired.
