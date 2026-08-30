@@ -67,7 +67,7 @@ Work spec by spec, test-first:
 1. Write the test for one spec, tagged with its ID
 2. Watch it fail
 3. Write just enough implementation to pass
-4. Tag the implementation with `@spec`
+4. Tag the implementation with `@implements`
 
 Write scaffolding tests freely — they are cheap, they make progress visible, and they are expected
 to be deleted at the next regrowth.
@@ -88,7 +88,7 @@ wrong, and that is their call.
 
 ### 6. Reconcile the manifest
 
-- Every `@spec` tag references a real manifest entry
+- Every `@proves` and `@implements` tag references a real manifest entry
 - Every manifest entry that should be implemented has a tag
 - Specs that no longer apply are **retired visibly**, with what replaced them and why
 - Behavior discovered during regrowth that is not promised is recorded as a non-promise

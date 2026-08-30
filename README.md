@@ -22,7 +22,7 @@ the durable artifact that makes routine deletion survivable.
 | `regrowing-a-subsystem` | Deleting and rebuilding a subsystem already under management |
 
 Deferred until the process has survived real use: steady-state change (epic → invariant impact →
-manifest update → cut → regrow), reconcile (manifest ↔ `@spec` tags), a CLI, and plugin packaging.
+manifest update → cut → regrow), reconcile (manifest ↔ tags), a CLI, and plugin packaging.
 
 ## Installing for experimentation
 

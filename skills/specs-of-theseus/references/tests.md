@@ -4,7 +4,7 @@ Two kinds of test, and the difference decides what survives a cut.
 
 | | Binding | Scaffolding |
 | --- | --- | --- |
-| **Proves** | An invariant, or a boundary-observable spec | An implementation detail works |
+| **Proves** | An invariant or a spec — anything with a manifest entry | An implementation detail works |
 | **Scope** | Full-system, black-box, through the subsystem's public edge | Units, classes, functions inside the boundary |
 | **Survives the cut** | Yes — it is the referee for the regrowth | No — deleted with the code it describes |
 | **May reach inside the boundary** | Never | Freely |
@@ -21,19 +21,27 @@ path without reading every file.
 **Tags.** Every binding test carries the IDs it proves:
 
 ```ruby
-# @binding
-# @spec BILLING-INV-001
+# @proves BILLING-INV-001
 test "settled invoice total is immutable when line item prices change" do
   ...
 end
 ```
 
-Implementation carries `@spec` tags too, so the manifest-to-reality thread runs both ways:
+Implementation carries tags too, so the manifest-to-reality thread runs both ways:
 
 ```ruby
-# @spec BILLING-SPEC-001, BILLING-SPEC-002
+# @implements BILLING-SPEC-001, BILLING-SPEC-002
 def create_invoice(line_items)
 ```
+
+Two verbs, one ID space. Tests **prove**; code **implements**. The ID says which kind of entry it
+is, so the tag never has to — which is why neither verb is `@spec`: that would collide with `SPEC`
+as an entry type and read as a category claim rather than a reference.
+
+**The tag does not restate the tier.** There is no `@binding` marker: referencing a manifest entry
+is what makes a test binding, so a separate tag would only be a second place to forget. Location
+carries the tier; the tag carries the reference. Keeping the tag tier-neutral also means anything
+else that establishes an entry — a production monitor, say — can carry `@proves` unchanged.
 
 ## Writing binding tests
 

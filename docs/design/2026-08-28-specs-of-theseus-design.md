@@ -56,13 +56,14 @@ Entry types, all with stable IDs `{SUBSYSTEM}-{TYPE}-{NNN}`:
   reason. Stops the same debate recurring, and tells a regenerating agent not to reproduce
   something merely because it appears in git history.
 Retirement is a **status**, not a type: an entry keeps its ID forever and is moved to a Retired
-section recording what replaced it and why. IDs are never reused, or every `@spec` tag in git
+section recording what replaced it and why. IDs are never reused, or every tag in git
 history becomes a lie.
 
 Invariants and specs are separate classes, not the same thing at different strengths. Most specs
 are not invariants. The cut decision needs a short, high-status list to check against.
 
-`@spec` tags in code and tests carry the IDs, giving the manifest-to-reality thread.
+`@implements` tags in code and `@proves` tags in tests carry the IDs, giving the
+manifest-to-reality thread.
 
 ## Failure modes the process must resist
 

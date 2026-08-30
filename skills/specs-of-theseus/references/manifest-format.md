@@ -23,7 +23,7 @@ hard to read.
 Types: `INV` (invariant), `SPEC` (behavioral promise), `NON` (non-promise).
 
 **IDs are permanent and never reused.** A retired entry keeps its ID forever; retirement is a
-status, not a renumbering. Reusing an ID makes every `@spec` tag in git history a lie.
+status, not a renumbering. Reusing an ID makes every tag in git history a lie.
 
 ## subsystems.md — the manifest
 
