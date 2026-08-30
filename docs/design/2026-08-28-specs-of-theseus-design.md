@@ -36,15 +36,15 @@ invariants hold.
 ## Artifacts
 
 ```
-docs/theseus/
-  manifest.md      # coverage index: which regions are under management
-  <region>.md      # per region: invariants, specs, non-promises, retired entries
+docs/subsystems/
+  manifest.md      # coverage index: which subsystems are under management
+  <subsystem>.md      # per subsystem: invariants, specs, non-promises, retired entries
 ```
 
 Coverage is **partial by design**. The manifest states what it speaks for; code outside a covered
-region is not a violation, it is simply not yet under management.
+subsystem is not a violation, it is simply not yet under management.
 
-Entry types, all with stable IDs `{REGION}-{TYPE}-{NNN}`:
+Entry types, all with stable IDs `{SUBSYSTEM}-{TYPE}-{NNN}`:
 
 - **Invariant** (`INV`) — must survive a total rewrite. Categories: contract, performance,
   architecture. Always has at least one binding test. Performance invariants state a measurable
@@ -75,10 +75,10 @@ are not invariants. The cut decision needs a short, high-status list to check ag
 ## Skills
 
 - **`specs-of-theseus`** (core) — the model and the router. Holds vocabulary and formats as
-  references; decides whether a region is under management and dispatches accordingly.
-- **`adopting-a-region`** — brownfield entry point. Boundary → invariant candidates → human
-  classification → region file → binding tests proven green against the *existing* implementation.
-- **`regrowing-a-region`** — the engine. Cut, redesign, TDD back to green, verify invariants,
+  references; decides whether a subsystem is under management and dispatches accordingly.
+- **`adopting-a-subsystem`** — brownfield entry point. Boundary → invariant candidates → human
+  classification → subsystem file → binding tests proven green against the *existing* implementation.
+- **`regrowing-a-subsystem`** — the engine. Cut, redesign, TDD back to green, verify invariants,
   re-tag, update the manifest. Reused by both entry points.
 
 Deferred until after the first real regeneration: steady-state change (epic → invariant impact →

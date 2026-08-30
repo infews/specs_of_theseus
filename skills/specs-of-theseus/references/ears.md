@@ -1,7 +1,7 @@
 # EARS — Easy Approach to Requirements Syntax
 
 Specs are written in EARS so they are unambiguous, individually testable, and readable as a list.
-Every spec describes **observable behavior at the region boundary** — never internal mechanics.
+Every spec describes **observable behavior at the subsystem boundary** — never internal mechanics.
 
 ## The five patterns
 
@@ -42,7 +42,7 @@ Nest sparingly. Two conditions is usually the limit before the spec should be sp
 - **One behavior per spec.** If the statement needs "and" between two responses, it is two specs.
 - **Observable at the boundary.** A spec a caller could not detect is describing implementation.
 - **"Shall" for promises.** Not "should", not "will".
-- **Name the actor.** "The system" is fine when unambiguous; prefer the region's name when several
+- **Name the actor.** "The system" is fine when unambiguous; prefer the subsystem's name when several
   parties are in play.
 - **No implementation nouns.** If the statement names a class, table, or private function inside the
   boundary, rewrite it in terms of what is observable.

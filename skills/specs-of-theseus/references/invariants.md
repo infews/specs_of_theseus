@@ -16,7 +16,7 @@ schema visible to others, file and wire formats, CLI flags and exit codes, error
 conditions, authentication and authorization rules.
 
 ### Performance characteristic
-What the region must cost. Always with a number, a workload, and a measurement method.
+What the subsystem must cost. Always with a number, a workload, and a measurement method.
 
 Latency at a stated percentile, throughput, memory and connection ceilings, batch sizes, timeout
 and retry behavior, startup time.
@@ -29,7 +29,7 @@ Not: "settlement should be fast."
 ### High-level architecture
 Structural properties a rewrite could violate without any test noticing.
 
-What the region may and may not depend on, what must remain separable, ordering guarantees,
+What the subsystem may and may not depend on, what must remain separable, ordering guarantees,
 idempotency, transactional boundaries, isolation and consistency requirements, failure and
 degradation behavior, where state may live.
 
@@ -46,7 +46,7 @@ robs regeneration of the freedom that makes it worth doing.
 Gather from evidence, strongest first. Do not judge while gathering — judging while gathering
 suppresses inconvenient findings.
 
-1. **Callers.** Read every call site. What does each actually rely on — including things the region
+1. **Callers.** Read every call site. What does each actually rely on — including things the subsystem
    never meant to promise? This is the strongest evidence, because it is observed dependency
    rather than claimed intent.
 2. **Exterior surface.** Enumerate everything crossing the boundary.
@@ -61,7 +61,7 @@ suppresses inconvenient findings.
 ## The classification gate
 
 Every candidate is classified **with the user**, one at a time. This is the step that decides
-whether the manifest inherits the region's entropy or sheds it.
+whether the manifest inherits the subsystem's entropy or sheds it.
 
 | Classification | Meaning | Result |
 | --- | --- | --- |

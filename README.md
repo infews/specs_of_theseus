@@ -18,8 +18,8 @@ the durable artifact that makes routine deletion survivable.
 | Skill | Use when |
 | --- | --- |
 | `specs-of-theseus` | The model and the router — entry point for any work in a managed codebase |
-| `adopting-a-region` | An existing subsystem needs its intent declared before it can be regrown |
-| `regrowing-a-region` | Deleting and rebuilding a region already under management |
+| `adopting-a-subsystem` | An existing subsystem needs its intent declared before it can be regrown |
+| `regrowing-a-subsystem` | Deleting and rebuilding a subsystem already under management |
 
 Deferred until the process has survived real use: steady-state change (epic → invariant impact →
 manifest update → cut → regrow), reconcile (manifest ↔ `@spec` tags), a CLI, and plugin packaging.

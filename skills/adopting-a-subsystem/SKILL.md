@@ -1,14 +1,14 @@
 ---
-name: adopting-a-region
-description: Use when an existing subsystem is not yet in docs/theseus/manifest.md and needs its intent declared — typically a high-entropy region you intend to delete and regrow. Use when asked to extract invariants from existing code, characterize what a subsystem promises, or bring a region under Specs of Theseus management.
+name: adopting-a-subsystem
+description: Use when an existing subsystem is not yet in docs/subsystems/manifest.md and needs its intent declared — typically a high-entropy subsystem you intend to delete and regrow. Use when asked to extract invariants from existing code, characterize what a subsystem promises, or bring a subsystem under Specs of Theseus management.
 ---
 
-# Adopting a Region
+# Adopting a Subsystem
 
 ## Overview
 
 Bringing existing code under management means recovering intent from an implementation that never
-declared any. The region cannot be trusted to describe itself: its observable behavior mixes
+declared any. The subsystem cannot be trusted to describe itself: its observable behavior mixes
 deliberate promises, accidents people now depend on, bugs that became load-bearing, and side
 effects nobody knows exist.
 
@@ -18,7 +18,7 @@ articulate and you delete things real users depend on.
 
 **REQUIRED BACKGROUND:** Read the `specs-of-theseus` skill first for the model and vocabulary.
 
-Adoption does not change behavior. It produces a region file and a set of binding tests that pass
+Adoption does not change behavior. It produces a subsystem file and a set of binding tests that pass
 against the code as it stands today.
 
 ## Checklist
@@ -27,8 +27,15 @@ Create a TodoWrite item for each step. Each ends with a stop.
 
 ### 1. Draw the boundary
 
-Name the region. State precisely what is inside and outside, in terms of files, modules, or
-directories. Then map its edges:
+Name the subsystem. State precisely what is inside and outside, in terms of files, modules, or
+directories.
+
+The boundary is one you draw, not one you discover. It may follow the existing module structure, but
+it does not have to — in a high-entropy area that structure is often *the* entropy, and regrowth is
+free to produce a different internal shape. Draw the boundary around the behavior worth promising,
+then note which existing code falls inside it.
+
+Then map its edges:
 
 - **Who calls in** — every caller, and what each depends on
 - **What it calls out to** — services, databases, queues, filesystems, third parties
@@ -36,7 +43,7 @@ directories. Then map its edges:
   file formats, CLI flags
 
 Nothing else can be decided until the boundary is fixed. If the boundary cannot be drawn cleanly,
-say so — a region with no discernible edge is not yet adoptable, and the honest move is to propose
+say so — a subsystem with no discernible edge is not yet adoptable, and the honest move is to propose
 a smaller one.
 
 **STOP. Present the boundary and get approval before continuing.**
@@ -74,15 +81,15 @@ promise is recoverable; a wrongly enshrined one is forever.
 
 **STOP. Present the classification and get approval before continuing.**
 
-### 4. Write the region file
+### 4. Write the subsystem file
 
-Create `docs/theseus/<region>.md` and add the region to `docs/theseus/manifest.md` with status
+Create `docs/subsystems/<subsystem>.md` and add the subsystem to `docs/subsystems/manifest.md` with status
 `adopted — not yet regrown`. Follow
 [manifest-format.md](../specs-of-theseus/references/manifest-format.md).
 
-Record the boundary itself in the region file. The cut later depends on it.
+Record the boundary itself in the subsystem file. The cut later depends on it.
 
-**STOP. Present the region file and get approval before continuing.**
+**STOP. Present the subsystem file and get approval before continuing.**
 
 ### 5. Prove the binding tests against the existing implementation
 
@@ -101,9 +108,9 @@ reclassify.
 
 ### 6. Hand off
 
-Adoption is complete. The region is now under management and its intent survives deletion.
+Adoption is complete. The subsystem is now under management and its intent survives deletion.
 
-To regrow it, use the `regrowing-a-region` skill.
+To regrow it, use the `regrowing-a-subsystem` skill.
 
 ## Common mistakes
 

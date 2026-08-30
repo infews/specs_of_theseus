@@ -5,7 +5,7 @@ Two kinds of test, and the difference decides what survives a cut.
 | | Binding | Scaffolding |
 | --- | --- | --- |
 | **Proves** | An invariant, or a boundary-observable spec | An implementation detail works |
-| **Scope** | Full-system, black-box, through the region's public edge | Units, classes, functions inside the boundary |
+| **Scope** | Full-system, black-box, through the subsystem's public edge | Units, classes, functions inside the boundary |
 | **Survives the cut** | Yes — it is the referee for the regrowth | No — deleted with the code it describes |
 | **May reach inside the boundary** | Never | Freely |
 | **Written when** | At adoption, proven green against existing code | During regrowth, as you build |

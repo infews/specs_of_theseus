@@ -3,16 +3,16 @@
 ## Layout
 
 ```
-docs/theseus/
-  manifest.md      # coverage index
-  <region>.md      # one file per region
+docs/subsystems/
+  manifest.md       # coverage index
+  <subsystem>.md    # one file per subsystem
 ```
 
-Flat. Add a `regions/` subdirectory only when the number of regions makes the directory hard to read.
+Flat. Group into subdirectories only when the number of files makes the directory hard to read.
 
 ## IDs
 
-`{REGION}-{TYPE}-{NNN}` — e.g. `BILLING-INV-003`, `CHECKOUT-SPEC-012`.
+`{SUBSYSTEM}-{TYPE}-{NNN}` — e.g. `BILLING-INV-003`, `CHECKOUT-SPEC-012`.
 
 Types: `INV` (invariant), `SPEC` (behavioral promise), `NON` (non-promise).
 
@@ -24,10 +24,10 @@ status, not a renumbering. Reusing an ID makes every `@spec` tag in git history 
 ```markdown
 # Spec Manifest
 
-Regions under Specs of Theseus management. **Regions not listed here are not under management.
+Subsystems under Specs of Theseus management. **Subsystems not listed here are not under management.
 Their absence is not drift.**
 
-| Region | File | Status | Adopted | Last regrown |
+| Subsystem | File | Status | Adopted | Last regrown |
 | --- | --- | --- | --- | --- |
 | Billing | billing.md | under management | 2026-08-28 | 2026-09-02 |
 | Checkout | checkout.md | adopted — not yet regrown | 2026-09-10 | — |
@@ -35,10 +35,10 @@ Their absence is not drift.**
 
 Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progress`.
 
-## Region file
+## Subsystem file
 
 ```markdown
-# Region: Billing
+# Subsystem: Billing
 
 ## Boundary
 

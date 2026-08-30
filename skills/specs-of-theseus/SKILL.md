@@ -1,6 +1,6 @@
 ---
 name: specs-of-theseus
-description: Use when a subsystem has accumulated too much entropy to keep patching, when new requirements arrive for a region already under management, or when working in a codebase that has a docs/theseus manifest. Also use when asked about the spec manifest, invariants, binding tests, regenerating or regrowing a subsystem, or Specs of Theseus.
+description: Use when a subsystem has accumulated too much entropy to keep patching, when new requirements arrive for a subsystem already under management, or when working in a codebase that has a docs/subsystems manifest. Also use when asked about the spec manifest, invariants, binding tests, regenerating or regrowing a subsystem, or Specs of Theseus.
 ---
 
 # Specs of Theseus
@@ -22,14 +22,14 @@ becomes husbandry rather than destruction. Entropy accumulates in implementation
 
 Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture.
 
-## Lifecycle of a region
+## Lifecycle of a subsystem
 
-The nodes are the statuses recorded in `docs/theseus/manifest.md`; the arrows are the things you do.
+The nodes are the statuses recorded in `docs/subsystems/manifest.md`; the arrows are the things you do.
 
 ```mermaid
 stateDiagram-v2
     [*] --> Unmanaged
-    Unmanaged --> Adopted: adopt — draw the boundary,<br/>classify candidates, write the region file
+    Unmanaged --> Adopted: adopt — draw the boundary,<br/>classify candidates, write the subsystem file
     Adopted --> Regrowing: cut — delete implementation<br/>and scaffolding tests
     Regrowing --> Managed: regrow — rebuild to green,<br/>verify invariants, reconcile the manifest
     Managed --> Regrowing: cut again — new requirements,<br/>or accumulated entropy
@@ -41,7 +41,7 @@ stateDiagram-v2
     Managed: Under management
 ```
 
-A region only reaches **Under management** by being regrown. Adoption alone declares intent; it does
+A subsystem only reaches **Under management** by being regrown. Adoption alone declares intent; it does
 not prove the intent is sufficient to rebuild from. That proof is the regrowth.
 
 **Never change code first and the manifest after.** The manifest is the statement of intent; code is
@@ -52,8 +52,8 @@ an invariant updates the manifest before a line of code moves.
 
 | Term | Meaning |
 | --- | --- |
-| **Spec manifest** | `docs/theseus/` — the authoritative record of what the system promises |
-| **Region** | A named area of the system with a drawn boundary; the unit that gets cut and regrown |
+| **Spec manifest** | `docs/subsystems/` — the authoritative record of what the system promises |
+| **Subsystem** | A named area of the system with a boundary *you draw*; the unit that gets cut and regrown. It need not match an existing module. |
 | **Invariant** | A property that must survive a total rewrite: exterior contract, performance characteristic, or high-level architecture |
 | **Spec** | A behavioral promise, written in EARS |
 | **Non-promise** | Behavior that exists today and is explicitly not promised |
@@ -73,7 +73,7 @@ Implementation shape matters less — but not zero. It is free to change so long
 
 ## Coverage is partial by design
 
-`docs/theseus/manifest.md` records which regions are under management. Code outside a covered region
+`docs/subsystems/manifest.md` records which subsystems are under management. Code outside a covered subsystem
 is **not a violation** — it is simply not yet adopted. Never report unadopted code as drift, and
 never mass-adopt a codebase to make the manifest look complete.
 
@@ -86,8 +86,8 @@ never mass-adopt a codebase to make the manifest look complete.
 
 ## Satellite skills
 
-- **adopting-a-region** — the region is not in `docs/theseus/manifest.md`
-- **regrowing-a-region** — the region is managed, and the change is large enough that patching it
+- **adopting-a-subsystem** — the subsystem is not in `docs/subsystems/manifest.md`
+- **regrowing-a-subsystem** — the subsystem is managed, and the change is large enough that patching it
   would distort the shape, or entropy has already made it unmaintainable
 
 Anything smaller is an ordinary change under the existing specs.
@@ -109,7 +109,7 @@ Read the satellite when you reach it. Do not reconstruct its process from this f
 - "I'll update the manifest after the code works"
 - "This behavior is obviously intended, no need to classify it"
 - "The existing tests tell us what the invariants are" — they assert implementation as often as intent
-- "Let me just patch this in" for a change that clearly strains the region's shape
+- "Let me just patch this in" for a change that clearly strains the subsystem's shape
 - "Deleting the tests loses coverage" — scaffolding tests are supposed to die with their code
 
 **All of these mean: stop and re-read this skill.**
