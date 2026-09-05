@@ -9,7 +9,7 @@ Specs of Theseus starts at a subsystem that someone has already decided to work 
 - Broad intent never gets written down. An epic-sized need arrives, gets mentally decomposed, and the manifest receives its consequences without ever recording the thing that caused them.
 - There is no unit of work between "a subsystem" and "a manifest entry." A subsystem is too big to deliver and a manifest entry is too small to prioritize, so the middle is improvised each time.
 
-[specs-of-theseus.mmd](../specs-of-theseus.mmd) closes both. It also fills in the *steady-state change* path that the [original design](2026-08-28-specs-of-theseus-design.md) explicitly deferred.
+[the flow diagrams](../specs-of-theseus-intent.mmd) closes both. It also fills in the *steady-state change* path that the [original design](2026-08-28-specs-of-theseus-design.md) explicitly deferred.
 
 ## What we take from pivotal-xp, and what we change
 
@@ -192,7 +192,7 @@ With links deferred, this is the only annotation change that ships — and it ma
   Required, not cosmetic: GitHub derives the anchor from the whole heading, so `#text-inv-001` does not resolve against `### TEXT-INV-001 — A PDF with no text layer…`. The explicit anchor also survives a title rewording, which the derived one does not.
 
   This survives the decision to skip links in code comments, because the linking that remains is markdown→markdown — a story's task list citing the entry it edits, the manifest citing an entry directly — and that is where markdown actually renders. **The rule that falls out: markdown links belong in markdown files; code comments carry bare IDs.**
-- **Add a prefix column to `docs/subsystems.md`** mapping the ID prefix to its file (`TEXT-` → [subsystems/text-acquisition.md](subsystems/text-acquisition.md)). One line per subsystem, maintained in one place. It is what makes an ID a complete address without a path in any comment, and what a future doc→code tool reads to resolve one.
+- **Add a prefix column to `docs/subsystems.md`** mapping the ID prefix to its file (`TEXT-` → `subsystems/text-acquisition.md`). One line per subsystem, maintained in one place. It is what makes an ID a complete address without a path in any comment, and what a future doc→code tool reads to resolve one.
 - **Add the reclassification rule** and the *ID is an address, not an assertion* framing — see Conflicts 2.
 - **Add a `Origin` field to entries** — the story or epic that introduced them. One link. It makes the manifest answer "why is this promised?" without re-deriving it, and it is the only durable pointer back to the disposable layer.
 

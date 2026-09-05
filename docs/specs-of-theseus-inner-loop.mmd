@@ -1,0 +1,22 @@
+---
+config:
+  layout: dagre
+  look: handDrawn
+  theme: forest
+  themeVariables:
+    fontFamily: '''Open Sans Variable'', sans-serif'
+title: Specs of Theseus — Inner Loop (One Task)
+---
+flowchart LR
+    classDef hidden fill:none,stroke:none,color:transparent
+
+    AA(("Intent <br>Tasks <br> Diagram <br> fa:fa-diagram-project")) -- Task --> AB["Write Test"]
+    AB -- Test --> AC["Run Tests"]
+    AC -- Red Test --> AD["Write <br> Implementation"]
+    AD -- Implementation --> AC
+    AC -- Green Test --> AE["Refactor"]
+    AC -. Manifest Defect -.-> AF(("Intent <br>Tasks <br> Diagram <br> fa:fa-diagram-project"))
+    AE -- Better Code --> AC
+    AC -- Green Tests &amp; <br> Implementation --> AG["Annotate Code <br> with Spec Tags"]
+    AG -- Annotated Code --> AH["AH"]:::hidden
+    AG -- Completed <br> Task --> AA
