@@ -1,0 +1,41 @@
+---
+title: Specs of Theseus
+config:
+  layout: elk
+  nodePlacementAlignment: left-up
+---
+
+flowchart TD
+    A[Decide Next Intent]
+    START1:::hidden-->|Business Need| A
+    START2:::hidden-->|Product Idea| A
+    START3:::hidden-->|Technical Spike| A
+
+    A-->|Epic| B[Slices Vertically]
+    B-->|Stories| C[Prioritize]
+    C-->|Ordered Backlog\nof Stories| D[Choose Top of Backlog]
+    D-->|Single Story| E[Analyze Inventory]
+    S4:::hidden-->|Existing\nSubsystems| E
+    S5:::hidden-->|Code w/o\nSpecs| E
+    E-->|Code to Adopt|G
+    E-->|Need of New\nSubsystem|G[Extract Invariants]
+    E-->|Existing Subsystem\n that needs Updates| F[Update Specs]
+    F-->|Specs|H[Extract Work]
+    G-->|Specs|H
+    H-->|Tasks|I[Choose Next Task]
+    I-->|Task|J[Write Test]
+    J-->|Test|K[Run Tests]
+    L-->|Code| K
+    K-->|Red\nTest|L[Write\nImplementation]
+    K-->|Green Test|M[Annotate Code\n to Spec]
+    M-->|"fa:fa-smile Code"|END1:::hidden
+    M-->|"fa:fa-smile Tests"|END2:::hidden
+    M-->|Completed Task|N[Mark Task Complete]
+    N-->|Completed Task|I
+    O-->|Capacity|D
+    O-->|Working\nSoftware| Q[Acceptance]
+    Q-->|Rejected\nWork| D
+    Q-->|Accepted\nWork| D
+    I-->|Completed Task List|O[Deploy]
+    D-->|Completed Epic|A
+
