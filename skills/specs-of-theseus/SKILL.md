@@ -9,16 +9,11 @@ description: Use when a subsystem has accumulated too much entropy to keep patch
 
 The running system is replaceable material. The declared intent is the durable asset.
 
-Code and most tests are planks. The **spec manifest** and its **binding tests** are what make the
-system the same ship after every plank has been replaced.
+Code and most tests are planks. The **spec manifest** and its **binding tests** are what make the system the same ship after every plank has been replaced.
 
-**Change happens by regeneration, not accretion.** When requirements arrive, the move is not "patch
-this into the existing shape." It is: decide what to delete so the system can be rethought
-*including* the new requirements, then regrow it against intent that survived the deletion.
+**Change happens by regeneration, not accretion.** When requirements arrive, the move is not "patch this into the existing shape." It is: decide what to delete so the system can be rethought *including* the new requirements, then regrow it against intent that survived the deletion.
 
-Normal development accretes because deletion is frightening — the code is the only place intent is
-written down, so throwing it away loses knowledge. Once intent lives outside the code, deletion
-becomes husbandry rather than destruction. Entropy accumulates in implementations, not in intent.
+Normal development accretes because deletion is frightening — the code is the only place intent is written down, so throwing it away loses knowledge. Once intent lives outside the code, deletion becomes husbandry rather than destruction. Entropy accumulates in implementations, not in intent.
 
 Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture.
 
@@ -41,12 +36,9 @@ stateDiagram-v2
     Managed: Under management
 ```
 
-A subsystem only reaches **Under management** by being regrown. Adoption alone declares intent; it does
-not prove the intent is sufficient to rebuild from. That proof is the regrowth.
+A subsystem only reaches **Under management** by being regrown. Adoption alone declares intent; it does not prove the intent is sufficient to rebuild from. That proof is the regrowth.
 
-**Never change code first and the manifest after.** The manifest is the statement of intent; code is
-its current expression. Reversing the order is how the record goes wrong — so a change that touches
-an invariant updates the manifest before a line of code moves.
+**Never change code first and the manifest after.** The manifest is the statement of intent; code is its current expression. Reversing the order is how the record goes wrong — so a change that touches an invariant updates the manifest before a line of code moves.
 
 ## Vocabulary
 
@@ -73,9 +65,7 @@ Implementation shape matters less — but not zero. It is free to change so long
 
 ## Coverage is partial by design
 
-`docs/subsystems.md` records which subsystems are under management. Code outside a covered subsystem
-is **not a violation** — it is simply not yet adopted. Never report unadopted code as drift, and
-never mass-adopt a codebase to make the manifest look complete.
+`docs/subsystems.md` records which subsystems are under management. Code outside a covered subsystem is **not a violation** — it is simply not yet adopted. Never report unadopted code as drift, and never mass-adopt a codebase to make the manifest look complete.
 
 ## Reference
 
@@ -86,11 +76,8 @@ never mass-adopt a codebase to make the manifest look complete.
 
 ## Satellite skills
 
-- [**adopting-a-subsystem**](../adopting-a-subsystem/SKILL.md) — the subsystem is not in
-  `docs/subsystems.md`
-- [**regrowing-a-subsystem**](../regrowing-a-subsystem/SKILL.md) — the subsystem is managed, and the
-  change is large enough that patching it would distort the shape, or entropy has already made it
-  unmaintainable
+- [**adopting-a-subsystem**](../adopting-a-subsystem/SKILL.md) — the subsystem is not in `docs/subsystems.md`
+- [**regrowing-a-subsystem**](../regrowing-a-subsystem/SKILL.md) — the subsystem is managed, and the change is large enough that patching it would distort the shape, or entropy has already made it unmaintainable
 
 Anything smaller is an ordinary change under the existing specs.
 

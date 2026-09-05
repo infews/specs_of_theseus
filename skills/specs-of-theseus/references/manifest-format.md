@@ -41,6 +41,11 @@ Their absence is not drift.**
 
 Statuses: `adopted — not yet regrown`, `under management`, `regrowth in progress`.
 
+A subsystem at `regrowth in progress` carries a `## Regrowth in progress` section in its file
+listing every entry being rebuilt. Entry states: `not started`, `in progress`, `green`. The section
+is written when the regrowth is planned and deleted when it completes — it is the one part of a
+subsystem file that is not durable, and the only part describing work rather than intent.
+
 ## Subsystem file
 
 ```markdown
@@ -93,6 +98,17 @@ Part of the [spec manifest](../subsystems.md).
 - **Observed:** IDs increment by one, and at least one report sorts by ID assuming chronology.
 - **Why not promised:** Incidental to the current primary key. A regrowth may use UUIDs. Callers
   needing ordering must sort by created_at.
+
+## Regrowth in progress
+
+Started 2026-09-01 on branch `regrow-billing`. Delete this section at reconcile.
+
+| Entry | State |
+| --- | --- |
+| BILLING-INV-001 | green |
+| BILLING-INV-002 | green |
+| BILLING-SPEC-001 | in progress |
+| BILLING-SPEC-002 | not started |
 
 ## Retired
 
