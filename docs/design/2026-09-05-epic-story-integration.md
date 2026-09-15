@@ -9,7 +9,7 @@ Specs of Theseus starts at a subsystem that someone has already decided to work 
 - Broad intent never gets written down. An epic-sized need arrives, gets mentally decomposed, and the manifest receives its consequences without ever recording the thing that caused them.
 - There is no unit of work between "a subsystem" and "a manifest entry." A subsystem is too big to deliver and a manifest entry is too small to prioritize, so the middle is improvised each time.
 
-[the flow diagrams](../specs-of-theseus-intent.mmd) closes both. It also fills in the *steady-state change* path that the [original design](2026-08-28-specs-of-theseus-design.md) explicitly deferred.
+[the flow diagrams](../../skills/specs-of-theseus/references/intent-to-tasks.mmd) closes both. It also fills in the *steady-state change* path that the [original design](2026-08-28-specs-of-theseus-design.md) explicitly deferred.
 
 ## What we take from pivotal-xp, and what we change
 

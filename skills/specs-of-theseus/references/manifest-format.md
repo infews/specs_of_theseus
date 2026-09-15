@@ -4,11 +4,15 @@
 
 ```
 docs/
+  system.md             # the outermost boundary — cross-cutting invariants and coverage
+  capabilities.md       # what the software does today — a projection over the entries below
   subsystems.md         # the manifest — coverage index
   subsystems/
     billing.md          # one file per subsystem
     checkout.md
 ```
+
+`system.md` inherits every subsystem's specs rather than restating them, and holds only what no single subsystem owns. See [system.md](system.md).
 
 The manifest sits *beside* the directory it indexes, not inside it. Inside, it sorts alphabetically among the subsystem files and gets lost; beside, it is adjacent to the folder and cannot be missed.
 
@@ -35,6 +39,14 @@ Entries cannot change type, because the type is in the ID. Two cases, priced dif
 
 Do not reclassify to give an entry emphasis. `SPEC` → `INV` needs an answer to *would a from-scratch rebuild silently violate this?* that changed, not a feeling that the entry is important.
 
+### Rehoming — when a boundary is redrawn
+
+A subsystem boundary is not permanent. When one is redrawn, entries move between subsystems, and **the entry keeps its ID** — `BILLING-SPEC-011` landing in a merged `Ledger` subsystem stays `BILLING-SPEC-011`. Renumbering would make every tag in git history a lie, and the prefix was always an address rather than a claim about the current home.
+
+Record the move so the stale prefix stops misleading: note the new subsystem on the entry, and list rehomed entries in the destination subsystem file.
+
+**No entry may be orphaned by a redraw.** Every active entry lands somewhere on the other side, or is retired visibly with what replaced it and why. Losing a promise during a redraw is silent — no test fails, because the test went with it. See [system.md](system.md).
+
 ## subsystems.md — the manifest
 
 ```markdown
@@ -42,6 +54,9 @@ Do not reclassify to give an entry emphasis. `SPEC` → `INV` needs an answer to
 
 Subsystems under Specs of Theseus management. **Subsystems not listed here are not under management.
 Their absence is not drift.**
+
+The outermost boundary is [system.md](system.md), which inherits every spec below and holds
+the cross-cutting invariants no subsystem owns.
 
 | Subsystem | Prefix | File | Status | Adopted | Last regrown |
 | --- | --- | --- | --- | --- | --- |
@@ -139,6 +154,7 @@ Part of the [spec manifest](../subsystems.md).
 - **A performance invariant states a measurable threshold**, a workload it holds under, and how it was measured. Otherwise it is an aspiration.
 - **Evidence is required on invariants.** "Why do we believe this is a promise and not an accident?" is the question adoption exists to answer; record the answer.
 - **Retirement is visible.** Never delete an entry outright. Record what replaced it and why, so a later proposal to re-add it meets the reasoning that removed it.
+- **Retiring an entry includes updating every capability that links it.** Swap in the replacement entry, drop the link, or withdraw the capability — see [capabilities.md](capabilities.md). A capability has no status of its own; it is active while every entry it links is active, and that derivation is only true if the link list is kept current. Retirement is the hook because it is already an act that cannot be done silently.
 - **No implementation detail.** If an entry names a class, function, or pattern inside the boundary, it is Procrustean — rewrite it as an observable property or delete it.
 - **Every file path is a link.** Code, tests, directories — anything the manifest names, a reader should be able to open from where they are standing. Use paths relative to the file doing the linking (`../../` from `docs/subsystems/`), which resolve in GitHub and in an IDE alike.
 - **Reference tests by name, not line number.** Line numbers are wrong within a week and wrong silently. Link the test file and quote the test's name; the name survives edits and is greppable after a regrowth moves everything.

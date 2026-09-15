@@ -38,19 +38,27 @@ Asking costs one message. Acting without approval costs the pairing.
 
 ## Checklist
 
-Create a TodoWrite item per phase, for this session. **Task-by-task progress lives in the story file, not in TodoWrite** — a story can span sessions, and the session is not the unit the work is measured in.
+Track the phases however this session allows — TodoWrite if it is available, a written list otherwise. Session-level tracking is a convenience, not a requirement.
+
+**Task-by-task progress lives in the story file**, and that part is required: a story can span sessions, and the session is not the unit the work is measured in.
 
 ### 1. Analyse the inventory
 
-For each behavior the story requires, decide which of three it is:
+For each behavior the story requires, decide which of these it is. Look it up here rather than reasoning it out — the table is the answer, and a routing decision made by inference is one nobody can check.
 
 | Situation | Route |
 | --- | --- |
 | A managed subsystem needs spec changes | Phase 2, here |
 | Existing unmanaged code the story depends on | [adopting-a-subsystem](../adopting-a-subsystem/SKILL.md), then return |
 | Behavior with no home yet | [growing-a-subsystem](../growing-a-subsystem/SKILL.md), then return |
+| **A property owned by no subsystem** — data safety, authentication, degradation, or anything governing the test suite itself | `SYSTEM-INV` in `docs/system.md`, per [system.md](../specs-of-theseus/references/system.md). Phase 2 writes it; the binding test must be green before it is called an invariant |
+| **The right boundary does not exist** — the work wants a merge, a split, or a redraw | [regrowing-a-subsystem](../regrowing-a-subsystem/SKILL.md), redraw mode, then return |
 
 When adopting mid-story, **adopt only the boundary the story needs.** Record the rest as identified-but-not-adopted. A story is a bad place to widen coverage: the pressure is to finish, and adoption done under that pressure is how entropy gets enshrined.
+
+**The last row is the one that gets skipped.** Boundaries are disposable — the decomposition is not a fixed constraint you route around, and forcing a story into a shape that no longer fits is how a subsystem accumulates the entropy that eventually forces a worse cut. If the honest answer is "this wants a different decomposition," say so here, where it is a routing decision, rather than discovering it halfway through implementation. See [system.md](../specs-of-theseus/references/system.md).
+
+**Read `docs/system.md` on every story, not only when a row above points there.** A cross-cutting invariant belongs to nobody, so no subsystem's inventory will surface one the story puts at risk.
 
 **STOP. Present the routing before touching anything.**
 
@@ -117,8 +125,15 @@ Then back to phase 4 for the next task.
 
 - Full suite green.
 - Every task checked, every delta entry tagged in code and tests.
-- Story status set, and checked off in its epic.
-- If it was the last story, close the epic in `docs/epics.md`.
+- Story status set in the epic's `Resulting stories` list — **one edit, one place.** The story file carries no status; its task checkboxes already show where the work went.
+- If a delta entry was retired, update every capability that links it — see [manifest-format.md](../specs-of-theseus/references/manifest-format.md). A capability's status is derived from its entries, so a stale link list makes it wrong silently.
+
+If it was the last story, **close the epic — both halves:**
+
+- Flip its status to `done` in `docs/epics.md`.
+- Harvest it into `docs/capabilities.md`: a named capability, the outcome in user language, links to the entries its stories promised. Take the sentence from the epic's `Vision` and `Success criteria` rather than writing a new one. Format in [capabilities.md](../specs-of-theseus/references/capabilities.md).
+
+The harvest is the only moment the work layer looks backward. Skip it and the epic file — which the method gives you permission to delete — becomes the sole record that the software gained the feature. **An epic that delivered no new capability harvests nothing**, and saying so is the correct outcome, not a gap to fill.
 
 **STOP. Report: what was promised, what was built, anything that surprised you, and any entry that changed shape along the way.**
 
@@ -131,9 +146,13 @@ Then back to phase 4 for the next task.
 | Widening an adoption because the story touched it | Adopt the boundary the story needs. Record the rest. |
 | Bending an entry to match the code you wrote | Go back to phase 2 and change it deliberately, or the manifest quietly becomes fiction. |
 | Weakening an invariant to make the story land | Invariants are the point. Escalate. |
-| Tracking task progress only in TodoWrite | It dies with the session; a half-built story outlives it. |
+| Tracking task progress only in the session | It dies with the session; a half-built story outlives it. The story file is the record. |
 | Restating the entry in the code comment | Two copies, one maintained. Tag with the ID and stop. |
 | Closing the story without closing the epic | An epic reading `in progress` with every story done is the same lie as a stale manifest. |
+| Writing a status into the story file | It lives in the epic's list, once. A second copy is a second thing to forget. |
+| Closing the epic without harvesting it | Half a close. The feature exists and only a disposable file says so. |
+| Inventing a capability so the harvest is not empty | An entropy or hardening epic delivers none. An invented one is a promise nothing made. |
+| Retiring an entry and leaving the capability linking it | Capability status is derived. A stale link makes the feature list wrong without anything failing. |
 
 ## Common rationalizations
 

@@ -23,7 +23,7 @@ Usually from inside a story, when [delivering-a-story](../delivering-a-story/SKI
 
 ## Checklist
 
-Create a TodoWrite item for each step. Each ends with a stop.
+Track the steps however this session allows — TodoWrite if it is available, a written list otherwise. Each ends with a stop.
 
 Adoption changes no behavior, so an interrupted one breaks nothing and session-level tracking is enough. The classification decisions at step 3 are the exception, and they are written into the subsystem file as they are made rather than held in the session.
 
@@ -40,6 +40,8 @@ Then map its edges:
 - **What crosses the boundary** — function signatures, routes, event and message shapes, schemas, file formats, CLI flags
 
 Nothing else can be decided until the boundary is fixed. If the boundary cannot be drawn cleanly, say so — a subsystem with no discernible edge is not yet adoptable, and the honest move is to propose a smaller one.
+
+**The boundary is fixed for this adoption, not forever.** A later redraw can merge this subsystem, split it, or move its contents, carrying the entries across by ID — see [system.md](../specs-of-theseus/references/system.md). That is a reason to draw the smallest defensible boundary now rather than an ambitious one, and not a reason to agonize: the expensive decisions in adoption are the classifications at step 3, which survive any redraw.
 
 **STOP. Present the boundary and get approval before continuing.**
 

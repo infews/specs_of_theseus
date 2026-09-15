@@ -6,7 +6,11 @@ Code and most tests are planks. The **spec manifest** and its **binding tests** 
 
 Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture. The contribution here is the durable artifact that makes routine deletion survivable.
 
-**Status: experimental.** In use on one real codebase; one subsystem has been through a full adopt-and-regrow cycle. The epic and story layer is new and unexercised.
+Four artifacts answer four different questions: `docs/epics.md` records how the work got here, `docs/subsystems.md` records what must survive a rebuild, `docs/capabilities.md` records what the software does today and why that was worth having, and `docs/system.md` records what holds no matter how the system is decomposed.
+
+Subsystem boundaries are disposable too. The decomposition can be redrawn — subsystems merged, split, or moved — as long as every entry is rehomed rather than orphaned, because **the entry, not the subsystem, is the unit of obligation.**
+
+**Status: experimental.** In use on one real codebase; one subsystem has been through a full adopt-and-regrow cycle. The epic, story, capability, and system layers have been through one epic and one story, which produced the fixes in the most recent commits. Boundary redraw and whole-system regrowth have never been run.
 
 ## Skills
 
@@ -18,7 +22,7 @@ Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture. The cont
 | `delivering-a-story` | Working the top story off the backlog — inventory, manifest delta, tasks, TDD |
 | `adopting-a-subsystem` | Existing code needs its intent declared before it can be regrown |
 | `growing-a-subsystem` | Greenfield behavior with no subsystem yet |
-| `regrowing-a-subsystem` | Deleting and rebuilding a subsystem already under management |
+| `regrowing-a-subsystem` | Deleting and rebuilding a subsystem already under management — or redrawing boundaries across several |
 
 Work normally enters at an epic; the subsystem skills are reached through a story. Regrowth has no separate entry point in the flow — when a story's manifest delta is too large to patch, the cut becomes the story's first task.
 
@@ -45,5 +49,7 @@ Body edits take effect on the next invocation. Changes to a skill's `name` or `d
 
 - [Design](docs/design/2026-08-28-specs-of-theseus-design.md)
 - [Adding the intent layer — epics, stories, and tasks](docs/design/2026-09-05-epic-story-integration.md)
-- The flow: [intent to tasks](docs/specs-of-theseus-intent.mmd), [building one task](docs/specs-of-theseus-inner-loop.mmd)
-- Manifest format, invariants, EARS, and test conventions live in [skills/specs-of-theseus/references/](skills/specs-of-theseus/references/)
+- [Adding the capability layer — what the software does today](docs/design/2026-09-09-capability-layer.md)
+- [The system layer — making the decomposition disposable](docs/design/2026-09-12-system-layer.md)
+- The flow: [intent to tasks](skills/specs-of-theseus/references/intent-to-tasks.mmd), [building one task](skills/specs-of-theseus/references/inner-loop.mmd)
+- Manifest format, capabilities, invariants, EARS, and test conventions live in [skills/specs-of-theseus/references/](skills/specs-of-theseus/references/)

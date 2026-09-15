@@ -9,6 +9,8 @@ description: Use when a refined epic needs to be broken into stories. Use when a
 
 Break an epic into slices that are each independently deliverable and independently testable. A slice is vertical: it goes all the way through, from whatever the user touches to whatever persists, for a narrow case — rather than horizontally, one layer at a time.
 
+**Vertical means the full depth available, not necessarily a user-facing surface.** A hardening epic has no user-facing layer to reach: its slices run entry → binding test → fix if red, and that is the whole stack for that work. Such a story is vertical and passes the test. The horizontal failure is delivering *part* of the available depth — the entry without the test, or the test without the fix — not delivering a depth that stops short of a UI that was never involved. `capabilities.md` already blesses epics that deliver no capability; this is the same latitude one level down.
+
 **REQUIRED BACKGROUND:** Read the [specs-of-theseus](../specs-of-theseus/SKILL.md) skill first. Formats live in [work-format.md](../specs-of-theseus/references/work-format.md).
 
 Slicing produces story files and an ordered list. It produces no manifest entries — the delta is written inside the story, when the story is worked.
@@ -24,7 +26,7 @@ The `Subsystems touched` table is the input to slicing. A slice that spans four 
 Each one:
 
 - **Vertical.** Delivers something observable on its own. "Add the database column" is not a story.
-- **Narrow across subsystems.** One or two. Three is a warning; four means re-slice.
+- **Narrow across subsystems.** One or two. Three is a warning; four means re-slice. **For every slice touching more than one, say why they are paired** — and judge the answer, not the count. "The pty harness is a shared cost both need" is a reason; "both are cheap" is a leftover bin wearing a story's clothes. The count tells you to look; the rationale tells you whether the pairing is real.
 - **Thin enough to finish.** If you cannot picture it done in a focused session, split it.
 - **Independently valuable, or explicitly a prerequisite.** Both are legitimate; being unclear which is not.
 
@@ -43,6 +45,8 @@ Order by value and by dependency, and put the story that proves the riskiest ass
 Create them under `docs/epics/<epic>/`, numbered by tens, from the template in [work-format.md](../specs-of-theseus/references/work-format.md). Link each from the epic's `Resulting stories` list and back to the epic.
 
 Fill in the narrative and the Gherkin acceptance criteria. Leave `Manifest delta` and `Tasks` empty — those are written when the story is worked, by [delivering-a-story](../delivering-a-story/SKILL.md), against the manifest as it stands then rather than as it stands now.
+
+**The story file carries no status.** Set each story's initial `not started` beside its link in the epic's `Resulting stories` list, which is the one place a story's state is written.
 
 **STOP. Present the stories and the order.**
 

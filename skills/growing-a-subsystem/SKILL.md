@@ -21,7 +21,7 @@ So a grown subsystem is **weaker evidence than an adopted one**, and the manifes
 
 ## Checklist
 
-Create a TodoWrite item for each step. Each ends with a stop.
+Track the steps however this session allows — TodoWrite if it is available, a written list otherwise. Each ends with a stop.
 
 ### 1. Draw the boundary, and say it is provisional
 
