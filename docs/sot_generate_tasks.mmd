@@ -1,0 +1,27 @@
+---
+title: Specs of Theseus - Generate Tasks & Update Evals
+---
+flowchart TD
+
+  classDef hidden display:none
+
+  A["fa:fa-person Update Evals"]
+  RD[["fa:fa-robot Redesign System ⑤"]]
+  ATS["fa:fa-robot Add Tasks to Story"]
+
+  Start:::hidden -->|Story|A
+  H1:::hidden-->|Current \n Invariants|A
+  H2:::hidden-->|Current \n Contracts|A
+  H3:::hidden-->|Current \n End-to-End Tests|A
+  H4:::hidden-->|Current \n Monitors|A
+  H5:::hidden-->|Code|RD
+  A-->|Updated \n Invariants|RD
+  A-->|Updated \n Contracts|RD
+  A-->|Updated \n End-to-End Tests|RD
+  A-->|Updated \n Monitors|RD
+  RD-->|Plan|ATS
+  ATS-->|Story with Tasks|H6:::hidden
+
+
+
+

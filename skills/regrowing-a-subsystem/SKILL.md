@@ -1,162 +1,99 @@
 ---
 name: regrowing-a-subsystem
-description: Use when deleting and rebuilding a subsystem that is already in docs/subsystems.md — because entropy has made it unmaintainable, or because new requirements are large enough that patching would distort it. Also use when the decomposition itself is wrong and subsystems need merging, splitting, or their boundaries redrawn. Use when asked to regrow, regenerate, or rewrite a subsystem from its specs.
+description: Use when existing code needs its intent declared before it can be changed safely, when new behavior needs a subsystem that does not exist yet, or when a subsystem's implementation should be deleted and rebuilt from its declared intent. Use when asked to adopt, characterize, extract invariants from, grow, regrow, regenerate, or rewrite a subsystem.
 ---
 
 # Regrowing a Subsystem
 
-## Overview
+Declare what must survive, delete the implementation inside a boundary, rebuild from the manifest. The binding tests are the referee; the manifest is the brief. Everything else inside the boundary is free.
 
-Delete the implementation inside a boundary and rebuild it from declared intent. The binding tests are the referee; the manifest is the brief. Everything else inside the boundary is free.
+This is deliberate, reversible, and ordinary. Git holds the old implementation. What must not be lost is intent, and intent lives in the manifest.
 
-**REQUIRED BACKGROUND:** Read the [specs-of-theseus](../specs-of-theseus/SKILL.md) skill first for the model and vocabulary.
+**REQUIRED BACKGROUND:** Read [specs-of-theseus](../specs-of-theseus/SKILL.md) first for the model and vocabulary.
 
-This is deliberate, reversible, and ordinary. Git holds the old implementation if the regrowth fails. What must not be lost is intent, and intent lives in the manifest.
+## Three ways in
 
-## Where this is reached from
+| Situation | Start at |
+| --- | --- |
+| Existing code, no entries — *adopt* | Step 1. Classification is the work; steps 4–8 may be a separate later job. |
+| New behavior, no code, no entries — *grow* | Step 1, with candidates from the acceptance criteria. Then build under the everyday loop; there is nothing to cut. |
+| Entries exist, the implementation must go — *regrow* | Step 4. |
 
-Usually from inside a story, when [delivering-a-story](../delivering-a-story/SKILL.md) finds the manifest delta large enough that patching would distort the subsystem. The cut becomes the story's first task, and the story resumes afterward.
+**Adopt only the boundary the work in front of you needs.** Record the rest as identified-but-not-adopted. Widening coverage under delivery pressure is exactly how entropy gets enshrined.
 
-Occasionally directly, when entropy alone is the driver and there is no product change behind it. Even then, **write the story first.** A regrowth with no story is a body of work with no record of why it happened and nowhere to track how far it got.
+## 1. Draw the boundary
 
-## Two modes
+Name the subsystem. State what is inside and outside, in files and modules. Then map the edges: who calls in and what each depends on, what it calls out to, and what crosses — signatures, routes, event shapes, schemas, formats, flags.
 
-**Ordinary regrowth** rebuilds the inside of one boundary. The boundary is fixed; everything within it is free.
+The boundary is one you **draw**, not one you discover. It may follow the existing module structure, but in a high-entropy area that structure is often *the* entropy. Draw the smallest defensible boundary around the behavior worth promising. If no clean edge exists, say so and propose a smaller subsystem.
 
-**Redraw** changes the decomposition itself — merging subsystems, splitting one, or moving behavior between them. Reach for it when the work keeps fighting the shape: a story that spans three subsystems every time, a boundary that no longer matches how the behavior actually clusters, two subsystems that only ever change together.
+**STOP. Present the boundary and get approval.**
 
-The decomposition is disposable. Boundaries get drawn early, under maximum ignorance, and a boundary nobody revisits becomes load-bearing by accident. Redraw is how that entropy gets shed — see [system.md](../specs-of-theseus/references/system.md).
+## 2. Classify
 
-The checklist below runs the same either way, with the additions marked **(redraw)**.
+Gather candidates and walk them with the user, per [classifying.md](../specs-of-theseus/references/classifying.md). Write each decision down as it is made.
 
-## Preconditions
+**STOP. Present the classification and get approval.**
 
-Verify all of these before deleting anything. If any is unmet, stop and fix it first.
+## 3. Write the entries and prove them
 
-- [ ] The subsystem is in `docs/subsystems.md` with a drawn boundary
+Create `docs/subsystems/<name>.md` and add a manifest row with status `adopted — not yet regrown`, per [manifest.md](../specs-of-theseus/references/manifest.md). Record the boundary in the file — the cut depends on it.
+
+Write a binding test for every invariant and **run them against the code as it stands. Every one must pass before anything is deleted.** A binding test never green against the current ship is a guess, and the regrowth would be measured against a guess.
+
+When one fails, that is a finding, not a defect in the test: either the invariant was stated wrong or you have found a real bug. Take it back to the user and reclassify.
+
+**STOP. Report which tests pass and any invariant that turned out to be false.**
+
+The subsystem is now adopted. **It is not under management** — that status is earned by a regrowth, never by writing intent down well.
+
+## 4. Choose the cut
+
+Preconditions, all verified rather than assumed:
+
+- [ ] The subsystem is in the manifest with a drawn boundary
 - [ ] Every invariant has at least one binding test
-- [ ] All binding tests are **green against the current implementation** (run them; do not assume)
-- [ ] The working tree is clean and committed, on a branch
-- [ ] If new requirements are driving this, they are already in the manifest as specs — the regrowth is built from the manifest, so intent that is not in the manifest will not exist
-- [ ] **(redraw)** *Every* subsystem the redraw touches is adopted, with its binding tests green. The gate is the affected set, not the whole manifest — untouched subsystems need not be adopted.
-- [ ] **(redraw)** The cross-cutting invariants in `docs/system.md` are identified and their binding tests are green. They belong to no subsystem, so no subsystem's regrowth will notice when one breaks.
+- [ ] Every binding test is **green against the current implementation** — run them
+- [ ] New requirements driving this are already in the manifest; intent not in the manifest will not exist
+- [ ] Clean tree, committed, on a branch
 
-## Tracking the work
+State exactly what will be deleted — implementation files, scaffolding tests, dead configuration — and what is kept: binding tests, the manifest, everything outside the boundary.
 
-Two levels, because they have different lifetimes.
+**The cut should be as large as the boundary allows.** A timid cut preserves the shape you are trying to escape; the parts you flinch from deleting are usually the parts carrying the entropy. Flag anything you are unsure about rather than quietly keeping it.
 
-**The six steps below** — tracked however this session allows, TodoWrite or a written list.
+**STOP. Present the cut and get approval before deleting.**
 
-**The entries being rebuilt** — the task list in the story file. Committed, because a regrowth can span sessions and an interrupted one leaves a deleted implementation behind. `regrowth in progress` in the manifest says a subsystem is mid-flight; the story's tasks say how far.
+## 5. Cut
 
-Never track entry-by-entry progress in the session alone. It does not survive, and the session is not the unit a regrowth is measured in.
+Delete it. **Do not read the old implementation afterward, and do not keep a copy in the tree "for reference"** — it is in git, and a copy in the tree becomes the design.
 
-**Never track it in the subsystem file either.** That file describes intent, and intent has no progress. Putting work state there fills the history of the one document you want to read as a record of what the system promises with rows about what was green on Tuesday.
+If the old code held knowledge that is not in the manifest, that is a manifest defect: go back, add the entry, then continue.
 
-## Checklist
+## 6. Rebuild
 
-### 1. Choose the cut
+Design from the manifest, not from memory of what was there. Invariants constrain the design; nothing else does.
 
-State exactly what will be deleted: implementation files, scaffolding tests, dead configuration. State what is kept: binding tests, the manifest, anything outside the boundary.
+Then work entry by entry under the everyday loop — failing test, implementation, green, refactor, tag. Write scaffolding tests freely; they are cheap and expected to die at the next regrowth.
 
-The cut should be as large as the boundary allows. A timid cut preserves the shape you are trying to escape — the parts you flinch from deleting are usually the parts carrying the entropy.
+Binding tests will fail until the subsystem is substantially rebuilt. That is expected, and their turning green is the signal you are done.
 
-Flag anything inside the boundary you are unsure about rather than quietly keeping it.
+**An implausibly long plan is information.** Thirty entries usually means the cut was drawn too wide.
 
-**(redraw) Present the new decomposition and the rehoming plan in the same breath as the cut.**
-
-- **The shape.** What subsystems exist on the other side, what each is for, and where each boundary now falls. Say what the current decomposition costs, concretely — the stories that kept spanning it, the changes that always touched both.
-- **The rehoming table.** Every active entry in the affected set, and its destination. This is a transcription from the manifest, not a judgement: read the entries out and give each one a home.
-
-| Entry | From | To | Note |
-| --- | --- | --- | --- |
-| `BILLING-SPEC-011` | Billing | Ledger | unchanged |
-| `BILLING-INV-003` | Billing | Ledger | unchanged |
-| `CHECKOUT-SPEC-002` | Checkout | Ledger | boundary moved; statement unchanged |
-| `CHECKOUT-SPEC-009` | Checkout | — | **retire** — superseded by `BILLING-SPEC-011` |
-
-**No entry may be orphaned.** Every active entry lands somewhere, or is retired visibly with what replaced it and why. This is the one failure a redraw can produce that nothing downstream will catch: a lost promise breaks no test, because the test went with it. An entry with no obvious home is a decision to bring to the user, never a row to leave blank.
-
-**IDs do not change.** `BILLING-SPEC-011` stays `BILLING-SPEC-011` inside Ledger. The prefix records where an entry was issued, not where it lives — renumbering would make every tag in git history a lie. See [manifest-format.md](../specs-of-theseus/references/manifest-format.md).
-
-**STOP. Present the cut — and, for a redraw, the shape and the rehoming table — and get approval before deleting.**
-
-### 2. Cut
-
-Delete it. Do not read the old implementation for guidance afterward, and do not keep a copy in the tree "for reference" — it is in git.
-
-Copying the old structure defeats the purpose. If the old implementation held knowledge that is not in the manifest, that is a manifest defect: go back, add the spec, then continue.
-
-### 3. Design the regrowth and plan the work
-
-Design from the manifest, not from memory of what was there. Cover: the internal decomposition, how each invariant will be satisfied, and how the specs map onto the new shape.
-
-Invariants constrain the design. Nothing else does — internal patterns, decomposition, and file layout are yours to choose.
-
-Then write the plan into the story's task list — every active invariant and spec inside the boundary, broken into red/green/refactor steps, each naming the entry it serves. The entry list comes from the manifest, so that part is a transcription rather than a judgement: if an entry is missing it will not get built, and if a task names nothing in the manifest, you are about to build unpromised behavior.
-
-An implausibly long plan is information. Thirty entries usually means the cut was drawn too wide.
-
-**STOP. Present the design and the plan, and get approval before implementing.**
-
-### 4. Rebuild, one spec at a time
-
-Work down the task list one task at a time, test-first, with the same gates [delivering-a-story](../delivering-a-story/SKILL.md) uses — one TDD discipline, not two:
-
-1. Write the test for one entry, tagged `@proves` with its ID. **Gate: approval before running it.**
-2. Run it. Confirm it fails for the expected reason.
-3. Write just enough implementation to pass, tagged `@implements`. **Gate: approval before running again.**
-4. Run it. Confirm green.
-5. Refactor while the context is fresh. **Gate: approval before refactoring.** If nothing needs it, say so rather than skipping silently.
-
-Write scaffolding tests freely — they are cheap, they make progress visible, and they are expected to be deleted at the next regrowth.
-
-Check the task off as you go, and commit it with the work it describes. A task list updated in a batch at the end was never a plan.
-
-Keep binding tests running throughout. They will fail until the subsystem is substantially rebuilt; that is expected, and their turning green is the signal you are done.
-
-### 5. Verify the invariants
+## 7. Verify
 
 - Every binding test green
-- Performance invariants **measured**, not assumed — a threshold nobody measured is not verified
-- Architectural invariants checked by inspection, and stated explicitly in your report
-- Every caller identified at adoption still works
-- **(redraw)** Every entry on the rehoming table accounted for — each one either satisfied in its new home or retired visibly. Read the table back; do not infer it from a green suite, which cannot tell a satisfied promise from a deleted one.
-- **(redraw)** The cross-cutting invariants in `docs/system.md` re-verified. A redraw moves behavior across boundaries, which is exactly the move that breaks a property no boundary owns.
+- Performance invariants **measured**, not assumed — an unmeasured threshold is not verified
+- Architectural invariants checked by inspection and stated explicitly in your report
+- Every caller identified at step 1 still works
 
-If an invariant cannot be satisfied by the new design, stop. Do not weaken the invariant to make the regrowth succeed. Bring it back to the user: either the design is wrong or the invariant was wrong, and that is their call.
+**If an invariant cannot be satisfied by the new design, stop.** Do not weaken it to make the regrowth succeed. Either the design is wrong or the invariant was, and that is the user's call.
 
-### 6. Reconcile the manifest
+## 8. Reconcile
 
-- Every `@proves` and `@implements` tag references a real manifest entry
-- Every manifest entry that should be implemented has a tag
-- Specs that no longer apply are **retired visibly**, with what replaced them and why
-- Behavior discovered during regrowth that is not promised is recorded as a non-promise
-- Subsystem status updated in `docs/subsystems.md`
-- Every task in the story checked off, and the story closed
-- Nothing describing work state left in the subsystem file — it records intent only
-- **(redraw)** Subsystem files created, merged, or deleted to match the new shape; rehomed entries listed in their destination file with their original IDs
-- **(redraw)** `docs/subsystems.md` rows added and removed, and a dissolved subsystem's row taken out rather than left reading `under management`
-- **(redraw)** `docs/capabilities.md` links still resolve — a capability pointing at a retired entry needs its link swapped or the capability withdrawn, since capability status is derived from the entries it links
+- Every `@proves` and `@implements` tag names a real entry, and every entry that should be implemented has a tag
+- Entries that no longer apply are retired visibly, with what replaced them
+- Behavior discovered during regrowth that is not promised is recorded as a `NON`
+- Status updated to `under management`
+- Nothing describing work state left in the subsystem file
 
-**STOP. Report: invariants verified with evidence, specs implemented, entries retired or added, and anything that surprised you. For a redraw, report the rehoming table as executed — every entry, where it landed, and what was retired.**
-
-## Common mistakes
-
-| Mistake | Fix |
-| --- | --- |
-| Reading the old implementation while rebuilding | Reproduces the shape you deleted. Build from the manifest. |
-| Keeping the old code around "just in case" | It is in git. A copy in the tree becomes the design. |
-| Weakening an invariant to make the regrowth pass | Invariants are the point. Escalate instead. |
-| Asserting performance invariants without measuring | An unmeasured threshold is not verified. |
-| Deleting binding tests along with scaffolding | Binding tests survive the cut. They are the referee. |
-| A cut that carefully preserves the messy part | The part you flinch from deleting is usually the entropy. |
-| Tracking entry progress only in the session | It dies with the session, and a half-regrown subsystem outlives it. |
-| Putting the progress table in the subsystem file | That file is intent. Work state belongs to the story, which is deleted when the work is. |
-| Regrowing with no story behind it | Nothing records why, and nothing tracks how far. Write the story first, even for a pure-entropy cut. |
-| Leaving a row blank on the rehoming table | An entry with no home is a decision for the user, not an omission to fill in later. |
-| Renumbering entries to match their new subsystem | The prefix is an address, not a claim. Renumbering makes every tag in git history a lie. |
-| Redrawing around a subsystem that is not adopted | You would be rehoming entries that do not exist. Adopt the affected set first. |
-| Treating a green suite as proof nothing was orphaned | A deleted promise takes its test with it. Read the rehoming table back, entry by entry. |
-| Skipping cross-cutting invariants because no subsystem owns them | That is precisely why a redraw is when they break. |
-| Working around a bad boundary instead of proposing a redraw | The decomposition is disposable. Say what a redraw would cost and let the user decide. |
+**STOP. Report: invariants verified with evidence, entries implemented, entries retired or added, and anything that surprised you.**

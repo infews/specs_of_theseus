@@ -1,0 +1,30 @@
+---
+title: Specs of Theseus - Overview
+---
+flowchart TD
+
+  classDef hidden display:none
+  PP[Product Prioritization]
+  CE[Choose Epic]
+  EB[Epic Breakdown]
+  JP[Joint Prioritization]
+  CS[Choose Story \n from top \n of Backlog]
+  GT[[Generate Tasks & Update Evals ①]]
+  Impl[[Development ②]]
+  AW[[Acceptance ③]]
+  RF[[Release ④]]
+
+  Start:::hidden-->|Idea|PP
+  PP-->|Prioritized Work|CE
+  CE-->|Epic|EB
+  EB-->|Stories|JP
+  JP-->|Prioritized \n Backlog|CS
+  CS-->|Story|GT
+  GT-->|Story w/ Tasks|Impl
+  Impl-->|Completed Story|AW
+  AW-->|Rejected \n Stories|JP
+  AW-->|Accepted \n Stories|RF
+  RF-->|New Functionality|Stop:::hidden
+
+
+

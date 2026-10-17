@@ -6,11 +6,6 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST="${HOME}/.claude/skills"
 SKILLS=(
   specs-of-theseus
-  refining-an-epic
-  slicing-an-epic
-  delivering-a-story
-  adopting-a-subsystem
-  growing-a-subsystem
   regrowing-a-subsystem
 )
 
