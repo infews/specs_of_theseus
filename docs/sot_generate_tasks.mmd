@@ -9,7 +9,7 @@ flowchart TD
   RD[["fa:fa-robot Redesign System ⑤"]]
   ATS["fa:fa-robot Add Tasks to Story"]
 
-  Start:::hidden -->|Story|A
+  Start:::hidden -->|Story \n w/o Tasks|A
   H1:::hidden-->|Current \n Invariants|A
   H2:::hidden-->|Current \n Contracts|A
   H3:::hidden-->|Current \n End-to-End Tests|A
@@ -19,7 +19,9 @@ flowchart TD
   A-->|Updated \n Contracts|RD
   A-->|Updated \n End-to-End Tests|RD
   A-->|Updated \n Monitors|RD
+  RD-->|Redesigned \n Subsystems|ATS
   RD-->|Plan|ATS
+  RD-->|Tasks|ATS
   ATS-->|Story with Tasks|H6:::hidden
 
 
