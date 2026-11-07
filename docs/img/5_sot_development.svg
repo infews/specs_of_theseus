@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="pele pele-flowchart" viewBox="0 0 870 1253" width="870" height="1253" style="max-width:100%;height:auto;--_bg:var(--pele-bg,#fff);--_fg:var(--pele-fg,#1f1f1f);--_m:var(--pele-muted,#6e6e6e);--_l:var(--pele-line,#1f1f1f);--_s:var(--pele-surface,#f3f3f3);--_a:var(--pele-surface-alt,#e6e6e6);--_b:var(--pele-border,#8a8a8a);--_c:var(--pele-accent,#5b7bd5);color:var(--_fg);--_r:var(--pele-radius,4px);--_tw:var(--pele-title-weight,bold);--_fm:var(--pele-font-mono,monospace);font:16px sans-serif;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;font-family:var(--pele-font,sans-serif)" fill="var(--_fg)" role="graphics-document document" aria-roledescription="flowchart"><style><![CDATA[
+/*
+ * pele-plex.css — an IBM Plex theme for Pele (https://github.com/obsidianmd/pele)
+ *
+ * Fonts      IBM Plex Sans for labels, IBM Plex Mono for monospace parts.
+ * Schemes    carbon (default), paper, harbor, moss — each with a light and a dark palette.
+ * Edge text  ALL CAPS, slightly smaller, tracked out, in a rounded pill.
+ * Utility    .hidden { display: none }
+ *
+ * ── Choosing a scheme ────────────────────────────────────────────────────────────────
+ *   <div data-pele-scheme="paper"> …diagram… </div>
+ *   Put the attribute on the diagram's container or any ancestor (e.g. <html>).
+ *   With no attribute, diagrams use "carbon".
+ *
+ * ── Light / dark ─────────────────────────────────────────────────────────────────────
+ *   By default a diagram follows the OS setting, via @media (prefers-color-scheme: dark).
+ *   pele-preview's --scheme light|dark (and its preview toggle) pin the mode by
+ *   rewriting that media query in the embedded copy of this file.
+ *   Force a mode with data-pele-mode="light" | "dark" on the container or any ancestor,
+ *   or from your own CSS:  html.dark { --plex-mode: dark; }
+ *   Switching never needs a re-render: every color is a light-dark() pair that the
+ *   browser resolves against the diagram's color-scheme.
+ *   Needs light-dark(): Chrome/Edge 123+, Safari 17.5+, Firefox 120+.
+ *
+ * ── Fonts and measuring ─────────────────────────────────────────────────────────────
+ *   Pele measures labels in the font it is given, so:
+ *   • mount(): reads --pele-font / --pele-font-mono from CSS (set below) and re-measures
+ *     once the web fonts finish loading.
+ *   • render(): pass the same family yourself:
+ *       render(src, { fontFamily: '"IBM Plex Sans", sans-serif',
+ *                     fontFamilyMono: '"IBM Plex Mono", monospace' })
+ *   Remove the @import below if you self-host Plex (e.g. via @fontsource).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+
+/* ─── Utility ────────────────────────────────────────────────────────────────────── */
+
+.hidden {
+  display: none;
+}
+
+
+/* ─── Fonts, weights, knobs ──────────────────────────────────────────────────────── */
+/* Declared on :root so a container sees them before its first render (mount() reads
+   them from there), and so a data-pele-scheme on an ancestor can override them. */
+
+:root {
+  --pele-font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pele-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --pele-title-weight: 600;
+  --pele-heading-weight: 600;
+  --pele-bold-weight: 600;
+  --pele-radius: 6px;
+
+  /* Edge-label tuning. Scale is relative to the size Pele measured the label at. */
+  --plex-edge-label-scale: 0.72;       /* text size, vs. what Pele measured (caps need ≤ ~0.78) */
+  --plex-edge-label-tracking: 0.06em;  /* letter-spacing for the caps */
+  --plex-edge-label-weight: 500;
+  --plex-edge-label-pad-x: 1.06;       /* pill width, as a factor of Pele's measured box */
+  --plex-edge-label-pad-x-wrapped: 1.14; /* pill width for labels Pele wrapped onto 2+ lines */
+  --plex-edge-label-pad-y: 1.0;        /* pill height, as a factor of Pele's measured box */
+  --plex-edge-label-pad-y-wrapped: 1.18; /* pill height for labels on 2+ lines */
+  /* --plex-edge-label-radius: 4px;       unset = full pill; set for a soft-cornered tag */
+  --plex-edge-label-stroke-width: 1px;
+
+  /* Edge lines. Pele's defaults are 1px, and 2.5px for thick (==>) edges. */
+  --plex-edge-width: 1.75px;
+  --plex-edge-width-thick: 3.25px;
+}
+
+/* Every diagram resolves its light-dark() colors against this. The OS setting is
+   read through these two media queries, and nowhere else, so a tool can pin the
+   mode by rewriting them (pele-preview --scheme light|dark does exactly that).
+   --plex-mode, when set, wins over both. */
+.pele {
+  color-scheme: var(--plex-mode, light);
+}
+@media (prefers-color-scheme: dark) {
+  .pele {
+    color-scheme: var(--plex-mode, dark);
+  }
+}
+
+[data-pele-mode="light"] { --plex-mode: light; }
+[data-pele-mode="dark"]  { --plex-mode: dark; }
+[data-pele-mode="auto"]  { --plex-mode: initial; }
+
+
+/* ─── Edges ──────────────────────────────────────────────────────────────────────── */
+
+.pele .pele-edges {
+  stroke-width: var(--plex-edge-width);
+}
+.pele .pele-edge > path[stroke-width="2.5"] {
+  stroke-width: var(--plex-edge-width-thick);
+}
+/* Arrowheads and dots are filled shapes drawn with stroke="none"; a thin stroke in the
+   edge's color scales them up to match the heavier line and rounds their tips. Stroked
+   markers (the --x cross) already follow the line width and are left alone. */
+.pele .pele-edge > .pele-marker[stroke="none"] {
+  stroke: inherit;
+  stroke-width: calc(var(--plex-edge-width) * 0.5);
+  stroke-linejoin: round;
+}
+
+
+/* ─── Edge labels ────────────────────────────────────────────────────────────────── */
+/* Pele draws a graph edge label as
+     <g class="pele-edge-label"><rect …/><text>…</text></g>
+   with the rect sized to the text it measured. Uppercase + tracking widens text, so
+   the text is shrunk to compensate and the rect is grown around its own center. */
+
+.pele .pele-edge-label text,
+.pele text.pele-edge-label {
+  text-transform: uppercase;
+  letter-spacing: var(--plex-edge-label-tracking);
+  font-size: calc(var(--plex-edge-label-scale) * 1em);
+  font-weight: var(--plex-edge-label-weight);
+  fill: var(--plex-edge-label-fg, var(--pele-fg));
+  /* Pele sets the baseline for the measured size; re-center the smaller caps. */
+  transform: translateY(calc(-0.35em * (1 / var(--plex-edge-label-scale) - 1)));
+}
+
+/* Sequence diagrams draw message text as edge labels too, often with no backing rect.
+   Caps on long messages read poorly there, so they are left as-is. Delete this rule
+   to give sequence messages the same treatment. */
+.pele.pele-sequence .pele-edge-label text {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  transform: none;
+}
+
+/* Wrapped labels (one <tspan x=…> per line) get a little more room on every side. */
+.pele .pele-edge-label:has(tspan[x] + tspan[x]) {
+  --plex-edge-label-pad-x: var(--plex-edge-label-pad-x-wrapped);
+  --plex-edge-label-pad-y: var(--plex-edge-label-pad-y-wrapped);
+}
+
+.pele:not(.pele-sequence) .pele-edge-label > rect {
+  fill: var(--plex-edge-label-bg, var(--pele-bg));
+  stroke: var(--plex-edge-label-border, var(--pele-border));
+  stroke-width: var(--plex-edge-label-stroke-width);
+  /* The radius as drawn, then divided by the scale below so the corners stay circular.
+     Pele's single-line label box is 1.5em tall, so 0.75em × pad-y is a full pill;
+     multi-line labels get the same radius and read as rounded rectangles. */
+  --_plex-r: var(--plex-edge-label-radius, calc(0.75em * var(--plex-edge-label-pad-y)));
+  rx: calc(var(--_plex-r) / var(--plex-edge-label-pad-x));
+  ry: calc(var(--_plex-r) / var(--plex-edge-label-pad-y));
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(var(--plex-edge-label-pad-x), var(--plex-edge-label-pad-y));
+  vector-effect: non-scaling-stroke;
+}
+
+
+/* ─── Tones: series colors on flowchart nodes and subgraphs ──────────────────────── */
+/* In the diagram:
+     A[Ingest]:::tone-1            a node (one ::: class per node)
+     class B,C tone-2              several nodes
+     class MySubgraph tone-3       a subgraph, by its id (subgraphs can't take :::)
+     D[Alert]:::tone-4             a full-strength fill: add "solid" on its own line,
+     class D solid                   as Mermaid takes one class per ::: or class line
+   No classDef is needed; Pele copies the class names onto the SVG. Tones follow the
+   active scheme and light/dark mode because they read --pele-series-1…8. */
+
+.pele .tone-1 { --plex-tone: var(--pele-series-1); }
+.pele .tone-2 { --plex-tone: var(--pele-series-2); }
+.pele .tone-3 { --plex-tone: var(--pele-series-3); }
+.pele .tone-4 { --plex-tone: var(--pele-series-4); }
+.pele .tone-5 { --plex-tone: var(--pele-series-5); }
+.pele .tone-6 { --plex-tone: var(--pele-series-6); }
+.pele .tone-7 { --plex-tone: var(--pele-series-7); }
+.pele .tone-8 { --plex-tone: var(--pele-series-8); }
+
+:root {
+  --plex-tone-node-mix: 18%;     /* how much tone is mixed into a node's fill */
+  --plex-tone-cluster-mix: 9%;   /* …and into a subgraph's fill */
+}
+
+/* Nodes: tinted fill, full-tone outline. Detail lines (cylinder lids, subroutine
+   bars) are drawn with fill="none" and only take the stroke. */
+.pele .pele-node:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > :not(text, [fill="none"]) {
+  fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-node-mix), var(--pele-surface));
+}
+.pele .pele-node:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > :not(text) {
+  stroke: var(--plex-tone);
+}
+
+/* Solid: the tone itself as the fill, with background-colored text on it. */
+.pele .pele-node.solid > :not(text, [fill="none"]) {
+  fill: var(--plex-tone, var(--pele-accent));
+}
+.pele .pele-node.solid > :not(text) {
+  stroke: var(--plex-tone, var(--pele-accent));
+}
+.pele .pele-node.solid > :is(path[fill="none"]) {
+  stroke: var(--pele-bg);
+}
+.pele .pele-node.solid .pele-label {
+  fill: var(--pele-bg);
+}
+
+/* Subgraphs: a lighter tint, an opaque fill (Pele draws them at 0.5 opacity), a
+   tone outline and title. A title Pele moves off the box to dodge an edge is drawn
+   outside this group and keeps the default color. */
+.pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > rect {
+  fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-cluster-mix), var(--pele-bg));
+  fill-opacity: 1;
+  stroke: var(--plex-tone);
+}
+.pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > .pele-cluster-label {
+  fill: var(--plex-tone);
+}
+
+
+/* ─── Schemes ───────────────────────────────────────────────────────────────────── */
+/* Each color is light-dark(<light>, <dark>). */
+
+/* Carbon — neutral grays and IBM blue; series is IBM's categorical palette. */
+:root,
+[data-pele-scheme="carbon"] {
+  --pele-bg:          light-dark(#ffffff, #161616);
+  --pele-fg:          light-dark(#161616, #f4f4f4);
+  --pele-fg-on-light: #161616;
+  --pele-fg-on-dark:  #ffffff;
+  --pele-muted:       light-dark(#6f6f6f, #a8a8a8);
+  --pele-line:        light-dark(#525252, #a8a8a8);
+  --pele-surface:     light-dark(#f4f4f4, #262626);
+  --pele-surface-alt: light-dark(#e0e0e0, #393939);
+  --pele-border:      light-dark(#8d8d8d, #6f6f6f);
+  --pele-accent:      light-dark(#0f62fe, #78a9ff);
+  --pele-critical:    light-dark(#da1e28, #ff8389);
+  --pele-error:       light-dark(#da1e28, #ff8389);
+  --pele-series-1:    light-dark(#6929c4, #8a3ffc);
+  --pele-series-2:    light-dark(#1192e8, #33b1ff);
+  --pele-series-3:    light-dark(#005d5d, #007d79);
+  --pele-series-4:    light-dark(#9f1853, #ff7eb6);
+  --pele-series-5:    light-dark(#fa4d56, #fa4d56);
+  --pele-series-6:    light-dark(#570408, #fff1f1);
+  --pele-series-7:    light-dark(#198038, #6fdc8c);
+  --pele-series-8:    light-dark(#002d9c, #4589ff);
+}
+
+/* Paper — warm off-white and espresso, rust accent. */
+[data-pele-scheme="paper"] {
+  --pele-bg:          light-dark(#fbf8f1, #1c1915);
+  --pele-fg:          light-dark(#2b2620, #ece5d8);
+  --pele-fg-on-light: #2b2620;
+  --pele-fg-on-dark:  #fbf8f1;
+  --pele-muted:       light-dark(#7a7064, #a39889);
+  --pele-line:        light-dark(#5a5045, #b9ae9d);
+  --pele-surface:     light-dark(#f2ecdf, #27231d);
+  --pele-surface-alt: light-dark(#e7dfcf, #332e26);
+  --pele-border:      light-dark(#c4b69e, #5a5045);
+  --pele-accent:      light-dark(#b2541a, #e8935a);
+  --pele-critical:    light-dark(#b3261e, #f07167);
+  --pele-error:       light-dark(#b3261e, #f07167);
+  --pele-series-1:    light-dark(#b2541a, #e8935a);
+  --pele-series-2:    light-dark(#8a6d1c, #d9b450);
+  --pele-series-3:    light-dark(#5d7a2e, #a3c46a);
+  --pele-series-4:    light-dark(#2f6f73, #6cc1bc);
+  --pele-series-5:    light-dark(#3f5b8c, #8aa8de);
+  --pele-series-6:    light-dark(#6b4a8a, #b996d6);
+  --pele-series-7:    light-dark(#9c3d5b, #e584a2);
+  --pele-series-8:    light-dark(#7a5c45, #c9a786);
+}
+
+/* Harbor — cool blue-grays, teal accent. */
+[data-pele-scheme="harbor"] {
+  --pele-bg:          light-dark(#f7f9fb, #0d1620);
+  --pele-fg:          light-dark(#0f1c2a, #dde6ef);
+  --pele-fg-on-light: #0f1c2a;
+  --pele-fg-on-dark:  #f7f9fb;
+  --pele-muted:       light-dark(#5b6b7c, #8a9bab);
+  --pele-line:        light-dark(#3d5064, #9fb2c4);
+  --pele-surface:     light-dark(#e9eff5, #152230);
+  --pele-surface-alt: light-dark(#dae4ee, #1e2e3e);
+  --pele-border:      light-dark(#98abbf, #3d5267);
+  --pele-accent:      light-dark(#0b7285, #3bc9db);
+  --pele-critical:    light-dark(#c92a2a, #ff6b6b);
+  --pele-error:       light-dark(#c92a2a, #ff6b6b);
+  --pele-series-1:    light-dark(#0b7285, #3bc9db);
+  --pele-series-2:    light-dark(#1864ab, #74c0fc);
+  --pele-series-3:    light-dark(#5f3dc4, #b197fc);
+  --pele-series-4:    light-dark(#a61e4d, #f783ac);
+  --pele-series-5:    light-dark(#c2410c, #ff922b);
+  --pele-series-6:    light-dark(#8a6400, #ffd43b);
+  --pele-series-7:    light-dark(#2b8a3e, #8ce99a);
+  --pele-series-8:    light-dark(#495057, #ced4da);
+}
+
+/* Moss — soft greens and bark, leaf accent. */
+[data-pele-scheme="moss"] {
+  --pele-bg:          light-dark(#f8faf5, #12170f);
+  --pele-fg:          light-dark(#1b2418, #dfe6d8);
+  --pele-fg-on-light: #1b2418;
+  --pele-fg-on-dark:  #f8faf5;
+  --pele-muted:       light-dark(#637060, #8e9a86);
+  --pele-line:        light-dark(#46533f, #aab8a0);
+  --pele-surface:     light-dark(#ecf1e6, #1a2116);
+  --pele-surface-alt: light-dark(#dee6d5, #242d1f);
+  --pele-border:      light-dark(#a3b298, #46533f);
+  --pele-accent:      light-dark(#3f7a1c, #9ccc65);
+  --pele-critical:    light-dark(#b3261e, #f07167);
+  --pele-error:       light-dark(#b3261e, #f07167);
+  --pele-series-1:    light-dark(#3f7a1c, #9ccc65);
+  --pele-series-2:    light-dark(#2f6f5e, #63c6a8);
+  --pele-series-3:    light-dark(#8a6d1c, #d9b450);
+  --pele-series-4:    light-dark(#a8541e, #e8945a);
+  --pele-series-5:    light-dark(#7a3b5c, #d68aaf);
+  --pele-series-6:    light-dark(#3f5b8c, #8fb0e8);
+  --pele-series-7:    light-dark(#5e4a2e, #c4a27a);
+  --pele-series-8:    light-dark(#5f6b2a, #c9cf8a);
+}
+
+]]></style><text class="pele-title" font-weight="var(--_tw)" text-anchor="middle" xml:space="preserve"><tspan x="435" y="25.6">Specs of Theseus - Development</tspan></text><g class="pele-clusters"><g class="pele-cluster tone-7" data-id="Dev"><rect x="8" y="180" width="853.14" height="929" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="69.13" y="205.6" text-anchor="middle">Development</text></g></g><g class="pele-edges" fill="none" stroke="var(--_l)" stroke-linecap="round"><g class="pele-edge" data-id="L_Start1_Dev_P_0"><path d="M630.44,92L630.44,233"/><path class="pele-marker" d="M630.44,240L627.08,232L633.8,232Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_P_Dev_RGR_0"><path d="M602.2,288L602.2,296.97C602.2,299.85 296.01,305.62 296.01,308.5L296.01,369"/><path class="pele-marker" d="M296.01,376L292.65,368L299.37,368Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_RGR_Dev_Prop_0"><path d="M232.2,442L232.2,454.25C232.2,464.02 202.6,470 154.3,470C106.01,470 76.41,485.2 76.41,510L76.41,567"/><path class="pele-marker" d="M76.41,574L73.05,566L79.77,566Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Prop_Dev_RGR_0"><path d="M192.33,574L192.33,510C192.33,492.64 202.94,482 220.26,482C237.59,482 248.2,471.74 248.2,455L248.2,449"/><path class="pele-marker" d="M248.2,442L251.56,450L244.84,450Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Prop_Dev_Mu_0"><path d="M134.37,640L134.37,721"/><path class="pele-marker" d="M134.37,728L131.01,720L137.73,720Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Mu_Dev_RGR_0"><path d="M251.65,728L251.65,715C251.65,677.5 296.01,677.5 296.01,640L296.01,449"/><path class="pele-marker" d="M296.01,442L299.37,450L292.65,450Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Mu_Dev_Checks_0"><path d="M208.29,776L208.29,836.5C208.29,844.19 265.02,844.19 265.02,851.88L265.02,857"/><path class="pele-marker" d="M265.02,864L261.66,856L268.38,856Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Checks_Dev_RGR_0"><path d="M326.83,864L326.83,851C326.83,813.5 383.55,813.5 383.55,776L383.55,574C383.55,514.5 359.69,514.5 359.69,455L359.69,449"/><path class="pele-marker" d="M359.69,442L363.05,450L356.33,450Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Checks_Dev_IT_0"><path d="M295.92,930L295.92,975.5C295.92,980.07 502.8,986.3 502.8,990.88L502.8,996"/><path class="pele-marker" d="M502.8,1003L499.44,995L506.16,995Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_IT_Dev_RGR_0"><path d="M518.8,1003L518.8,574C518.8,514.5 375.69,514.5 375.69,455L375.69,449"/><path class="pele-marker" d="M375.69,442L379.05,450L372.33,450Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_IT_Dev_P_0"><path d="M534.8,1003L534.8,990C534.8,960 630.44,960 630.44,930L630.44,295"/><path class="pele-marker" d="M630.44,288L633.8,296L627.08,296Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_P_Dev_Complete_0"><path d="M658.68,288L658.68,296.97C658.68,302.73 749.79,302.73 749.79,308.5L749.79,378"/><path class="pele-marker" d="M749.79,385L746.43,377L753.15,377Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Complete_Stop2_0"><path d="M749.79,433L749.79,1190"/><path class="pele-marker" d="M749.79,1197L746.43,1189L753.15,1189Z" fill="var(--_l)" stroke="none"/></g></g><g class="pele-edge-labels" font-size="14"><g class="pele-edge-label" data-id="L_Start1_Dev_P_0"><rect x="601.15" y="114.5" width="58.57" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="630.44" y="128.4">Story w/</tspan><tspan x="630.44" y="146.4">Tasks</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_P_Dev_RGR_0"><rect x="276.84" y="318" width="38.34" height="21" rx="3" fill="var(--_bg)"/><text x="296.01" y="333.4" text-anchor="middle">Task</text></g><g class="pele-edge-label" data-id="L_Dev_RGR_Dev_Prop_0"><rect x="30" y="512" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="76.41" y="525.9">Subsystems</tspan><tspan x="76.41" y="543.9">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Prop_Dev_RGR_0"><rect x="142.81" y="512" width="99.03" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="192.33" y="525.9">Failing</tspan><tspan x="192.33" y="543.9">Property Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Prop_Dev_Mu_0"><rect x="87.96" y="662.5" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="134.37" y="676.4">Subsystems</tspan><tspan x="134.37" y="694.4">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Mu_Dev_RGR_0"><rect x="262.84" y="596.5" width="66.34" height="21" rx="3" fill="var(--_bg)"/><text x="296.01" y="611.9" text-anchor="middle">Survivors</text></g><g class="pele-edge-label" data-id="L_Dev_Mu_Dev_Checks_0"><rect x="161.89" y="798.5" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="208.29" y="812.4">Subsystems</tspan><tspan x="208.29" y="830.4">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Checks_Dev_RGR_0"><rect x="333.65" y="741.5" width="99.8" height="21" rx="3" fill="var(--_bg)"/><text x="383.55" y="756.9" text-anchor="middle">Failing Checks</text></g><g class="pele-edge-label" data-id="L_Dev_Checks_Dev_IT_0"><rect x="241.74" y="952.5" width="108.37" height="21" rx="3" fill="var(--_bg)"/><text x="295.92" y="967.9" text-anchor="middle">Passing Checks</text></g><g class="pele-edge-label" data-id="L_Dev_IT_Dev_RGR_0"><rect x="475.12" y="741.5" width="87.35" height="21" rx="3" fill="var(--_bg)"/><text x="518.8" y="756.9" text-anchor="middle">Failing Evals</text></g><g class="pele-edge-label" data-id="L_Dev_IT_Dev_P_0"><rect x="582.48" y="741.5" width="95.92" height="21" rx="3" fill="var(--_bg)"/><text x="630.44" y="756.9" text-anchor="middle">Passing Evals</text></g><g class="pele-edge-label" data-id="L_Dev_P_Dev_Complete_0"><rect x="717.78" y="310.5" width="64.01" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="749.79" y="324.4">Empty</tspan><tspan x="749.79" y="342.4">Task List</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Complete_Stop2_0"><rect x="711.94" y="1131.5" width="75.69" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="749.79" y="1145.4">Completed</tspan><tspan x="749.79" y="1163.4">Story</tspan></text></g></g><g class="pele-nodes"><g class="pele-node pele-shape-rect hidden" data-id="Start1" transform="translate(630.44,68)"><rect x="-39.34" y="-24" width="78.69" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Start1</text></g><g class="pele-node pele-shape-rect" data-id="Dev_P" transform="translate(630.44,264)"><rect x="-80.24" y="-24" width="160.48" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Pick next Task</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_RGR" transform="translate(296.01,409)"><rect x="-107.81" y="-33" width="215.62" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-99.81,-33V33M99.81,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Red/Green/Refactor</tspan><tspan x="0" y="16.1">in Subsystems</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Prop" transform="translate(134.37,607)"><rect x="-84.69" y="-33" width="169.38" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-76.69,-33V33M76.69,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Migrate to</tspan><tspan x="0" y="16.1">Property Testing</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Mu" transform="translate(208.29,752)"><rect x="-95.36" y="-24" width="190.72" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-87.36,-24V24M87.36,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Mutation Testing</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_IT" transform="translate(518.8,1036)"><rect x="-66.01" y="-33" width="132.02" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-58.01,-33V33M58.01,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Run Full</tspan><tspan x="0" y="16.1">Eval Suite</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Checks" transform="translate(295.92,897)"><rect x="-82.9" y="-33" width="165.81" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-74.9,-33V33M74.9,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Run Controls</tspan><tspan x="0" y="16.1">&amp; Checks</tspan></text></g><g class="pele-node pele-shape-fr-rect" data-id="Dev_Complete" transform="translate(749.79,409)"><rect x="-91.35" y="-24" width="182.7" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-83.35,-24V24M83.35,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Complete Story</text></g><g class="pele-node pele-shape-rect hidden" data-id="Stop2" transform="translate(749.79,1221)"><rect x="-38.9" y="-24" width="77.81" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Stop2</text></g></g></svg>

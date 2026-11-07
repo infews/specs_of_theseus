@@ -1,0 +1,100 @@
+---
+title: Specs of Theseus - Overview
+---
+flowchart TD
+
+  classDef hidden display:none
+
+  subgraph Prod["Product Planning"]
+    PP[👱 Product Prioritization]
+    CE[👱 Choose Epic]
+    EB[[👱 🤖 Epic Breakdown]]
+    JP[[👱 🤖 Prioritization]]
+  end
+
+  CS[👱 🤖 Choose Story \n from top \n of Backlog]
+  Deploy[[⚙ Deploy]]
+  AW[[Acceptance]]
+  RF[[👱 ⚙ Release]]
+
+  AW-.->|Rejected \n Stories|JP
+
+  %%% Update Evals
+  subgraph UE[Update Evals]
+    Repo_1:::hidden
+    GT_A[[👱 🤖 Update Evals]]
+  end
+
+  %%% Redesign System
+  subgraph RS[Redesign System]
+    GT_RD[[🤖 Redesign System]]
+    GT_ATS[[🤖 Add Tasks to Story]]
+    Repo_2:::hidden
+    Repo_3:::hidden
+  end
+
+  subgraph Dev[Development]
+    Dev_P[🤖 Pick next Task]
+    Dev_RGR[[🤖 Red/Green/Refactor \n in Subsystems]]
+    Dev_Prop[[🤖 Migrate to \n Property Testing]]
+    Dev_Mu[[🤖 Mutation Testing]]
+    Dev_IT[[🤖 Run Full \n Eval Suite]]
+    Dev_Checks[[🤖 Run Controls \n & Checks]]
+    Dev_Complete[[🤖 Complete Story]]
+  end
+
+  Start:::hidden-->|Idea|PP
+  PP-->|Prioritized Work|CE
+  CE-->|Epic|EB
+  EB-->|Stories|JP
+  JP-->|Prioritized \n Backlog|CS
+  CS-->|Empty \n Backlog|CE
+  CS-->|Story|GT_A
+
+  %% Generate Tasks & Update Evals
+  Repo_1-->|Current \n Invariants|GT_A
+  Repo_1-->|Current \n Contracts|GT_A
+  Repo_1-->|Current \n End-to-End \n Tests|GT_A
+  Repo_1-->|Current \n Monitors|GT_A
+  Repo_2-->|Code|GT_RD
+
+  GT_A-->|Story|GT_RD
+
+  GT_A-->|Updated \n Invariants|GT_RD
+  GT_A-->|Updated \n Contracts|GT_RD
+  GT_A-->|Updated \n End-to-End \nTests|GT_RD
+  GT_A-->|Updated \n Monitors|GT_RD
+
+  GT_RD-->|Redesigned \n Subsystems \n Plan|GT_ATS
+  GT_RD-->|Tasks|GT_ATS
+  GT_RD-->|Story|GT_ATS
+
+  %% Development
+  GT_ATS-->|Story w/ Tasks|Dev_P
+  Dev_P-->|Task|Dev_RGR
+  Dev_RGR-->|Subsystems \n Code & Tests|Dev_Prop
+  Dev_Prop-->|Failing \n Property Tests|Dev_RGR
+  Dev_Prop-->|Subsystems \n Code & Tests|Dev_Mu
+  Dev_Mu-->|Survivors|Dev_RGR
+  Dev_Mu-->|Subsystems \n Code & Tests|Dev_Checks
+
+  Dev_Checks-->|Failing Checks|Dev_RGR
+  Dev_Checks-->|Passing Checks|Dev_IT
+
+  Dev_IT-->|Failing Evals|Dev_RGR
+  Dev_IT-->|Passing Evals|Dev_P
+
+  Dev_P-->|Empty \n Task List|Dev_Complete
+
+  Dev_Complete-->|Completed \n Story|Deploy
+  Deploy-->|Working \n Software|AW
+  Deploy-->|Empty \n Work \n Queue|CS
+  AW-->|Accepted \n Stories|RF
+  RF-->|New Functionality|Stop:::hidden
+
+  class EB,JP,GT_A tone-7
+  class GT_RD,GT_ATS,Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
+  class Repo,Repo2 tone-2
+  class GT tone-1
+  class Prod tone-2
+  class Dev tone-7

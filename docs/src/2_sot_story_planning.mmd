@@ -1,0 +1,51 @@
+---
+title: Specs of Theseus - Story Planning
+---
+flowchart TD
+
+  classDef hidden display:none
+
+  Product_Planning:::hidden
+  CS[👱 🤖 Choose Story \n from top \n of Backlog]
+
+  CS --> |Story| GT_A
+  CS --> |Empty \n Backlog| Product_Planning
+
+  Product_Planning --> |Prioritized \n Backlog| CS
+  Dev_Complete:::hidden --> |Empty \n Work \n Queue| CS
+
+  subgraph GT[Update Evals & Generate Tasks]
+    Repo_1:::hidden
+    GT_A[[👱 🤖 Update Evals]]
+    GT_RD[[🤖 Redesign System]]
+    GT_ATS[[🤖 Add Tasks to Story]]
+    Repo_2:::hidden
+  end
+
+  %% Generate Tasks & Update Evals
+  Repo_1-->|Current \n Invariants|GT_A
+  Repo_1-->|Current \n Contracts|GT_A
+  Repo_1-->|Current \n End-to-End \n Tests|GT_A
+  Repo_1-->|Current \n Monitors|GT_A
+  Repo_1-->|Code|GT_RD
+
+  GT_A-->|Story|GT_RD
+
+  GT_A-->|Updated \n Invariants|GT_RD
+  GT_A-->|Updated \n Contracts|GT_RD
+  GT_A-->|Updated \n End-to-End \nTests|GT_RD
+  GT_A-->|Updated \n Monitors|GT_RD
+
+  GT_RD-->|Redesigned \n Subsystems \n Plan|GT_ATS
+  GT_RD-->|Tasks|GT_ATS
+  GT_RD-->|Story|GT_ATS
+  GT_RD-->|Updated Evals|Repo_2
+
+  GT_ATS --> |Story w/ Tasks| End:::hidden
+
+  class EB,JP,GT_A tone-7
+  class GT_RD,GT_ATS,Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
+  class Repo,Repo2 tone-2
+  class GT tone-1
+  class Prod tone-2
+  class Dev tone-7

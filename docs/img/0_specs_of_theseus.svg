@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="pele pele-flowchart" viewBox="0 0 1096 3482" width="1096" height="3482" style="max-width:100%;height:auto;--_bg:var(--pele-bg,#fff);--_fg:var(--pele-fg,#1f1f1f);--_m:var(--pele-muted,#6e6e6e);--_l:var(--pele-line,#1f1f1f);--_s:var(--pele-surface,#f3f3f3);--_a:var(--pele-surface-alt,#e6e6e6);--_b:var(--pele-border,#8a8a8a);--_c:var(--pele-accent,#5b7bd5);color:var(--_fg);--_r:var(--pele-radius,4px);--_tw:var(--pele-title-weight,bold);--_fm:var(--pele-font-mono,monospace);font:16px sans-serif;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;font-family:var(--pele-font,sans-serif)" fill="var(--_fg)" role="graphics-document document" aria-roledescription="flowchart"><style><![CDATA[
+/*
+ * pele-plex.css — an IBM Plex theme for Pele (https://github.com/obsidianmd/pele)
+ *
+ * Fonts      IBM Plex Sans for labels, IBM Plex Mono for monospace parts.
+ * Schemes    carbon (default), paper, harbor, moss — each with a light and a dark palette.
+ * Edge text  ALL CAPS, slightly smaller, tracked out, in a rounded pill.
+ * Utility    .hidden { display: none }
+ *
+ * ── Choosing a scheme ────────────────────────────────────────────────────────────────
+ *   <div data-pele-scheme="paper"> …diagram… </div>
+ *   Put the attribute on the diagram's container or any ancestor (e.g. <html>).
+ *   With no attribute, diagrams use "carbon".
+ *
+ * ── Light / dark ─────────────────────────────────────────────────────────────────────
+ *   By default a diagram follows the OS setting, via @media (prefers-color-scheme: dark).
+ *   pele-preview's --scheme light|dark (and its preview toggle) pin the mode by
+ *   rewriting that media query in the embedded copy of this file.
+ *   Force a mode with data-pele-mode="light" | "dark" on the container or any ancestor,
+ *   or from your own CSS:  html.dark { --plex-mode: dark; }
+ *   Switching never needs a re-render: every color is a light-dark() pair that the
+ *   browser resolves against the diagram's color-scheme.
+ *   Needs light-dark(): Chrome/Edge 123+, Safari 17.5+, Firefox 120+.
+ *
+ * ── Fonts and measuring ─────────────────────────────────────────────────────────────
+ *   Pele measures labels in the font it is given, so:
+ *   • mount(): reads --pele-font / --pele-font-mono from CSS (set below) and re-measures
+ *     once the web fonts finish loading.
+ *   • render(): pass the same family yourself:
+ *       render(src, { fontFamily: '"IBM Plex Sans", sans-serif',
+ *                     fontFamilyMono: '"IBM Plex Mono", monospace' })
+ *   Remove the @import below if you self-host Plex (e.g. via @fontsource).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+
+/* ─── Utility ────────────────────────────────────────────────────────────────────── */
+
+.hidden {
+  display: none;
+}
+
+
+/* ─── Fonts, weights, knobs ──────────────────────────────────────────────────────── */
+/* Declared on :root so a container sees them before its first render (mount() reads
+   them from there), and so a data-pele-scheme on an ancestor can override them. */
+
+:root {
+  --pele-font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pele-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --pele-title-weight: 600;
+  --pele-heading-weight: 600;
+  --pele-bold-weight: 600;
+  --pele-radius: 6px;
+
+  /* Edge-label tuning. Scale is relative to the size Pele measured the label at. */
+  --plex-edge-label-scale: 0.72;       /* text size, vs. what Pele measured (caps need ≤ ~0.78) */
+  --plex-edge-label-tracking: 0.06em;  /* letter-spacing for the caps */
+  --plex-edge-label-weight: 500;
+  --plex-edge-label-pad-x: 1.06;       /* pill width, as a factor of Pele's measured box */
+  --plex-edge-label-pad-x-wrapped: 1.14; /* pill width for labels Pele wrapped onto 2+ lines */
+  --plex-edge-label-pad-y: 1.0;        /* pill height, as a factor of Pele's measured box */
+  --plex-edge-label-pad-y-wrapped: 1.18; /* pill height for labels on 2+ lines */
+  /* --plex-edge-label-radius: 4px;       unset = full pill; set for a soft-cornered tag */
+  --plex-edge-label-stroke-width: 1px;
+
+  /* Edge lines. Pele's defaults are 1px, and 2.5px for thick (==>) edges. */
+  --plex-edge-width: 1.75px;
+  --plex-edge-width-thick: 3.25px;
+}
+
+/* Every diagram resolves its light-dark() colors against this. The OS setting is
+   read through these two media queries, and nowhere else, so a tool can pin the
+   mode by rewriting them (pele-preview --scheme light|dark does exactly that).
+   --plex-mode, when set, wins over both. */
+.pele {
+  color-scheme: var(--plex-mode, light);
+}
+@media (prefers-color-scheme: dark) {
+  .pele {
+    color-scheme: var(--plex-mode, dark);
+  }
+}
+
+[data-pele-mode="light"] { --plex-mode: light; }
+[data-pele-mode="dark"]  { --plex-mode: dark; }
+[data-pele-mode="auto"]  { --plex-mode: initial; }
+
+
+/* ─── Edges ──────────────────────────────────────────────────────────────────────── */
+
+.pele .pele-edges {
+  stroke-width: var(--plex-edge-width);
+}
+.pele .pele-edge > path[stroke-width="2.5"] {
+  stroke-width: var(--plex-edge-width-thick);
+}
+/* Arrowheads and dots are filled shapes drawn with stroke="none"; a thin stroke in the
+   edge's color scales them up to match the heavier line and rounds their tips. Stroked
+   markers (the --x cross) already follow the line width and are left alone. */
+.pele .pele-edge > .pele-marker[stroke="none"] {
+  stroke: inherit;
+  stroke-width: calc(var(--plex-edge-width) * 0.5);
+  stroke-linejoin: round;
+}
+
+
+/* ─── Edge labels ────────────────────────────────────────────────────────────────── */
+/* Pele draws a graph edge label as
+     <g class="pele-edge-label"><rect …/><text>…</text></g>
+   with the rect sized to the text it measured. Uppercase + tracking widens text, so
+   the text is shrunk to compensate and the rect is grown around its own center. */
+
+.pele .pele-edge-label text,
+.pele text.pele-edge-label {
+  text-transform: uppercase;
+  letter-spacing: var(--plex-edge-label-tracking);
+  font-size: calc(var(--plex-edge-label-scale) * 1em);
+  font-weight: var(--plex-edge-label-weight);
+  fill: var(--plex-edge-label-fg, var(--pele-fg));
+  /* Pele sets the baseline for the measured size; re-center the smaller caps. */
+  transform: translateY(calc(-0.35em * (1 / var(--plex-edge-label-scale) - 1)));
+}
+
+/* Sequence diagrams draw message text as edge labels too, often with no backing rect.
+   Caps on long messages read poorly there, so they are left as-is. Delete this rule
+   to give sequence messages the same treatment. */
+.pele.pele-sequence .pele-edge-label text {
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  transform: none;
+}
+
+/* Wrapped labels (one <tspan x=…> per line) get a little more room on every side. */
+.pele .pele-edge-label:has(tspan[x] + tspan[x]) {
+  --plex-edge-label-pad-x: var(--plex-edge-label-pad-x-wrapped);
+  --plex-edge-label-pad-y: var(--plex-edge-label-pad-y-wrapped);
+}
+
+.pele:not(.pele-sequence) .pele-edge-label > rect {
+  fill: var(--plex-edge-label-bg, var(--pele-bg));
+  stroke: var(--plex-edge-label-border, var(--pele-border));
+  stroke-width: var(--plex-edge-label-stroke-width);
+  /* The radius as drawn, then divided by the scale below so the corners stay circular.
+     Pele's single-line label box is 1.5em tall, so 0.75em × pad-y is a full pill;
+     multi-line labels get the same radius and read as rounded rectangles. */
+  --_plex-r: var(--plex-edge-label-radius, calc(0.75em * var(--plex-edge-label-pad-y)));
+  rx: calc(var(--_plex-r) / var(--plex-edge-label-pad-x));
+  ry: calc(var(--_plex-r) / var(--plex-edge-label-pad-y));
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(var(--plex-edge-label-pad-x), var(--plex-edge-label-pad-y));
+  vector-effect: non-scaling-stroke;
+}
+
+
+/* ─── Tones: series colors on flowchart nodes and subgraphs ──────────────────────── */
+/* In the diagram:
+     A[Ingest]:::tone-1            a node (one ::: class per node)
+     class B,C tone-2              several nodes
+     class MySubgraph tone-3       a subgraph, by its id (subgraphs can't take :::)
+     D[Alert]:::tone-4             a full-strength fill: add "solid" on its own line,
+     class D solid                   as Mermaid takes one class per ::: or class line
+   No classDef is needed; Pele copies the class names onto the SVG. Tones follow the
+   active scheme and light/dark mode because they read --pele-series-1…8. */
+
+.pele .tone-1 { --plex-tone: var(--pele-series-1); }
+.pele .tone-2 { --plex-tone: var(--pele-series-2); }
+.pele .tone-3 { --plex-tone: var(--pele-series-3); }
+.pele .tone-4 { --plex-tone: var(--pele-series-4); }
+.pele .tone-5 { --plex-tone: var(--pele-series-5); }
+.pele .tone-6 { --plex-tone: var(--pele-series-6); }
+.pele .tone-7 { --plex-tone: var(--pele-series-7); }
+.pele .tone-8 { --plex-tone: var(--pele-series-8); }
+
+:root {
+  --plex-tone-node-mix: 18%;     /* how much tone is mixed into a node's fill */
+  --plex-tone-cluster-mix: 9%;   /* …and into a subgraph's fill */
+}
+
+/* Nodes: tinted fill, full-tone outline. Detail lines (cylinder lids, subroutine
+   bars) are drawn with fill="none" and only take the stroke. */
+.pele .pele-node:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > :not(text, [fill="none"]) {
+  fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-node-mix), var(--pele-surface));
+}
+.pele .pele-node:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > :not(text) {
+  stroke: var(--plex-tone);
+}
+
+/* Solid: the tone itself as the fill, with background-colored text on it. */
+.pele .pele-node.solid > :not(text, [fill="none"]) {
+  fill: var(--plex-tone, var(--pele-accent));
+}
+.pele .pele-node.solid > :not(text) {
+  stroke: var(--plex-tone, var(--pele-accent));
+}
+.pele .pele-node.solid > :is(path[fill="none"]) {
+  stroke: var(--pele-bg);
+}
+.pele .pele-node.solid .pele-label {
+  fill: var(--pele-bg);
+}
+
+/* Subgraphs: a lighter tint, an opaque fill (Pele draws them at 0.5 opacity), a
+   tone outline and title. A title Pele moves off the box to dodge an edge is drawn
+   outside this group and keeps the default color. */
+.pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > rect {
+  fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-cluster-mix), var(--pele-bg));
+  fill-opacity: 1;
+  stroke: var(--plex-tone);
+}
+.pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
+  > .pele-cluster-label {
+  fill: var(--plex-tone);
+}
+
+
+/* ─── Schemes ───────────────────────────────────────────────────────────────────── */
+/* Each color is light-dark(<light>, <dark>). */
+
+/* Carbon — neutral grays and IBM blue; series is IBM's categorical palette. */
+:root,
+[data-pele-scheme="carbon"] {
+  --pele-bg:          light-dark(#ffffff, #161616);
+  --pele-fg:          light-dark(#161616, #f4f4f4);
+  --pele-fg-on-light: #161616;
+  --pele-fg-on-dark:  #ffffff;
+  --pele-muted:       light-dark(#6f6f6f, #a8a8a8);
+  --pele-line:        light-dark(#525252, #a8a8a8);
+  --pele-surface:     light-dark(#f4f4f4, #262626);
+  --pele-surface-alt: light-dark(#e0e0e0, #393939);
+  --pele-border:      light-dark(#8d8d8d, #6f6f6f);
+  --pele-accent:      light-dark(#0f62fe, #78a9ff);
+  --pele-critical:    light-dark(#da1e28, #ff8389);
+  --pele-error:       light-dark(#da1e28, #ff8389);
+  --pele-series-1:    light-dark(#6929c4, #8a3ffc);
+  --pele-series-2:    light-dark(#1192e8, #33b1ff);
+  --pele-series-3:    light-dark(#005d5d, #007d79);
+  --pele-series-4:    light-dark(#9f1853, #ff7eb6);
+  --pele-series-5:    light-dark(#fa4d56, #fa4d56);
+  --pele-series-6:    light-dark(#570408, #fff1f1);
+  --pele-series-7:    light-dark(#198038, #6fdc8c);
+  --pele-series-8:    light-dark(#002d9c, #4589ff);
+}
+
+/* Paper — warm off-white and espresso, rust accent. */
+[data-pele-scheme="paper"] {
+  --pele-bg:          light-dark(#fbf8f1, #1c1915);
+  --pele-fg:          light-dark(#2b2620, #ece5d8);
+  --pele-fg-on-light: #2b2620;
+  --pele-fg-on-dark:  #fbf8f1;
+  --pele-muted:       light-dark(#7a7064, #a39889);
+  --pele-line:        light-dark(#5a5045, #b9ae9d);
+  --pele-surface:     light-dark(#f2ecdf, #27231d);
+  --pele-surface-alt: light-dark(#e7dfcf, #332e26);
+  --pele-border:      light-dark(#c4b69e, #5a5045);
+  --pele-accent:      light-dark(#b2541a, #e8935a);
+  --pele-critical:    light-dark(#b3261e, #f07167);
+  --pele-error:       light-dark(#b3261e, #f07167);
+  --pele-series-1:    light-dark(#b2541a, #e8935a);
+  --pele-series-2:    light-dark(#8a6d1c, #d9b450);
+  --pele-series-3:    light-dark(#5d7a2e, #a3c46a);
+  --pele-series-4:    light-dark(#2f6f73, #6cc1bc);
+  --pele-series-5:    light-dark(#3f5b8c, #8aa8de);
+  --pele-series-6:    light-dark(#6b4a8a, #b996d6);
+  --pele-series-7:    light-dark(#9c3d5b, #e584a2);
+  --pele-series-8:    light-dark(#7a5c45, #c9a786);
+}
+
+/* Harbor — cool blue-grays, teal accent. */
+[data-pele-scheme="harbor"] {
+  --pele-bg:          light-dark(#f7f9fb, #0d1620);
+  --pele-fg:          light-dark(#0f1c2a, #dde6ef);
+  --pele-fg-on-light: #0f1c2a;
+  --pele-fg-on-dark:  #f7f9fb;
+  --pele-muted:       light-dark(#5b6b7c, #8a9bab);
+  --pele-line:        light-dark(#3d5064, #9fb2c4);
+  --pele-surface:     light-dark(#e9eff5, #152230);
+  --pele-surface-alt: light-dark(#dae4ee, #1e2e3e);
+  --pele-border:      light-dark(#98abbf, #3d5267);
+  --pele-accent:      light-dark(#0b7285, #3bc9db);
+  --pele-critical:    light-dark(#c92a2a, #ff6b6b);
+  --pele-error:       light-dark(#c92a2a, #ff6b6b);
+  --pele-series-1:    light-dark(#0b7285, #3bc9db);
+  --pele-series-2:    light-dark(#1864ab, #74c0fc);
+  --pele-series-3:    light-dark(#5f3dc4, #b197fc);
+  --pele-series-4:    light-dark(#a61e4d, #f783ac);
+  --pele-series-5:    light-dark(#c2410c, #ff922b);
+  --pele-series-6:    light-dark(#8a6400, #ffd43b);
+  --pele-series-7:    light-dark(#2b8a3e, #8ce99a);
+  --pele-series-8:    light-dark(#495057, #ced4da);
+}
+
+/* Moss — soft greens and bark, leaf accent. */
+[data-pele-scheme="moss"] {
+  --pele-bg:          light-dark(#f8faf5, #12170f);
+  --pele-fg:          light-dark(#1b2418, #dfe6d8);
+  --pele-fg-on-light: #1b2418;
+  --pele-fg-on-dark:  #f8faf5;
+  --pele-muted:       light-dark(#637060, #8e9a86);
+  --pele-line:        light-dark(#46533f, #aab8a0);
+  --pele-surface:     light-dark(#ecf1e6, #1a2116);
+  --pele-surface-alt: light-dark(#dee6d5, #242d1f);
+  --pele-border:      light-dark(#a3b298, #46533f);
+  --pele-accent:      light-dark(#3f7a1c, #9ccc65);
+  --pele-critical:    light-dark(#b3261e, #f07167);
+  --pele-error:       light-dark(#b3261e, #f07167);
+  --pele-series-1:    light-dark(#3f7a1c, #9ccc65);
+  --pele-series-2:    light-dark(#2f6f5e, #63c6a8);
+  --pele-series-3:    light-dark(#8a6d1c, #d9b450);
+  --pele-series-4:    light-dark(#a8541e, #e8945a);
+  --pele-series-5:    light-dark(#7a3b5c, #d68aaf);
+  --pele-series-6:    light-dark(#3f5b8c, #8fb0e8);
+  --pele-series-7:    light-dark(#5e4a2e, #c4a27a);
+  --pele-series-8:    light-dark(#5f6b2a, #c9cf8a);
+}
+
+]]></style><text class="pele-title" font-weight="var(--_tw)" text-anchor="middle" xml:space="preserve"><tspan x="548" y="25.6">Specs of Theseus - Overview</tspan></text><g class="pele-clusters"><g class="pele-cluster tone-7" data-id="Dev"><rect x="234.13" y="2016" width="853.14" height="929" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="295.26" y="2041.6" text-anchor="middle">Development</text></g><g class="pele-cluster" data-id="RS"><rect x="673.65" y="1520" width="344.06" height="423" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/></g><g class="pele-cluster" data-id="UE"><rect x="630.2" y="924" width="397.08" height="390" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="828.75" y="949.6" text-anchor="middle">Update Evals</text></g><g class="pele-cluster tone-2" data-id="Prod"><rect x="8" y="165" width="312.4" height="511" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="82.92" y="190.6" text-anchor="middle">Product Planning</text></g></g><g class="pele-edges" fill="none" stroke="var(--_l)" stroke-linecap="round"><g class="pele-edge" data-id="L_AW_JP_0"><path d="M124.25,3169L124.25,643" stroke-dasharray="3 4"/><path class="pele-marker" d="M124.25,636L127.61,644L120.89,644Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Start_PP_0"><path d="M198.37,92L198.37,218"/><path class="pele-marker" d="M198.37,225L195.01,217L201.73,217Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_CE_0"><path d="M198.37,273L198.37,339"/><path class="pele-marker" d="M198.37,346L195.01,338L201.73,338Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_CE_EB_0"><path d="M176.8,394L176.8,402.97C176.8,408.73 132.25,408.73 132.25,414.5L132.25,460"/><path class="pele-marker" d="M132.25,467L128.89,459L135.61,459Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_EB_JP_0"><path d="M132.25,515L132.25,581"/><path class="pele-marker" d="M132.25,588L128.89,580L135.61,580Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_JP_CS_0"><path d="M194.37,636L194.37,757"/><path class="pele-marker" d="M194.37,764L191.01,756L197.73,756Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_CS_CE_0"><path d="M278.39,764L278.39,700C278.39,688 264.5,688 264.5,676L264.5,467C264.5,437 219.95,437 219.95,407L219.95,401"/><path class="pele-marker" d="M219.95,394L223.31,402L216.59,402Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_CS_GT_A_0"><path d="M289.78,851L289.78,859.97C289.78,862.85 650.2,868.62 650.2,871.5L650.2,1143.5C650.2,1177.29 667.42,1198 695.51,1198C723.61,1198 740.82,1203.98 740.82,1213.75L740.82,1219"/><path class="pele-marker" d="M740.82,1226L737.46,1218L744.18,1218Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Repo_1_GT_A_0"><path d="M837.51,1032C837.51,1049.36 811.87,1060 770.03,1060C728.19,1060 702.55,1075.2 702.55,1100L702.55,1158C702.55,1185.5 756.82,1185.5 756.82,1213L756.82,1219"/><path class="pele-marker" d="M756.82,1226L753.46,1218L760.18,1218Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Repo_1_GT_A_2"><path d="M853.51,1032C853.51,1056.8 841.6,1072 822.18,1072C802.75,1072 790.85,1082.64 790.85,1100L790.85,1219"/><path class="pele-marker" d="M790.85,1226L787.49,1218L794.21,1218Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Repo_1_GT_A_3"><path d="M869.51,1032C869.51,1066 884.21,1066 884.21,1100L884.21,1158C884.21,1175.36 872.93,1186 854.54,1186C836.14,1186 824.87,1196.26 824.87,1213L824.87,1219"/><path class="pele-marker" d="M824.87,1226L821.51,1218L828.23,1218Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Repo_1_GT_A_4"><path d="M885.51,1032C885.51,1066 974.45,1066 974.45,1100L974.45,1158C974.45,1182.8 949.07,1198 907.66,1198C866.25,1198 840.87,1203.98 840.87,1213.75L840.87,1219"/><path class="pele-marker" d="M840.87,1226L837.51,1218L844.23,1218Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Repo_2_GT_RD_0"><path d="M951.69,1628L951.69,1673.5C951.69,1681.19 903.48,1681.19 903.48,1688.88L903.48,1694"/><path class="pele-marker" d="M903.48,1701L900.12,1693L906.84,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_A_GT_RD_0"><path d="M758.85,1274L758.85,1314C758.85,1331.36 706.24,1342 620.41,1342C534.58,1342 481.98,1357.2 481.98,1382L481.98,1440C481.98,1472.24 545,1492 647.83,1492C750.65,1492 813.68,1502.64 813.68,1520L813.68,1694"/><path class="pele-marker" d="M813.68,1701L810.32,1693L817.04,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_A_GT_RD_2"><path d="M774.85,1274L774.85,1314C774.85,1338.8 761.11,1354 738.7,1354C716.29,1354 702.55,1364.64 702.55,1382L702.55,1440C702.55,1464.8 726.7,1480 766.11,1480C805.52,1480 829.68,1495.2 829.68,1520L829.68,1694"/><path class="pele-marker" d="M829.68,1701L826.32,1693L833.04,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_A_GT_RD_3"><path d="M790.85,1274L790.85,1440C790.85,1480 845.68,1480 845.68,1520L845.68,1694"/><path class="pele-marker" d="M845.68,1701L842.32,1693L849.04,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_A_GT_RD_4"><path d="M806.85,1274L806.85,1314C806.85,1338.8 821.55,1354 845.53,1354C869.51,1354 884.21,1364.64 884.21,1382L884.21,1440C884.21,1480 861.68,1480 861.68,1520L861.68,1694"/><path class="pele-marker" d="M861.68,1701L858.32,1693L865.04,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_A_GT_RD_5"><path d="M822.85,1274L822.85,1314C822.85,1331.36 851.65,1342 898.65,1342C945.65,1342 974.45,1357.2 974.45,1382L974.45,1440C974.45,1468.52 956.06,1486 926.06,1486C896.06,1486 877.68,1498.92 877.68,1520L877.68,1694"/><path class="pele-marker" d="M877.68,1701L874.32,1693L881.04,1693Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_RD_GT_ATS_0"><path d="M771.78,1749L771.78,1848"/><path class="pele-marker" d="M771.78,1855L768.42,1847L775.14,1847Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_RD_GT_ATS_2"><path d="M856.57,1749L856.57,1848"/><path class="pele-marker" d="M856.57,1855L853.21,1847L859.93,1847Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_RD_GT_ATS_3"><path d="M919.58,1749L919.58,1848"/><path class="pele-marker" d="M919.58,1855L916.22,1847L922.94,1847Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_GT_ATS_Dev_P_0"><path d="M856.57,1903L856.57,2069"/><path class="pele-marker" d="M856.57,2076L853.21,2068L859.93,2068Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_P_Dev_RGR_0"><path d="M828.33,2124L828.33,2132.97C828.33,2135.85 522.14,2141.62 522.14,2144.5L522.14,2205"/><path class="pele-marker" d="M522.14,2212L518.78,2204L525.5,2204Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_RGR_Dev_Prop_0"><path d="M458.34,2278L458.34,2290.25C458.34,2300.02 428.73,2306 380.44,2306C332.14,2306 302.54,2321.2 302.54,2346L302.54,2403"/><path class="pele-marker" d="M302.54,2410L299.18,2402L305.9,2402Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Prop_Dev_RGR_0"><path d="M418.46,2410L418.46,2346C418.46,2328.64 429.08,2318 446.4,2318C463.72,2318 474.34,2307.74 474.34,2291L474.34,2285"/><path class="pele-marker" d="M474.34,2278L477.7,2286L470.98,2286Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Prop_Dev_Mu_0"><path d="M360.5,2476L360.5,2557"/><path class="pele-marker" d="M360.5,2564L357.14,2556L363.86,2556Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Mu_Dev_RGR_0"><path d="M477.79,2564L477.79,2551C477.79,2513.5 522.14,2513.5 522.14,2476L522.14,2285"/><path class="pele-marker" d="M522.14,2278L525.5,2286L518.78,2286Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Mu_Dev_Checks_0"><path d="M434.43,2612L434.43,2672.5C434.43,2680.19 491.15,2680.19 491.15,2687.88L491.15,2693"/><path class="pele-marker" d="M491.15,2700L487.79,2692L494.51,2692Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Checks_Dev_RGR_0"><path d="M552.96,2700L552.96,2687C552.96,2649.5 609.69,2649.5 609.69,2612L609.69,2410C609.69,2350.5 585.82,2350.5 585.82,2291L585.82,2285"/><path class="pele-marker" d="M585.82,2278L589.18,2286L582.46,2286Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Checks_Dev_IT_0"><path d="M522.06,2766L522.06,2811.5C522.06,2816.07 728.93,2822.3 728.93,2826.88L728.93,2832"/><path class="pele-marker" d="M728.93,2839L725.57,2831L732.29,2831Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_IT_Dev_RGR_0"><path d="M744.93,2839L744.93,2410C744.93,2350.5 601.82,2350.5 601.82,2291L601.82,2285"/><path class="pele-marker" d="M601.82,2278L605.18,2286L598.46,2286Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_IT_Dev_P_0"><path d="M760.93,2839L760.93,2826C760.93,2796 856.57,2796 856.57,2766L856.57,2131"/><path class="pele-marker" d="M856.57,2124L859.93,2132L853.21,2132Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_P_Dev_Complete_0"><path d="M884.81,2124L884.81,2132.97C884.81,2138.73 975.92,2138.73 975.92,2144.5L975.92,2214"/><path class="pele-marker" d="M975.92,2221L972.56,2213L979.28,2213Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Complete_Repo_g_0"><path d="M983.92,2269L983.92,2945C983.92,2955.25 1006.87,2955.25 1006.87,2965.5L1006.87,3026"/><path class="pele-marker" d="M1006.87,3033L1003.51,3025L1010.23,3025Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Dev_Complete_Deploy_0"><path d="M951.25,2269L951.25,2945C951.25,2955.25 928.3,2955.25 928.3,2965.5L928.3,3005.5C928.3,3009.34 226.53,3017.03 226.53,3020.88L226.53,3026"/><path class="pele-marker" d="M226.53,3033L223.17,3025L229.89,3025Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Deploy_AW_0"><path d="M220.77,3081L220.77,3141.5C220.77,3149.19 140.25,3149.19 140.25,3156.88L140.25,3162"/><path class="pele-marker" d="M140.25,3169L136.89,3161L143.61,3161Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Deploy_CS_0"><path d="M206.13,3033L206.13,858"/><path class="pele-marker" d="M206.13,851L209.49,859L202.77,859Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_AW_RF_0"><path d="M123.11,3217L123.11,3298"/><path class="pele-marker" d="M123.11,3305L119.75,3297L126.47,3297Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_RF_Stop_0"><path d="M123.11,3353L123.11,3419"/><path class="pele-marker" d="M123.11,3426L119.75,3418L126.47,3418Z" fill="var(--_l)" stroke="none"/></g></g><g class="pele-cluster-titles"><g class="pele-cluster-title" data-id="RS"><text fill="none" stroke="color-mix(in srgb,var(--_a) 50%,var(--_bg))" stroke-width="5" stroke-linejoin="round" x="750.33" y="1545.6" text-anchor="middle">Redesign System</text><text class="pele-cluster-label" fill="var(--_m)" x="750.33" y="1545.6" text-anchor="middle">Redesign System</text></g></g><g class="pele-edge-labels" font-size="14"><g class="pele-edge-label" data-id="L_AW_JP_0"><rect x="92.63" y="1713.5" width="63.24" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="124.25" y="1727.4">Rejected</tspan><tspan x="124.25" y="1745.4">Stories</tspan></text></g><g class="pele-edge-label" data-id="L_Start_PP_0"><rect x="180.75" y="114.5" width="35.24" height="21" rx="3" fill="var(--_bg)"/><text x="198.37" y="129.9" text-anchor="middle">Idea</text></g><g class="pele-edge-label" data-id="L_PP_CE_0"><rect x="144.98" y="295.5" width="106.78" height="21" rx="3" fill="var(--_bg)"/><text x="198.37" y="310.9" text-anchor="middle">Prioritized Work</text></g><g class="pele-edge-label" data-id="L_CE_EB_0"><rect x="114.63" y="416.5" width="35.23" height="21" rx="3" fill="var(--_bg)"/><text x="132.25" y="431.9" text-anchor="middle">Epic</text></g><g class="pele-edge-label" data-id="L_EB_JP_0"><rect x="106.46" y="537.5" width="51.57" height="21" rx="3" fill="var(--_bg)"/><text x="132.25" y="552.9" text-anchor="middle">Stories</text></g><g class="pele-edge-label" data-id="L_JP_CS_0"><rect x="159.26" y="702" width="70.23" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="194.37" y="715.9">Prioritized</tspan><tspan x="194.37" y="733.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_CS_CE_0"><rect x="249.49" y="702" width="57.8" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="278.39" y="715.9">Empty</tspan><tspan x="278.39" y="733.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_CS_GT_A_0"><rect x="629.87" y="873.5" width="40.68" height="21" rx="3" fill="var(--_bg)"/><text x="650.2" y="888.9" text-anchor="middle">Story</text></g><g class="pele-edge-label" data-id="L_Repo_1_GT_A_0"><rect x="668.2" y="1111" width="68.69" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="702.55" y="1124.9">Current</tspan><tspan x="702.55" y="1142.9">Invariants</tspan></text></g><g class="pele-edge-label" data-id="L_Repo_1_GT_A_2"><rect x="756.89" y="1111" width="67.91" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="790.85" y="1124.9">Current</tspan><tspan x="790.85" y="1142.9">Contracts</tspan></text></g><g class="pele-edge-label" data-id="L_Repo_1_GT_A_3"><rect x="844.8" y="1102" width="78.81" height="54" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="884.21" y="1115.9">Current</tspan><tspan x="884.21" y="1133.9">End-to-End</tspan><tspan x="884.21" y="1151.9">Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Repo_1_GT_A_4"><rect x="943.61" y="1111" width="61.68" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="974.45" y="1124.9">Current</tspan><tspan x="974.45" y="1142.9">Monitors</tspan></text></g><g class="pele-edge-label" data-id="L_Repo_2_GT_RD_0"><rect x="930.96" y="1650.5" width="41.46" height="21" rx="3" fill="var(--_bg)"/><text x="951.69" y="1665.9" text-anchor="middle">Code</text></g><g class="pele-edge-label" data-id="L_GT_A_GT_RD_0"><rect x="461.64" y="1400.5" width="40.68" height="21" rx="3" fill="var(--_bg)"/><text x="481.98" y="1415.9" text-anchor="middle">Story</text></g><g class="pele-edge-label" data-id="L_GT_A_GT_RD_2"><rect x="668.2" y="1393" width="68.69" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="702.55" y="1406.9">Updated</tspan><tspan x="702.55" y="1424.9">Invariants</tspan></text></g><g class="pele-edge-label" data-id="L_GT_A_GT_RD_3"><rect x="756.89" y="1393" width="67.91" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="790.85" y="1406.9">Updated</tspan><tspan x="790.85" y="1424.9">Contracts</tspan></text></g><g class="pele-edge-label" data-id="L_GT_A_GT_RD_4"><rect x="844.8" y="1384" width="78.81" height="54" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="884.21" y="1397.9">Updated</tspan><tspan x="884.21" y="1415.9">End-to-End</tspan><tspan x="884.21" y="1433.9">Tests</tspan></text></g><g class="pele-edge-label" data-id="L_GT_A_GT_RD_5"><rect x="943.61" y="1393" width="61.68" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="974.45" y="1406.9">Updated</tspan><tspan x="974.45" y="1424.9">Monitors</tspan></text></g><g class="pele-edge-label" data-id="L_GT_RD_GT_ATS_0"><rect x="729.66" y="1771.5" width="84.24" height="54" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="771.78" y="1785.4">Redesigned</tspan><tspan x="771.78" y="1803.4">Subsystems</tspan><tspan x="771.78" y="1821.4">Plan</tspan></text></g><g class="pele-edge-label" data-id="L_GT_RD_GT_ATS_2"><rect x="833.9" y="1788" width="45.34" height="21" rx="3" fill="var(--_bg)"/><text x="856.57" y="1803.4" text-anchor="middle">Tasks</text></g><g class="pele-edge-label" data-id="L_GT_RD_GT_ATS_3"><rect x="899.24" y="1788" width="40.68" height="21" rx="3" fill="var(--_bg)"/><text x="919.58" y="1803.4" text-anchor="middle">Story</text></g><g class="pele-edge-label" data-id="L_GT_ATS_Dev_P_0"><rect x="806.67" y="1965.5" width="99.8" height="21" rx="3" fill="var(--_bg)"/><text x="856.57" y="1980.9" text-anchor="middle">Story w/ Tasks</text></g><g class="pele-edge-label" data-id="L_Dev_P_Dev_RGR_0"><rect x="502.97" y="2154" width="38.34" height="21" rx="3" fill="var(--_bg)"/><text x="522.14" y="2169.4" text-anchor="middle">Task</text></g><g class="pele-edge-label" data-id="L_Dev_RGR_Dev_Prop_0"><rect x="256.13" y="2348" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="302.54" y="2361.9">Subsystems</tspan><tspan x="302.54" y="2379.9">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Prop_Dev_RGR_0"><rect x="368.94" y="2348" width="99.03" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="418.46" y="2361.9">Failing</tspan><tspan x="418.46" y="2379.9">Property Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Prop_Dev_Mu_0"><rect x="314.09" y="2498.5" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="360.5" y="2512.4">Subsystems</tspan><tspan x="360.5" y="2530.4">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Mu_Dev_RGR_0"><rect x="488.97" y="2432.5" width="66.34" height="21" rx="3" fill="var(--_bg)"/><text x="522.14" y="2447.9" text-anchor="middle">Survivors</text></g><g class="pele-edge-label" data-id="L_Dev_Mu_Dev_Checks_0"><rect x="388.02" y="2634.5" width="92.81" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="434.43" y="2648.4">Subsystems</tspan><tspan x="434.43" y="2666.4">Code &amp; Tests</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Checks_Dev_RGR_0"><rect x="559.79" y="2577.5" width="99.8" height="21" rx="3" fill="var(--_bg)"/><text x="609.69" y="2592.9" text-anchor="middle">Failing Checks</text></g><g class="pele-edge-label" data-id="L_Dev_Checks_Dev_IT_0"><rect x="467.87" y="2788.5" width="108.37" height="21" rx="3" fill="var(--_bg)"/><text x="522.06" y="2803.9" text-anchor="middle">Passing Checks</text></g><g class="pele-edge-label" data-id="L_Dev_IT_Dev_RGR_0"><rect x="701.26" y="2577.5" width="87.35" height="21" rx="3" fill="var(--_bg)"/><text x="744.93" y="2592.9" text-anchor="middle">Failing Evals</text></g><g class="pele-edge-label" data-id="L_Dev_IT_Dev_P_0"><rect x="808.61" y="2577.5" width="95.92" height="21" rx="3" fill="var(--_bg)"/><text x="856.57" y="2592.9" text-anchor="middle">Passing Evals</text></g><g class="pele-edge-label" data-id="L_Dev_P_Dev_Complete_0"><rect x="943.91" y="2146.5" width="64.01" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="975.92" y="2160.4">Empty</tspan><tspan x="975.92" y="2178.4">Task List</tspan></text></g><g class="pele-edge-label" data-id="L_Dev_Complete_Repo_g_0"><rect x="986.14" y="2975" width="41.46" height="21" rx="3" fill="var(--_bg)"/><text x="1006.87" y="2990.4" text-anchor="middle">Code</text></g><g class="pele-edge-label" data-id="L_Dev_Complete_Deploy_0"><rect x="890.45" y="2967.5" width="75.69" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="928.3" y="2981.4">Completed</tspan><tspan x="928.3" y="2999.4">Story</tspan></text></g><g class="pele-edge-label" data-id="L_Deploy_AW_0"><rect x="189.14" y="3103.5" width="63.24" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="220.77" y="3117.4">Working</tspan><tspan x="220.77" y="3135.4">Software</tspan></text></g><g class="pele-edge-label" data-id="L_Deploy_CS_0"><rect x="181.12" y="1704.5" width="50.03" height="54" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="206.13" y="1718.4">Empty</tspan><tspan x="206.13" y="1736.4">Work</tspan><tspan x="206.13" y="1754.4">Queue</tspan></text></g><g class="pele-edge-label" data-id="L_AW_RF_0"><rect x="89.93" y="3239.5" width="66.37" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="123.11" y="3253.4">Accepted</tspan><tspan x="123.11" y="3271.4">Stories</tspan></text></g><g class="pele-edge-label" data-id="L_RF_Stop_0"><rect x="63.87" y="3375.5" width="118.47" height="21" rx="3" fill="var(--_bg)"/><text x="123.11" y="3390.9" text-anchor="middle">New Functionality</text></g></g><g class="pele-nodes"><g class="pele-node pele-shape-rect" data-id="PP" transform="translate(198.37,249)"><rect x="-102.02" y="-24" width="204.05" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 Product Prioritization</text></g><g class="pele-node pele-shape-rect" data-id="CE" transform="translate(198.37,370)"><rect x="-73.58" y="-24" width="147.15" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 Choose Epic</text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="EB" transform="translate(132.25,491)"><rect x="-104.25" y="-24" width="208.5" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-96.25,-24V24M96.25,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 🤖 Epic Breakdown</text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="JP" transform="translate(132.25,612)"><rect x="-90.46" y="-24" width="180.91" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-82.46,-24V24M82.46,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 🤖 Prioritization</text></g><g class="pele-node pele-shape-rect" data-id="CS" transform="translate(254.86,807.5)"><rect x="-86.91" y="-43.5" width="173.82" height="87" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-15.4">👱 🤖 Choose Story</tspan><tspan x="0" y="5.6">from top</tspan><tspan x="0" y="26.6">of Backlog</tspan></text></g><g class="pele-node pele-shape-fr-rect" data-id="Deploy" transform="translate(220.77,3057)"><rect x="-57.76" y="-24" width="115.52" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-49.76,-24V24M49.76,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">⚙ Deploy</text></g><g class="pele-node pele-shape-fr-rect" data-id="AW" transform="translate(123.11,3193)"><rect x="-67.8" y="-24" width="135.6" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-59.8,-24V24M59.8,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Acceptance</text></g><g class="pele-node pele-shape-fr-rect" data-id="RF" transform="translate(123.11,3329)"><rect x="-72.43" y="-24" width="144.86" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-64.43,-24V24M64.43,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 ⚙ Release</text></g><g class="pele-node pele-shape-rect hidden" data-id="Repo_1" transform="translate(853.95,1008)"><rect x="-46.02" y="-24" width="92.03" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Repo_1</text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="GT_A" transform="translate(790.85,1250)"><rect x="-94.02" y="-24" width="188.05" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-86.02,-24V24M86.02,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">👱 🤖 Update Evals</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="GT_RD" transform="translate(856.57,1725)"><rect x="-98.91" y="-24" width="197.82" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-90.91,-24V24M90.91,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Redesign System</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="GT_ATS" transform="translate(856.57,1879)"><rect x="-103.81" y="-24" width="207.62" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-95.81,-24V24M95.81,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Add Tasks to Story</text></g><g class="pele-node pele-shape-rect hidden" data-id="Repo_2" transform="translate(951.69,1604)"><rect x="-46.02" y="-24" width="92.03" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Repo_2</text></g><g class="pele-node pele-shape-rect hidden" data-id="Repo_3" transform="translate(739.66,1604)"><rect x="-46.02" y="-24" width="92.03" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Repo_3</text></g><g class="pele-node pele-shape-rect" data-id="Dev_P" transform="translate(856.57,2100)"><rect x="-80.24" y="-24" width="160.48" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Pick next Task</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_RGR" transform="translate(522.14,2245)"><rect x="-107.81" y="-33" width="215.62" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-99.81,-33V33M99.81,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Red/Green/Refactor</tspan><tspan x="0" y="16.1">in Subsystems</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Prop" transform="translate(360.5,2443)"><rect x="-84.69" y="-33" width="169.38" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-76.69,-33V33M76.69,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Migrate to</tspan><tspan x="0" y="16.1">Property Testing</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Mu" transform="translate(434.43,2588)"><rect x="-95.36" y="-24" width="190.72" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-87.36,-24V24M87.36,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Mutation Testing</text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_IT" transform="translate(744.93,2872)"><rect x="-66.01" y="-33" width="132.02" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-58.01,-33V33M58.01,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Run Full</tspan><tspan x="0" y="16.1">Eval Suite</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-6" data-id="Dev_Checks" transform="translate(522.06,2733)"><rect x="-82.9" y="-33" width="165.81" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-74.9,-33V33M74.9,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🤖 Run Controls</tspan><tspan x="0" y="16.1">&amp; Checks</tspan></text></g><g class="pele-node pele-shape-fr-rect" data-id="Dev_Complete" transform="translate(975.92,2245)"><rect x="-91.35" y="-24" width="182.7" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-83.35,-24V24M83.35,-24V24" fill="none" stroke="var(--_b)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🤖 Complete Story</text></g><g class="pele-node pele-shape-rect hidden" data-id="Start" transform="translate(198.37,68)"><rect x="-34.9" y="-24" width="69.79" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Start</text></g><g class="pele-node pele-shape-rect hidden" data-id="Repo_g" transform="translate(1006.87,3057)"><rect x="-46.02" y="-24" width="92.03" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Repo_g</text></g><g class="pele-node pele-shape-rect hidden" data-id="Stop" transform="translate(123.11,3450)"><rect x="-34.46" y="-24" width="68.91" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Stop</text></g></g></svg>

@@ -1,0 +1,26 @@
+---
+title: Specs of Theseus - Product Planning
+---
+flowchart TD
+
+  classDef hidden display:none
+
+  Start:::hidden
+  End_1:::hidden
+
+  subgraph Prod["Product Planning"]
+    PP[👱 Product Prioritization]
+    CE[👱 Choose Epic]
+    EB[[👱 🤖 Epic Breakdown]]
+    BP[[👱 🤖 Prioritization]]
+  end
+
+  Start --> |Idea| PP
+  EB --> |Stories| BP
+  PP --> |Prioritized Work|CE
+  CE --> |Epic|EB
+  BP --> |Prioritized \n Backlog| End_1
+  End_1 --> |Empty \n Backlog| CE
+
+  class EB,BP tone-7
+  class Prod tone-2
