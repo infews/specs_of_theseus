@@ -1,0 +1,24 @@
+---
+title: Specs of Theseus - Acceptance
+---
+flowchart TD
+
+    classDef hidden display:none
+
+    JP:::hidden
+    Tag_Repo:::hidden
+    CS:::hidden
+    Stop:::hidden
+
+    subgraph Acceptance
+        Deploy[[⚙ Deploy]]
+        AW[[🧑🏾‍⚖️ Acceptance]]
+        RF[[🧑🏾‍⚖️ ⚙ Release]]
+    end
+
+    AW-.->|Rejected \n Stories|JP
+    Tag_Repo-->|Completed \n Story|Deploy
+    Deploy-->|Working \n Software|AW
+    Deploy-->|Empty \n Work \n Queue|CS
+    AW-->|Accepted \n Stories|RF
+    RF-->|New Functionality|Stop:::hidden

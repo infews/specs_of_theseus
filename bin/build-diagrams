@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Splits the overview into one diagram per stage, then renders every
+# docs/src/*.mmd to docs/img/<same name>.svg with pele-preview. Any arguments
+# are passed through to pele-preview.
+#
+# Override the renderer with PELE=/path/to/pele-preview and the stylesheet
+# with PELE_CSS=/path/to/style.css.
+#
+# Needs Ruby 4 (see .ruby-version). Where chruby doesn't load — CI, editor
+# tasks, non-interactive shells — run: chruby-exec ruby-4.0 -- bin/build-diagrams
+
+root = File.expand_path("..", __dir__)
+pele = ENV.fetch("PELE", File.join(root, "../mermaid_preview/bin/pele-preview"))
+css = ENV.fetch("PELE_CSS", File.join(File.dirname(pele), "../pele-plex.css"))
+src = File.join(root, "docs/src")
+img = File.join(root, "docs/img")
+
+def run(*command)
+  system(*command) or abort "build-diagrams: failed: #{command.join(' ')}"
+end
+
+# The stage diagrams are generated: edit the overview, not them.
+run RbConfig.ruby, File.join(__dir__, "split-diagram"), File.join(src, "0_specs_of_theseus.mmd"), src,
+    "--prefix", "sot_", "--order", "Prod,UE,RS,Dev,Acceptance"
+
+Dir[File.join(src, "*.mmd")].sort.each do |diagram|
+  run pele, diagram, css, "-o", File.join(img, "#{File.basename(diagram, '.mmd')}.svg"), *ARGV
+end

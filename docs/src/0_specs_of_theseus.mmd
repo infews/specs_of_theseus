@@ -3,98 +3,106 @@ title: Specs of Theseus - Overview
 ---
 flowchart TD
 
-  classDef hidden display:none
+    classDef hidden display:none
 
-  subgraph Prod["Product Planning"]
-    PP[👱 Product Prioritization]
-    CE[👱 Choose Epic]
-    EB[[👱 🤖 Epic Breakdown]]
-    JP[[👱 🤖 Prioritization]]
-  end
+    subgraph Key
+        K["🧑🏻‍🎨 Designer \n 🧑🏾‍⚖️ Product Manager \n 🧑🏼‍💻 Developer \n 🧞 Agent"]
+    end
 
-  CS[👱 🤖 Choose Story \n from top \n of Backlog]
-  Deploy[[⚙ Deploy]]
-  AW[[Acceptance]]
-  RF[[👱 ⚙ Release]]
+    subgraph Prod["Product Planning"]
+        PP[🧑🏻‍🎨🧑🏾‍⚖️ \n Product Prioritization]
+        CE[🧑🏾‍⚖️ Choose Epic]
+        EB[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 \n Epic Breakdown]]
+        JP[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 Prioritization]]
+    end
 
-  AW-.->|Rejected \n Stories|JP
+    Start:::hidden-->|Idea|PP
+    PP-->|Prioritized Work|CE
+    CE-->|Epic|EB
+    EB-->|Stories|JP
+    JP-->|Prioritized \n Backlog|CS
+    CS-->|Empty \n Backlog|CE
+    CS-->|Story|GT_A
 
-  %%% Update Evals
-  subgraph UE[Update Evals]
-    Repo_1:::hidden
-    GT_A[[👱 🤖 Update Evals]]
-  end
+    subgraph Acceptance
+        Deploy[[⚙ Deploy]]
+        AW[[🧑🏾‍⚖️ Acceptance]]
+        RF[[🧑🏾‍⚖️ ⚙ Release]]
+    end
 
-  %%% Redesign System
-  subgraph RS[Redesign System]
-    GT_RD[[🤖 Redesign System]]
-    GT_ATS[[🤖 Add Tasks to Story]]
-    Repo_2:::hidden
-    Repo_3:::hidden
-  end
+    AW-.->|Rejected \n Stories|JP
 
-  subgraph Dev[Development]
-    Dev_P[🤖 Pick next Task]
-    Dev_RGR[[🤖 Red/Green/Refactor \n in Subsystems]]
-    Dev_Prop[[🤖 Migrate to \n Property Testing]]
-    Dev_Mu[[🤖 Mutation Testing]]
-    Dev_IT[[🤖 Run Full \n Eval Suite]]
-    Dev_Checks[[🤖 Run Controls \n & Checks]]
-    Dev_Complete[[🤖 Complete Story]]
-  end
+    subgraph UE[Update Evals]
+        CS[🧑🏼‍💻 🧞 \n Choose Story from top of Backlog]
+        Repo_1:::hidden
+        GT_A[[🧑🏼‍💻 🧞 Update Evals]]
+    end
 
-  Start:::hidden-->|Idea|PP
-  PP-->|Prioritized Work|CE
-  CE-->|Epic|EB
-  EB-->|Stories|JP
-  JP-->|Prioritized \n Backlog|CS
-  CS-->|Empty \n Backlog|CE
-  CS-->|Story|GT_A
+    Repo_1-->|Current \n Invariants|GT_A
+    Repo_1-->|Current \n Contracts|GT_A
+    Repo_1-->|Current \n End-to-End \n Tests|GT_A
+    Repo_1-->|Current \n Monitors|GT_A
+    Repo_2-->|Code|RS_RD
 
-  %% Generate Tasks & Update Evals
-  Repo_1-->|Current \n Invariants|GT_A
-  Repo_1-->|Current \n Contracts|GT_A
-  Repo_1-->|Current \n End-to-End \n Tests|GT_A
-  Repo_1-->|Current \n Monitors|GT_A
-  Repo_2-->|Code|GT_RD
+    GT_A-->|Story|RS_RD
 
-  GT_A-->|Story|GT_RD
+    subgraph RS[Redesign System]
+        RS_RD[[🧞 Redesign System]]
+        RS_ATS[[🧞 Add Tasks to Story]]
+        RS_Review[[🧑🏼‍💻 🧞 Review Tasks]]
+        Repo_2:::hidden
+        Repo_3:::hidden
+    end
+        
+    GT_A-->|Updated \n Invariants|RS_RD
+    GT_A-->|Updated \n Contracts|RS_RD
+    GT_A-->|Updated \n End-to-End \nTests|RS_RD
+    GT_A-->|Updated \n Monitors|RS_RD
+    
+    RS_RD-->|Redesigned \n Subsystems \n Plan|RS_ATS
+    RS_RD-->|Tasks|RS_ATS
+    RS_RD-->|Story|RS_ATS
 
-  GT_A-->|Updated \n Invariants|GT_RD
-  GT_A-->|Updated \n Contracts|GT_RD
-  GT_A-->|Updated \n End-to-End \nTests|GT_RD
-  GT_A-->|Updated \n Monitors|GT_RD
+    RS_ATS-->|Story w/ Tasks|RS_Review
+    RS_Review --> |Story w/ Tasks| Dev_P
 
-  GT_RD-->|Redesigned \n Subsystems \n Plan|GT_ATS
-  GT_RD-->|Tasks|GT_ATS
-  GT_RD-->|Story|GT_ATS
+    subgraph Dev[🧑🏼‍💻 Development]
+        Dev_P[🧞 Pick next Task]
+        Dev_RGR[[🧞 Red/Green/Refactor \n in Subsystems]]
+        Dev_Prop[[🧞 Migrate to \n Property Testing]]
+        Dev_Mu[[🧞 Mutation Testing]]
+        Dev_IT[[🧞 Run Full \n Eval Suite]]
+        Dev_Checks[[🧞 Run Controls \n & Checks]]
+        Dev_Complete[[🧞 Complete Story]]
+        Tag_Repo[🧞 Tag Repo]
+        Repo_4:::hidden
+    end
 
-  %% Development
-  GT_ATS-->|Story w/ Tasks|Dev_P
-  Dev_P-->|Task|Dev_RGR
-  Dev_RGR-->|Subsystems \n Code & Tests|Dev_Prop
-  Dev_Prop-->|Failing \n Property Tests|Dev_RGR
-  Dev_Prop-->|Subsystems \n Code & Tests|Dev_Mu
-  Dev_Mu-->|Survivors|Dev_RGR
-  Dev_Mu-->|Subsystems \n Code & Tests|Dev_Checks
+    Dev_P-->|Task|Dev_RGR
+    Dev_RGR-->|Subsystems \n Code & Tests|Dev_Prop
+    Dev_Prop-->|Failing \n Property Tests|Dev_RGR
+    Dev_Prop-->|Subsystems \n Code & Tests|Dev_Mu
+    Dev_Mu-->|Survivors|Dev_RGR
+    Dev_Mu-->|Subsystems \n Code & Tests|Dev_Checks
 
-  Dev_Checks-->|Failing Checks|Dev_RGR
-  Dev_Checks-->|Passing Checks|Dev_IT
+    Dev_Checks-->|Failing Checks|Dev_RGR
+    Dev_Checks-->|Passing Checks|Dev_IT
 
-  Dev_IT-->|Failing Evals|Dev_RGR
-  Dev_IT-->|Passing Evals|Dev_P
+    Dev_IT-->|Failing Evals|Dev_RGR
+    Dev_IT-->|Passing Evals|Dev_P
 
-  Dev_P-->|Empty \n Task List|Dev_Complete
+    Dev_P-->|Empty \n Task List|Dev_Complete
 
-  Dev_Complete-->|Completed \n Story|Deploy
-  Deploy-->|Working \n Software|AW
-  Deploy-->|Empty \n Work \n Queue|CS
-  AW-->|Accepted \n Stories|RF
-  RF-->|New Functionality|Stop:::hidden
+    Dev_Complete-->|Completed \n Story|Tag_Repo
+    Repo_4-->|Code|Tag_Repo
+    Tag_Repo-->|Completed \n Story|Deploy
+    Tag_Repo-->|Tagged \n Repo|Repo_5:::hidden
+    Deploy-->|Working \n Software|AW
+    Deploy-->|Empty \n Work \n Queue|CS
+    AW-->|Accepted \n Stories|RF
+    RF-->|New Functionality|Stop:::hidden
 
   class EB,JP,GT_A tone-7
-  class GT_RD,GT_ATS,Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
-  class Repo,Repo2 tone-2
-  class GT tone-1
+  class RS_RD,RS_ATS,Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
   class Prod tone-2
   class Dev tone-7

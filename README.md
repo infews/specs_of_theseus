@@ -48,6 +48,16 @@ Body edits take effect on the next invocation. Changes to a skill's `name` or `d
 
 **When a run surfaces a gap, change the procedure step — do not add a row warning against the wrong behavior.** A Common Mistakes table is where a skill goes to accrete. If one exceeds five rows, the procedure above it is wrong. The first version of these skills reached 19,000 words that way; this one is under 2,500.
 
+## Diagrams
+
+Edit only `docs/src/0_specs_of_theseus.mmd`. `bin/build-diagrams` splits it into one diagram per stage and renders every diagram to `docs/img/`, using [pele-preview](../mermaid_preview) from a sibling checkout.
+
+The scripts need Ruby 4, pinned in `.ruby-version`. chruby picks it up in an interactive shell. Anywhere chruby doesn't load — CI, editor tasks, agents' shells — the system Ruby runs instead and the scripts fail, so run:
+
+```
+chruby-exec ruby-4.0 -- bin/build-diagrams
+```
+
 ## History
 
 Earlier versions carried an epic/story/task layer, a capability layer, and a system layer with a boundary-redraw procedure. All three were cut in September 2026 — the first two as generic or derivable, the third as machinery that had never been run. The design documents that produced them are kept as a record of the reasoning, not as current guidance.

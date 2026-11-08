@@ -1,0 +1,33 @@
+---
+title: Specs of Theseus - Update Evals
+---
+flowchart TD
+
+    classDef hidden display:none
+
+    JP:::hidden
+    CE:::hidden
+    RS_RD:::hidden
+    Deploy:::hidden
+
+    subgraph UE[Update Evals]
+        CS[🧑🏼‍💻 🧞 \n Choose Story from top of Backlog]
+        Repo_1:::hidden
+        GT_A[[🧑🏼‍💻 🧞 Update Evals]]
+    end
+
+    JP-->|Prioritized \n Backlog|CS
+    CS-->|Empty \n Backlog|CE
+    CS-->|Story|GT_A
+    Repo_1-->|Current \n Invariants|GT_A
+    Repo_1-->|Current \n Contracts|GT_A
+    Repo_1-->|Current \n End-to-End \n Tests|GT_A
+    Repo_1-->|Current \n Monitors|GT_A
+    GT_A-->|Story|RS_RD
+    GT_A-->|Updated \n Invariants|RS_RD
+    GT_A-->|Updated \n Contracts|RS_RD
+    GT_A-->|Updated \n End-to-End \nTests|RS_RD
+    GT_A-->|Updated \n Monitors|RS_RD
+    Deploy-->|Empty \n Work \n Queue|CS
+
+    class GT_A tone-7

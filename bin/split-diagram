@@ -1,0 +1,126 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Splits a Mermaid flowchart into one file per subgraph.
+#
+# Each output file keeps the subgraph, every edge that enters, leaves or stays
+# inside it, and the class lines for its nodes. Nodes on the far end of an
+# entering or leaving edge become hidden stubs, so the edge and its label stay.
+#
+# Files are named <n>_<prefix><slug>.mmd, where slug comes from the subgraph's
+# label ("Update Evals" -> update_evals). They are numbered in --order, then in
+# the order the remaining subgraphs appear in the file.
+#
+# Needs Ruby 4 (see .ruby-version). Where chruby doesn't load — CI, editor
+# tasks, non-interactive shells — run: chruby-exec ruby-4.0 -- bin/split-diagram ...
+
+require "fileutils"
+require "optparse"
+
+SUBGRAPH = /\A\s*subgraph\s+([\w-]+)\s*(?:\[\s*"?(.*?)"?\s*\])?\s*\z/
+NODE = /\A\s*([\w-]+)\s*(?:\[|\(|\{|:::|\z)/
+EDGE = /\A\s*([\w-]+)(?::::[\w-]+)?\s*(-->|-\.->|==>|---|-\.-|===)\s*(?:\|[^|]*\|)?\s*([\w-]+)(?::::[\w-]+)?\s*\z/
+CLASS = /\A\s*class\s+([\w,\s-]+?)\s+([\w-]+)\s*\z/
+
+Subgraph = Data.define(:id, :label, :lines)
+Diagram = Data.define(:title, :subgraphs, :members, :edges, :classes, :classdefs)
+
+def fail_with(message)
+  abort "split-diagram: #{message}"
+end
+
+def parse(text)
+  title = nil
+  if (front = text.match(/\A---\n(.*?)\n---\n/m))
+    title = front[1][/^title:\s*(.*)$/, 1]&.strip
+    text = text[front.end(0)..]
+  end
+
+  diagram = Diagram.new(title:, subgraphs: [], members: {}, edges: [], classes: [], classdefs: [])
+  current = nil
+
+  text.each_line(chomp: true) do |raw|
+    line = raw.strip
+    next if line.empty? || line.start_with?("%%", "flowchart", "graph ")
+
+    if line.start_with?("classDef")
+      diagram.classdefs << line
+    elsif (m = SUBGRAPH.match(line))
+      current = Subgraph.new(id: m[1], label: m[2] || m[1], lines: [raw.rstrip])
+      diagram.members[m[1]] = m[1]
+    elsif line == "end" && current
+      current.lines << raw.rstrip
+      diagram.subgraphs << current
+      current = nil
+    elsif EDGE.match?(line)
+      diagram.edges << line
+    elsif (m = CLASS.match(line))
+      diagram.classes << [m[1].split(",").map(&:strip).reject(&:empty?), m[2]]
+    elsif current
+      current.lines << raw.rstrip
+      node = NODE.match(line)
+      diagram.members[node[1]] = current.id if node
+    else
+      fail_with "cannot parse line: #{line}"
+    end
+  end
+
+  fail_with "subgraph #{current.id} has no end" if current
+  diagram
+end
+
+def slug(label)
+  label.downcase.gsub(/[^a-z0-9]+/, "_").gsub(/\A_+|_+\z/, "")
+end
+
+def render(diagram, subgraph)
+  inside = diagram.members.select { |_, owner| owner == subgraph.id }.keys
+  kept = []
+  outside = []
+  diagram.edges.each do |edge|
+    from, _, to = EDGE.match(edge).captures
+    next unless inside.include?(from) || inside.include?(to)
+
+    kept << edge
+    [from, to].each { |n| outside << n unless inside.include?(n) || outside.include?(n) }
+  end
+
+  base = diagram.title&.split(" - ")&.first
+  title = base ? "#{base} - #{subgraph.label}" : subgraph.label
+
+  out = ["---", "title: #{title}", "---", "flowchart TD", ""]
+  out += diagram.classdefs.map { "    #{it}" } + [""]
+  out += outside.map { "    #{it}:::hidden" } + (outside.empty? ? [] : [""])
+  out += subgraph.lines + [""]
+  out += kept.map { "    #{it}" } + [""]
+  diagram.classes.each do |ids, cls|
+    keep = ids & inside
+    out << "    class #{keep.join(',')} #{cls}" unless keep.empty?
+  end
+  "#{out.join("\n").rstrip}\n"
+end
+
+options = { skip: ["Key"], prefix: "", order: [] }
+parser = OptionParser.new do |o|
+  o.banner = "usage: split-diagram OVERVIEW.mmd OUT_DIR [--prefix TEXT] [--skip ID,...] [--order ID,...]"
+  o.on("--prefix TEXT", "text between the number and the slug, e.g. sot_") { |v| options[:prefix] = v }
+  o.on("--skip IDS", Array, "subgraph ids to leave out (default: Key)") { |v| options[:skip] = v }
+  o.on("--order IDS", Array, "subgraph ids in numbering order") { |v| options[:order] = v }
+end
+parser.parse!
+abort parser.banner unless ARGV.size == 2
+
+source, out_dir = ARGV
+diagram = parse(File.read(source))
+
+by_id = diagram.subgraphs.to_h { [it.id, it] }
+unknown = options[:order] - by_id.keys
+fail_with "no subgraph named #{unknown.join(', ')}" unless unknown.empty?
+
+ordered = by_id.values_at(*options[:order]) + diagram.subgraphs.reject { options[:order].include?(it.id) }
+FileUtils.mkdir_p(out_dir)
+ordered.reject { options[:skip].include?(it.id) }.each.with_index(1) do |sg, n|
+  path = File.join(out_dir, "#{n}_#{options[:prefix]}#{slug(sg.label)}.mmd")
+  File.write(path, render(diagram, sg))
+  puts "wrote #{path}"
+end

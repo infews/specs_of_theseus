@@ -1,0 +1,42 @@
+---
+title: Specs of Theseus - 🧑🏼‍💻 Development
+---
+flowchart TD
+
+    classDef hidden display:none
+
+    RS_Review:::hidden
+    Deploy:::hidden
+    Repo_5:::hidden
+
+    subgraph Dev[🧑🏼‍💻 Development]
+        Dev_P[🧞 Pick next Task]
+        Dev_RGR[[🧞 Red/Green/Refactor \n in Subsystems]]
+        Dev_Prop[[🧞 Migrate to \n Property Testing]]
+        Dev_Mu[[🧞 Mutation Testing]]
+        Dev_IT[[🧞 Run Full \n Eval Suite]]
+        Dev_Checks[[🧞 Run Controls \n & Checks]]
+        Dev_Complete[[🧞 Complete Story]]
+        Tag_Repo[🧞 Tag Repo]
+        Repo_4:::hidden
+    end
+
+    RS_Review --> |Story w/ Tasks| Dev_P
+    Dev_P-->|Task|Dev_RGR
+    Dev_RGR-->|Subsystems \n Code & Tests|Dev_Prop
+    Dev_Prop-->|Failing \n Property Tests|Dev_RGR
+    Dev_Prop-->|Subsystems \n Code & Tests|Dev_Mu
+    Dev_Mu-->|Survivors|Dev_RGR
+    Dev_Mu-->|Subsystems \n Code & Tests|Dev_Checks
+    Dev_Checks-->|Failing Checks|Dev_RGR
+    Dev_Checks-->|Passing Checks|Dev_IT
+    Dev_IT-->|Failing Evals|Dev_RGR
+    Dev_IT-->|Passing Evals|Dev_P
+    Dev_P-->|Empty \n Task List|Dev_Complete
+    Dev_Complete-->|Completed \n Story|Tag_Repo
+    Repo_4-->|Code|Tag_Repo
+    Tag_Repo-->|Completed \n Story|Deploy
+    Tag_Repo-->|Tagged \n Repo|Repo_5:::hidden
+
+    class Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
+    class Dev tone-7

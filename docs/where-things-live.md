@@ -1,0 +1,100 @@
+# Where Things Live
+
+Everything lives in the project's repo, under `/docs`.
+
+```
+docs/
+  epics/
+    0000-epics.md                  # index of all epics
+    0001-user-authentication.md    # an epic
+    0001-user-authentication/      # its stories
+      0010-login-form.md
+      0020-password-validation.md
+  evals/                           # the system's evals
+```
+
+## Epics and Stories
+
+Epics and stories are markdown files in `docs/epics/`.
+
+- **Epics** are named with a 4-digit number and a short slug: `0001-user-authentication.md`. Each new epic is linked from the index, `0000-epics.md`.
+- **Stories** live in a folder named after their epic: `0001-user-authentication/`. They are numbered in steps of 10 — `0010`, `0020`, `0030` — so stories split out or discovered later can slot in between. The numbering reflects the prioritization from the Product Planning stage.
+
+### An epic
+
+```markdown
+# User Authentication
+
+## Vision
+What's the goal? What problem are we solving, and for whom?
+
+## Context
+Why now? What background does the team need?
+
+## Scope
+### In Scope
+### Out of Scope
+
+## Success Criteria
+How will we know the epic is done, from the user's point of view?
+
+## Dependencies
+Anything this needs that doesn't exist yet — other teams, services, data.
+
+## Open Questions
+Anything unresolved. Issues raised during epic breakdown go here.
+
+## Resulting Stories
+- [Login form](0001-user-authentication/0010-login-form.md)
+```
+
+The epic is written in [Product Planning](1-product-planning.md). Epic breakdown adds its stories to **Resulting Stories**, and each is checked off or struck through when it's accepted.
+
+### A story
+
+````markdown
+# Login Form
+
+## Narrative
+As a [role], I want [goal], so that [benefit].
+
+## Acceptance Criteria
+```gherkin
+Feature: Login form
+
+  Scenario: Successful login
+    Given a registered user
+    When they submit valid credentials
+    Then they see their dashboard
+```
+
+## EARS Specifications
+- `AUTH-E2E-001`
+- `AUTH-INV-002`
+
+## Implementation Plan
+- [ ] Extract session handling into its own subsystem
+- [ ] Add the login form
+
+## Issues
+````
+
+Each section is filled in by a different stage:
+
+- **Narrative** and **Acceptance Criteria** — [Product Planning](1-product-planning.md), during epic breakdown.
+- **EARS Specifications** — [Updating Evals](2-updating-evals.md). It lists the IDs of the evals the story adds or changes; the evals themselves live in `docs/evals/`.
+- **Implementation Plan** — [Redesigning the System](3-redesigning-the-system.md). A plain checklist of tasks, checked off during [Development](4-development.md).
+- **Issues** — any stage, when someone gets stuck. See [Issues](working-agreements.md#issues).
+
+## Evals
+
+Evals live in `docs/evals/`, written in EARS with an `AREA-KIND-NNN` ID. Each one is checked by a test in the project's own language, which carries the eval's ID in a `@spec` comment. See [Evals](evals.md).
+
+## In the code
+
+- **Subsystems** are marked with a `@subsystem` comment at their entry point. See [Subsystems](subsystems.md).
+- **Tool commands** for each Development step live in the project's `CLAUDE.md` or `AGENTS.md`. See [Tools](working-agreements.md#tools).
+
+## In git
+
+- **Story tags** mark the commit where a story's evals all pass: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).
