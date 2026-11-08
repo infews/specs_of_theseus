@@ -103,7 +103,7 @@ end
 options = { skip: ["Key"], prefix: "", order: [] }
 parser = OptionParser.new do |o|
   o.banner = "usage: split-diagram OVERVIEW.mmd OUT_DIR [--prefix TEXT] [--skip ID,...] [--order ID,...]"
-  o.on("--prefix TEXT", "text between the number and the slug, e.g. sot_") { |v| options[:prefix] = v }
+  o.on("--prefix TEXT", "text between the number and the slug, e.g. theseus_") { |v| options[:prefix] = v }
   o.on("--skip IDS", Array, "subgraph ids to leave out (default: Key)") { |v| options[:skip] = v }
   o.on("--order IDS", Array, "subgraph ids in numbering order") { |v| options[:order] = v }
 end

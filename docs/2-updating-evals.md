@@ -1,6 +1,6 @@
 # Updating Evals
 
-![Update Evals](img/2_sot_update_evals.svg)
+![Update Evals](img/2_theseus_update_evals.svg)
 
 **Why:** The evals are the spec, so a new requirement starts by changing them — before any design or code. This is test-first development applied to the whole system rather than one function.
 
@@ -8,7 +8,7 @@
 
 **In:** The prioritized backlog. The current [evals](evals.md): invariants, contracts, end-to-end tests and monitors.
 
-**Out:** The story and its updated evals, sent to [Redesigning the System](3-redesigning-the-system.md).
+**Out:** The story, its updated evals, and a failing test for each new or changed eval, sent to [Redesigning the System](3-redesigning-the-system.md).
 
 ## How
 
@@ -17,6 +17,11 @@
 3. **Decide which evals it adds, changes or removes** — across all four kinds, not only end-to-end tests.
 4. **Write down any quality the story depends on that isn't an eval yet.** If it isn't written down, an agent may change it later.
 5. **Check that the updated evals don't contradict** each other or existing invariants.
+6. **Write a failing test for each new or changed eval**, tagged with its `@spec` ID. Use the test frameworks the project already uses; the developer and agent decide where the tests live. An invariant is a rule — "never", "always" — so its test is a property test.
+
+Writing the eval tests here means the agent never writes the tests that grade its own work in Development.
+
+Stories from an adoption epic describe behavior the system already has. See [Adopting an Existing Project](0-adopting.md) for how those differ.
 
 Don't skip ahead in the backlog. If the top story isn't ready, that's a planning problem — fix the order, not the pick.
 

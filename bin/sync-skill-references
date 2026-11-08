@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Copies the shared references and scripts from skills/specs-of-theseus into
+# every other skill, so each skill works when installed on its own.
+#
+#   bin/sync-skill-references          write the copies
+#   bin/sync-skill-references --check  exit 1 if any copy is missing or stale
+#
+# Edit the originals in skills/specs-of-theseus/, never the copies. Copies
+# carry a header saying so; copies whose original is gone are deleted.
+#
+# Needs Ruby 4 (see .ruby-version). Where chruby doesn't load — CI, editor
+# tasks, non-interactive shells — run: chruby-exec ruby-4.0 -- bin/sync-skill-references
+
+require "fileutils"
+
+ROOT = File.expand_path("..", __dir__)
+SKILLS = File.join(ROOT, "skills")
+SOURCE = File.join(SKILLS, "specs-of-theseus")
+SHARED = %w[references scripts].flat_map { Dir[File.join(SOURCE, it, "*")] }.sort
+MARKER = "Generated from skills/specs-of-theseus/"
+
+def header(relative)
+  note = "#{MARKER}#{relative} by bin/sync-skill-references. Edit the original, not this copy."
+  relative.end_with?(".md") ? "<!-- #{note} -->\n\n" : "# #{note}\n"
+end
+
+# Shell scripts keep their shebang on the first line.
+def stamped(relative, body)
+  return header(relative) + body if relative.end_with?(".md") || !body.start_with?("#!")
+
+  shebang, rest = body.split("\n", 2)
+  "#{shebang}\n#{header(relative)}#{rest}"
+end
+
+check = ARGV.delete("--check")
+stale = []
+
+targets = Dir[File.join(SKILLS, "*")].select { File.directory?(it) } - [SOURCE]
+targets.sort.each do |skill|
+  wanted = SHARED.to_h do |source|
+    relative = source.delete_prefix("#{SOURCE}/")
+    [File.join(skill, relative), stamped(relative, File.read(source))]
+  end
+
+  wanted.each do |path, content|
+    next if File.exist?(path) && File.read(path) == content
+
+    stale << path
+    next if check
+
+    FileUtils.mkdir_p(File.dirname(path))
+    File.write(path, content)
+    File.chmod(File.stat(File.join(SOURCE, path.delete_prefix("#{skill}/"))).mode, path)
+  end
+
+  # Copies whose original no longer exists.
+  Dir[File.join(skill, "{references,scripts}", "*")].each do |path|
+    next if wanted.key?(path) || !File.read(path).include?(MARKER)
+
+    stale << path
+    File.delete(path) unless check
+  end
+end
+
+if check
+  abort "Out of date (run bin/sync-skill-references):\n#{stale.map { "  #{it.delete_prefix("#{ROOT}/")}" }.join("\n")}" if stale.any?
+  puts "Skill references are in sync."
+else
+  stale.each { puts "wrote #{it.delete_prefix("#{ROOT}/")}" }
+  puts "Skill references are in sync." if stale.empty?
+end

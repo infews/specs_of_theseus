@@ -36,6 +36,7 @@ More on the method:
 - [Subsystems](subsystems.md) — the units underneath the system; an agent modifies, deletes, and regrows the subsystems.
 - [Working Agreements](working-agreements.md) — raising issues, tools, and commits and tags.
 - [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
+- [Adopting an Existing Project](0-adopting.md) — writing the first evals for a project that has none.
 
 ## Legend
 

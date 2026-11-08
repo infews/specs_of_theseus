@@ -1,68 +1,80 @@
 # Specs of Theseus
 
-A development process where the running system is replaceable material and the declared intent is the durable asset.
+A way for a team of people and agents to build software together. People decide what to build and whether it's done; agents decide how. The evals — the system's specs — are what lasts. The code can be replaced plank by plank, like the ship of Theseus, as long as every eval still passes.
 
-Code and most tests are planks. The **spec manifest** and its **binding tests** are what make the system the same ship after every plank has been replaced. Change happens by regeneration rather than accretion: new requirements trigger a deliberate decision about how much to delete so the system can be rethought *including* them.
+It borrows from [Pivotal Labs' flavor of Extreme Programming](https://labspractices.com/guides/tanzu-labs-engineer-faq/) — a product manager who owns the backlog, small stories, test-driven development, acceptance on working software — and from [Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/): durable specifications, disposable code.
 
-Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture. The contribution here is the durable artifact that makes routine deletion survivable.
+**Read the method in [docs/index.md](docs/index.md).** It covers the principles, the five stages, evals, subsystems, the working agreements, and adopting an existing project.
 
-## The principles
+**Status: work in progress.** The method and its skills are being tried on real projects.
 
-1. **Intent lives outside the code.** That is the only reason deletion is safe.
-2. **The entry is the unit of obligation** — permanent ID, never reused, retired visibly. Not the subsystem, not the file.
-3. **An invariant is what a from-scratch rebuild could silently violate.** Exterior contract, performance characteristic, high-level architecture. Everything else is free.
-4. **Binding tests prove invariants and survive the cut.** Everything else is scaffolding and dies with its code.
-5. **The manifest changes before the code does.** Reversing the order is how the record starts lying.
-6. **Telling intent from accident is human judgment, and defaults to accident.** An unrecorded promise is recoverable; an enshrined one is forever.
-7. **Coverage is partial by design.** Unadopted code is not drift.
+## Principles
+
+1. **Evals are the spec; code can be thrown away.**
+2. **If you care about it, make it an eval.**
+3. **The edges are fixed; the inside can be redrawn.**
+4. **Make the smallest change first, then look for something to regrow.**
+5. **People decide what gets built and whether it's done; agents decide how.**
+6. **Anyone can stop the line.**
+
+Each is explained in [docs/index.md](docs/index.md#principles).
 
 ## Skills
 
+The skills ship as a Claude Code plugin, `theseus`, versioned in `.claude-plugin/plugin.json`.
+
 | Skill | Use when |
 | --- | --- |
-| `specs-of-theseus` | The model, the vocabulary, and the everyday loop — entry point for any work in a managed codebase |
-| `regrowing-a-subsystem` | Adopting existing code, growing a new subsystem, or deleting and rebuilding one from its manifest |
+| `theseus:specs-of-theseus` | Entry point: the principles, where things live, and working out which stage the work is in |
+| `theseus:adopt-project` | Bringing an existing project into the method and writing its first evals |
+| `theseus:product-planning` | Writing epics, breaking them into stories, ordering the backlog |
+| `theseus:update-evals` | Taking the top story and changing the evals, with failing tests |
+| `theseus:redesign-system` | Planning the smallest change, looking for something to regrow, writing tasks |
+| `theseus:develop-story` | Running the Development loop, then completing and tagging the story |
 
-Two references sit under `specs-of-theseus/references/`: [manifest.md](skills/specs-of-theseus/references/manifest.md) for entry formats, IDs, and EARS, and [classifying.md](skills/specs-of-theseus/references/classifying.md) for the intent-versus-accident gate.
+Acceptance has no skill; it depends on each team's process.
 
-This method has no opinion about your planning process. Whatever unit of work you use — ticket, story, issue — the only rule it adds is that the unit carries a **manifest delta**, approved before a line of code moves.
+The skills restate much of `docs/`: the docs explain the method to people, the skills tell agents what to do. Change both together.
 
-**Status: experimental.** In use on one real codebase; one subsystem has been through a full adopt-and-regrow cycle.
+### Shared references
 
-## Installing for experimentation
+Several skills need the same material: evals, subsystems, project layout, working agreements, and the eval-link checker. Each skill carries its own copy so it works on its own. The originals live in `skills/specs-of-theseus/references/` and `skills/specs-of-theseus/scripts/` — **edit those, never the copies** — then run:
 
 ```sh
-./install.sh
+bin/sync-skill-references
 ```
 
-Symlinks each skill into `~/.claude/skills/`, so the skills are live in every project while the files you edit stay here. Run `./install.sh --uninstall` to remove them.
+`bin/sync-skill-references --check` fails if any copy is out of date, for CI or a pre-commit hook.
+
+## Trying the skills
+
+Load the plugin from this checkout for one session, in the project you're testing on:
+
+```sh
+claude --plugin-dir /path/to/specs-of-theseus
+```
 
 ## Iterating
 
-1. Work in the target project with the skills installed
+1. Work in the target project with the plugin loaded
 2. Note where a skill was ignored, misread, or gave bad guidance
-3. Fix the skill here — the symlink means edits are immediate
+3. Fix the skill here, run `bin/sync-skill-references` if you changed a shared reference, then start a new session to pick up the change
 4. Commit from this repo
 
-Body edits take effect on the next invocation. Changes to a skill's `name` or `description` need a session restart, since those load at startup.
-
-**When a run surfaces a gap, change the procedure step — do not add a row warning against the wrong behavior.** A Common Mistakes table is where a skill goes to accrete. If one exceeds five rows, the procedure above it is wrong. The first version of these skills reached 19,000 words that way; this one is under 2,500.
+**When a run surfaces a gap, change the procedure step — do not add a row warning against the wrong behavior.** A Common Mistakes table is where a skill goes to accrete. If one exceeds five rows, the procedure above it is wrong.
 
 ## Diagrams
 
 Edit only `docs/src/0_specs_of_theseus.mmd`. `bin/build-diagrams` splits it into one diagram per stage and renders every diagram to `docs/img/`, using [pele-preview](../mermaid_preview) from a sibling checkout.
 
-The scripts need Ruby 4, pinned in `.ruby-version`. chruby picks it up in an interactive shell. Anywhere chruby doesn't load — CI, editor tasks, agents' shells — the system Ruby runs instead and the scripts fail, so run:
+## Ruby
 
-```
+The scripts in `bin/` need Ruby 4, pinned in `.ruby-version`. chruby picks it up in an interactive shell. Anywhere chruby doesn't load — CI, editor tasks, agents' shells — the system Ruby runs instead and the scripts fail, so run them through chruby:
+
+```sh
 chruby-exec ruby-4.0 -- bin/build-diagrams
 ```
 
 ## History
 
-Earlier versions carried an epic/story/task layer, a capability layer, and a system layer with a boundary-redraw procedure. All three were cut in September 2026 — the first two as generic or derivable, the third as machinery that had never been run. The design documents that produced them are kept as a record of the reasoning, not as current guidance.
-
-- [Design](docs/design/2026-08-28-specs-of-theseus-design.md)
-- [Adding the intent layer — epics, stories, and tasks](docs/design/2026-09-05-epic-story-integration.md)
-- [Adding the capability layer — what the software does today](docs/design/2026-09-09-capability-layer.md)
-- [The system layer — making the decomposition disposable](docs/design/2026-09-12-system-layer.md)
+This version is a clean-sheet rewrite, started in November 2026. Earlier versions were built around a spec manifest with binding tests, and later added epic, capability and system layers. That work, and the design documents behind it, are in the git history before commit `32d871f`.

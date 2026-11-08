@@ -23,7 +23,7 @@ end
 
 # The stage diagrams are generated: edit the overview, not them.
 run RbConfig.ruby, File.join(__dir__, "split-diagram"), File.join(src, "0_specs_of_theseus.mmd"), src,
-    "--prefix", "sot_", "--order", "Prod,UE,RS,Dev,Acceptance"
+    "--prefix", "theseus_", "--order", "Prod,UE,RS,Dev,Acceptance"
 
 Dir[File.join(src, "*.mmd")].sort.each do |diagram|
   run pele, diagram, css, "-o", File.join(img, "#{File.basename(diagram, '.mmd')}.svg"), *ARGV

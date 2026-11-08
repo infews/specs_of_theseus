@@ -1,68 +1,57 @@
 ---
 name: specs-of-theseus
-description: Use when working in a codebase that has a docs/subsystems.md manifest, when a subsystem has accumulated too much entropy to keep patching, or when new requirements arrive for code already under management. Also use when asked about the spec manifest, invariants, binding tests, regrowing a subsystem, or Specs of Theseus.
+description: Entry point for the Specs of Theseus method — evals as the durable spec, disposable code, and a team of people and agents working through product planning, updating evals, redesign, and development. Use whenever a project has docs/epics/ or docs/evals/, or the user mentions Specs of Theseus, evals, the backlog, the next story, raising an issue, @spec or @subsystem markers, or asks "what's next?" in such a project. Also use when the user wants to start using the method on a project. Figures out which stage the work is in and hands off to the right stage skill.
 ---
 
 # Specs of Theseus
 
-The running system is replaceable material; the declared intent is the durable asset. Code and most tests are planks. The **manifest** and its **binding tests** are what make the system the same ship after every plank has been replaced.
+A method for a team of people and agents to build software. The evals — the system's specification — are what lasts. The code can be replaced plank by plank, like the ship of Theseus, as long as every eval still passes.
 
-Change happens by regeneration, not accretion. Deletion is frightening only while the code is the sole place intent is written down. Once intent lives outside the code, deletion becomes husbandry — entropy accumulates in implementations, never in intent.
+## Principles
 
-Lineage: Chad Fowler's Regenerative Development / Phoenix Architecture.
+Keep these in mind at every stage; the stage skills assume them.
 
-## Vocabulary
+1. **Evals are the spec; code can be thrown away.** Any subsystem can be rewritten as long as every eval still passes.
+2. **If you care about it, make it an eval.** Anything that isn't an eval, an agent is free to change — so a quality nobody wrote down is a quality nobody protected.
+3. **The edges are fixed; the inside can be redrawn.** Contracts with other systems are evals. Contracts between subsystems are disposable tests.
+4. **Make the smallest change first, then look for something to regrow.** Small steps keep work safe; regrowing keeps the design from piling up patches.
+5. **People decide what gets built and whether it's done; agents decide how.** People own prioritization, what the evals say, and acceptance.
+6. **Anyone can stop the line.** When stuck, raise an issue. An open issue blocks the work until a person answers it.
 
-| Term | Meaning |
-| --- | --- |
-| **Manifest** | `docs/subsystems.md`, with one file per subsystem in `docs/subsystems/`. Authoritative for what the system promises. |
-| **Subsystem** | A named area with a boundary *you draw*. The unit that gets cut and regrown. Not permanent. |
-| **Entry** | One promise, with a permanent ID. **The unit of obligation** — not the subsystem, not the file. |
-| **Invariant** (`INV`) | A property a from-scratch rebuild could silently violate: exterior contract, performance characteristic, high-level architecture. |
-| **Spec** (`SPEC`) | A behavioral promise, written in EARS. Most promises are specs. |
-| **Non-promise** (`NON`) | Behavior that exists today and is explicitly not promised. |
-| **Binding test** | Black-box, entering through the subsystem's public edge, tagged with the entry it proves. Survives the cut. |
-| **Scaffolding test** | Anything reaching inside the boundary. Deleted with the code it describes, without mourning. |
-| **The cut** | Deciding what to delete before regrowing. |
+## The stages
 
-## The rule everything turns on
+| Stage | Who | Skill |
+|---|---|---|
+| Adopting an existing project (once, before the stages) | developer, agent, PM for intent | `adopt-project` |
+| Product Planning — idea → epic → prioritized stories | PM leads, designer, developer, agent | `product-planning` |
+| Updating Evals — choose the top story, change the evals, write failing eval tests | developer, agent | `update-evals` |
+| Redesigning the System — smallest change, look for something to regrow, tasks | agent, then reviewed with developer | `redesign-system` |
+| Development — the per-task loop, then complete and tag the story | agent, developer oversees | `develop-story` |
+| Acceptance — deploy the tag, PM accepts or rejects, release | automation, PM | none: this depends on the team's own process |
 
-**The manifest changes before the code does.** Every time.
+## Find where the work is
 
-The manifest is the promise; code is only its current expression. Reversing the order is how the record starts lying — and a record that lies is worse than no record, because someone acts on it.
+Work this out from the project's files rather than asking — the files are the record. Read `references/project-layout.md` for where everything lives.
 
-Concretely: whatever unit of work you use — ticket, story, issue — it carries a **manifest delta** (entries added, modified, retired) written and approved before a line of code moves. This method has no opinion about your planning process above that line.
+1. **Open issues first.** Look in the `## Issues` section of every story and the `## Open Questions` section of every epic for unchecked items without an answer. If any exist, stop: show them to the person and wait. Nothing else moves while an issue is open.
+2. **No `docs/evals/` but there is code?** The project hasn't been adopted. Use `adopt-project`.
+3. **A story in progress?** A story's sections show its stage — there's no status field to keep in sync:
+   - Checked off or struck through in its epic's **Resulting Stories** → done (accepted, or an adoption story that's finished).
+   - **EARS Specifications** empty → not started.
+   - **EARS Specifications** filled, **Implementation Plan** empty → `redesign-system`.
+   - **Implementation Plan** has unchecked tasks, or all checked but no `story/<epic>/<story>` git tag yet → `develop-story`.
+   - Tagged → in Acceptance. Nothing for an agent to do until it's accepted or rejected.
+4. **Nothing in progress?** Take the top of the backlog with `update-evals`. The backlog is the stories not yet started, in epic order from `docs/epics/0000-epics.md`, then by story number.
+5. **Backlog empty?** Back to `product-planning` to choose and break down the next epic.
 
-## The everyday loop
+Say which stage you found and why, then follow that stage's skill.
 
-1. **Write the delta.** Get it approved. A change needing no delta is legitimate — say so out loud rather than inventing one.
-2. **Per entry:** failing test → implementation → green → refactor. Use your project's test-driven-development skill here; this method adds nothing to it.
-3. **Tag:** `@proves {ID}` on the test, `@implements {ID}` on the code. Bare IDs, comma-separated — no paths, no links, and never a comment restating the entry.
-4. **Close:** every delta entry tagged, full suite green.
+## Shared references
 
-**If an entry turns out to be wrong mid-build — incorrect, incomplete, impossible — stop and change the entry deliberately.** Never quietly write a different test to fit what you built. That substitution is the failure this whole method exists to prevent.
+The stage skills point here for the details they share. Read only what the task needs.
 
-## Coverage is partial by design
-
-Code outside a listed subsystem is **not drift** — it is simply not yet adopted. Never report it as a violation, and never mass-adopt a codebase to make the manifest look complete. A thousand inferred entries written before you know what a good one looks like is worse than none.
-
-## Routing
-
-| Where you are | What to do |
-| --- | --- |
-| A change covered by existing entries | The everyday loop above |
-| Entries need adding, changing, or retiring | Write the delta, then the loop |
-| Existing code with no entries; new behavior with no home; a subsystem that needs rebuilding | [regrowing-a-subsystem](../regrowing-a-subsystem/SKILL.md) |
-
-Entry formats, IDs, and EARS: [manifest.md](references/manifest.md).
-Telling intent from accident: [classifying.md](references/classifying.md).
-
-Read a reference when you reach it. Do not reconstruct its content from this file.
-
-## Red flags
-
-Three failures are invisible at the moment they happen. Everything else announces itself.
-
-- **Black sail** — code changed, manifest not. The system works, the record lies, someone acts on the record.
-- **Enshrined entropy** — current behavior captured wholesale as binding tests, making the mess permanent in the one artifact meant to outlive it.
-- **Silent retirement** — an entry deleted instead of retired visibly. A lost promise breaks no test, because the test went with it.
+- `references/project-layout.md` — where epics, stories and evals live; the epic and story templates.
+- `references/evals.md` — the four kinds of eval, EARS format, `AREA-KIND-NNN` IDs, linking evals to tests with `@spec`.
+- `references/subsystems.md` — what a subsystem is, `@subsystem` markers, extracting and folding back.
+- `references/working-agreements.md` — raising issues, finding tool commands, commits and story tags.
+- `scripts/check-eval-links.sh` — checks every eval has a test and every `@spec` tag points to a real eval.

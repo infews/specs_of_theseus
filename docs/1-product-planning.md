@@ -1,6 +1,6 @@
 # Product Planning
 
-![Product Planning](img/1_sot_product_planning.svg)
+![Product Planning](img/1_theseus_product_planning.svg)
 
 **Why:** The team needs one prioritized list of work and a person who owns its order. This is the Pivotal Labs or XP planning loop, with an agent helping to break epics down.
 

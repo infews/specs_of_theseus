@@ -10,7 +10,9 @@ docs/
     0001-user-authentication/      # its stories
       0010-login-form.md
       0020-password-validation.md
-  evals/                           # the system's evals
+  evals/
+    auth.md                        # one file per product area
+    cart.md
 ```
 
 ## Epics and Stories
@@ -79,6 +81,8 @@ Feature: Login form
 ## Issues
 ````
 
+A story's sections show where it is — there's no separate status to keep in sync. Empty EARS Specifications means not started; an Implementation Plan with unchecked tasks means in Development; a story tag means in Acceptance; checked off in the epic means done.
+
 Each section is filled in by a different stage:
 
 - **Narrative** and **Acceptance Criteria** — [Product Planning](1-product-planning.md), during epic breakdown.
@@ -88,7 +92,23 @@ Each section is filled in by a different stage:
 
 ## Evals
 
-Evals live in `docs/evals/`, written in EARS with an `AREA-KIND-NNN` ID. Each one is checked by a test in the project's own language, which carries the eval's ID in a `@spec` comment. See [Evals](evals.md).
+Evals live in `docs/evals/`, one file per product area, grouped by kind. Each eval is one list item: its `AREA-KIND-NNN` ID, then its EARS text. Each one is checked by a test in the project's own language, which carries the eval's ID in a `@spec` comment. A monitor that only runs in production points to its configuration instead. See [Evals](evals.md).
+
+```markdown
+# Cart
+
+## Invariants
+- `CART-INV-003`: The system shall never allow a cart total below zero.
+
+## End-to-end
+- `CART-E2E-001`: When a shopper removes the last item, the system shall show an empty cart.
+
+## Monitors
+- `CART-MON-001`: The system shall add an item to a cart within 200 ms at p95.
+  - Monitor: `config/monitors/cart.yml`
+```
+
+When an eval is retired, its line and its tests are deleted. IDs are never reused.
 
 ## In the code
 
