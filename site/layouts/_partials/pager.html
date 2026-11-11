@@ -1,0 +1,21 @@
+{{- /* Previous and next pages, in sidebar order. */ -}}
+{{- $pages := slice -}}
+{{- range site.Menus.main -}}
+  {{- if .HasChildren -}}
+    {{- range .Children }}{{ $pages = $pages | append . }}{{ end -}}
+  {{- else -}}
+    {{- $pages = $pages | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $here := -1 -}}
+{{- range $i, $e := $pages }}{{ if $.IsMenuCurrent "main" $e }}{{ $here = $i }}{{ end }}{{ end -}}
+{{- if ge $here 0 }}
+<nav class="pager" aria-label="Previous and next">
+  {{- if gt $here 0 }}{{ with index $pages (sub $here 1) }}
+  <a class="prev" href="{{ .URL }}"><span>Previous</span>{{ .Name }}</a>
+  {{- end }}{{ end }}
+  {{- if lt $here (sub (len $pages) 1) }}{{ with index $pages (add $here 1) }}
+  <a class="next" href="{{ .URL }}"><span>Next</span>{{ .Name }}</a>
+  {{- end }}{{ end }}
+</nav>
+{{- end }}

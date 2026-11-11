@@ -1,0 +1,8 @@
+{{- /* The docs have no front matter, so a page's title is its first "# " heading. */ -}}
+{{- $title := .Title -}}
+{{- if not $title -}}
+  {{- with findRESubmatch `(?m)^#\s+(.+?)\s*$` .RawContent 1 -}}
+    {{- $title = index (index . 0) 1 -}}
+  {{- end -}}
+{{- end -}}
+{{- return $title -}}

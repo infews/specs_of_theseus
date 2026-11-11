@@ -2,3 +2,8 @@
 
 # PNGs written by bin/build-diagrams alongside the SVGs; the docs use only the SVGs.
 docs/img/*.png
+
+# Hugo output; the site is built by .github/workflows/pages.yml
+site/public/
+site/resources/
+site/.hugo_build.lock

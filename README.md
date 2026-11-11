@@ -63,6 +63,14 @@ claude --plugin-dir /path/to/specs-of-theseus
 
 **When a run surfaces a gap, change the procedure step — do not add a row warning against the wrong behavior.** A Common Mistakes table is where a skill goes to accrete. If one exceeds five rows, the procedure above it is wrong.
 
+## Docs site
+
+`docs/` is published to GitHub Pages at <https://dwf.bigpencil.net/specs_of_theseus/> by `.github/workflows/pages.yml` on every push to main that touches `docs/` or `site/`. The site is built with [Hugo](https://gohugo.io/); its config, templates and theme live in `site/`, which mounts `docs/` as its content, so the docs stay plain Markdown that reads on GitHub too. To preview it (`brew install hugo`):
+
+```sh
+hugo server --source site     # http://localhost:1313/specs_of_theseus/
+```
+
 ## Diagrams
 
 Edit only `docs/src/0_specs_of_theseus.mmd` and `docs/src/6_adopting.mmd`; the stage diagrams are generated. `bin/build-diagrams` splits the overview into one diagram per stage and renders every diagram to `docs/img/` with `pele-laka export`, using the stylesheet in `docs/src/pele-noto.css`.

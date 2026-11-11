@@ -1,0 +1,107 @@
+# Builds docs/ into the GitHub Pages site. The docs stay plain Markdown that
+# reads well on GitHub too: this site mounts them as its content, and the
+# render hooks in layouts/_markup turn their .md links into site links.
+#
+#   hugo server --source site     # preview at http://localhost:1313/specs_of_theseus/
+#   hugo --source site            # build into site/public
+
+baseURL = "https://dwf.bigpencil.net/specs_of_theseus/"
+title = "Specs of Theseus"
+locale = "en-US"
+disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
+
+[params]
+  description = "A way for a team of people and agents to build software together. The evals are what lasts; the code can be replaced, plank by plank."
+  repo = "https://github.com/infews/specs_of_theseus"
+
+[markup.goldmark.renderer]
+  unsafe = false
+[markup.highlight]
+  noClasses = false
+
+# Mounting replaces Hugo's default content and static folders.
+[[module.mounts]]
+  source = "../docs/index.md"
+  target = "content/_index.md"
+[[module.mounts]]
+  source = "../docs"
+  target = "content"
+  files = ["! index.md", "! src/**", "! img/**", "! design/**", "! **/.DS_Store"]
+[[module.mounts]]
+  source = "../docs/img"
+  target = "static/img"
+  files = ["! **.png"]
+
+# The sidebar, in reading order. Prev/next links at the foot of each page follow it too.
+[[menus.main]]
+  identifier = "overview"
+  name = "Overview"
+  pageRef = "/"
+  weight = 1
+[[menus.main]]
+  identifier = "stages"
+  name = "The Stages"
+  weight = 10
+[[menus.main]]
+  parent = "stages"
+  name = "Product Planning"
+  pageRef = "/1-product-planning"
+  weight = 11
+[[menus.main]]
+  parent = "stages"
+  name = "Update Evals"
+  pageRef = "/2-update-evals"
+  weight = 12
+[[menus.main]]
+  parent = "stages"
+  name = "Redesign System"
+  pageRef = "/3-redesign-system"
+  weight = 13
+[[menus.main]]
+  parent = "stages"
+  name = "Development"
+  pageRef = "/4-development"
+  weight = 14
+[[menus.main]]
+  parent = "stages"
+  name = "Acceptance"
+  pageRef = "/5-acceptance"
+  weight = 15
+[[menus.main]]
+  identifier = "method"
+  name = "The Method"
+  weight = 20
+[[menus.main]]
+  parent = "method"
+  name = "Evals"
+  pageRef = "/evals"
+  weight = 21
+[[menus.main]]
+  parent = "method"
+  name = "Subsystems"
+  pageRef = "/subsystems"
+  weight = 22
+[[menus.main]]
+  parent = "method"
+  name = "Working Agreements"
+  pageRef = "/working-agreements"
+  weight = 23
+[[menus.main]]
+  parent = "method"
+  name = "Where Things Live"
+  pageRef = "/where-things-live"
+  weight = 24
+[[menus.main]]
+  identifier = "adopting"
+  name = "Getting Started"
+  weight = 30
+[[menus.main]]
+  parent = "adopting"
+  name = "Adopting an Existing Project"
+  pageRef = "/6_adopting"
+  weight = 31
+[[menus.main]]
+  identifier = "about"
+  name = "About"
+  pageRef = "/about"
+  weight = 40

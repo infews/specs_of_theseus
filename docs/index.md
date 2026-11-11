@@ -37,6 +37,7 @@ More on the method:
 - [Working Agreements](working-agreements.md) — raising issues, tools, and commits and tags.
 - [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
 - [Adopting an Existing Project](6_adopting.md) — writing the first evals for a project that has none.
+- [About](about.md) — who wrote this, and where to find more.
 
 ## Legend
 

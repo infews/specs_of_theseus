@@ -1,0 +1,14 @@
+{{- /* Turns the docs' links to other .md files into links to their pages, so the
+     same Markdown works on GitHub and on the site. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $href := .Destination -}}
+{{- if and (not $u.IsAbs) (strings.HasSuffix $u.Path ".md") -}}
+  {{- with .PageInner.GetPage $u.Path -}}
+    {{- $href = .RelPermalink -}}
+    {{- with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end -}}
+  {{- else -}}
+    {{- warnf "%s: link to a missing page: %s" $.PageInner.File.Path $.Destination -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $href }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $u.IsAbs }} rel="external"{{ end }}>{{ .Text }}</a>
+{{- /* chomp trailing newline */ -}}

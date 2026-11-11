@@ -1,0 +1,17 @@
+{{- $current := . -}}
+<ul>
+  {{- range site.Menus.main }}
+  <li>
+    {{- if .HasChildren }}
+    <span class="group">{{ .Name }}</span>
+    <ul>
+      {{- range .Children }}
+      <li><a href="{{ .URL }}"{{ if $current.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+      {{- end }}
+    </ul>
+    {{- else }}
+    <a href="{{ .URL }}"{{ if $current.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>

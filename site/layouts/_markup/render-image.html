@@ -1,0 +1,11 @@
+{{- /* The docs reference diagrams as img/<name>.svg, relative to docs/. On the site
+     every page has its own folder, so point them at the site root instead. A
+     diagram is a figure that opens full size when clicked. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $src := .Destination -}}
+{{- if not $u.IsAbs }}{{ $src = relURL (strings.TrimPrefix "./" $u.Path) }}{{ end -}}
+{{- if strings.HasPrefix $u.Path "img/" -}}
+<a class="diagram" href="{{ $src }}" title="Open the diagram full size"><img src="{{ $src }}" alt="{{ .PlainText }}" loading="lazy"></a>
+{{- else -}}
+<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
+{{- end -}}
