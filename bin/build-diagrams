@@ -6,17 +6,40 @@
 # writes a PNG when Google Chrome is installed). Any arguments are passed
 # through to pele-laka export.
 #
-# Override the renderer with PELE=/path/to/pele-laka and the stylesheet
-# with PELE_CSS=/path/to/style.css.
+# The renderer is found in this order: PELE=/path/to/pele-laka, then
+# pele-laka on the PATH, then a sibling checkout at ../pele-laka. To install
+# it once: npm install -g github:infews/pele-laka (needs Node 20+).
+#
+# The stylesheet is docs/src/pele-noto.css, kept in this repo so every
+# machine renders the same way. Override it with PELE_CSS=/path/to/style.css.
 #
 # Needs Ruby 4 (see .ruby-version). Where chruby doesn't load — CI, editor
 # tasks, non-interactive shells — run: chruby-exec ruby-4.0 -- bin/build-diagrams
 
 root = File.expand_path("..", __dir__)
-pele = ENV.fetch("PELE", File.join(root, "../pele_preview/bin/pele-laka"))
-css = ENV.fetch("PELE_CSS", File.join(File.dirname(pele), "../pele-noto.css"))
 src = File.join(root, "docs/src")
 img = File.join(root, "docs/img")
+
+def on_path(name)
+  ENV.fetch("PATH", "").split(File::PATH_SEPARATOR)
+     .map { File.join(it, name) }
+     .find { File.file?(it) && File.executable?(it) }
+end
+
+def find_pele(root)
+  return ENV["PELE"] if ENV["PELE"]
+
+  sibling = File.expand_path("../pele-laka/bin/pele-laka", root)
+  on_path("pele-laka") || (sibling if File.executable?(sibling)) or abort <<~MSG
+    build-diagrams: can't find pele-laka. Install it once with
+      npm install -g github:infews/pele-laka
+    or check it out next to this repo at ../pele-laka (and run npm install there),
+    or point PELE at it: PELE=/path/to/pele-laka bin/build-diagrams
+  MSG
+end
+
+pele = find_pele(root)
+css = ENV.fetch("PELE_CSS", File.join(src, "pele-noto.css"))
 
 def run(*command)
   system(*command) or abort "build-diagrams: failed: #{command.join(' ')}"

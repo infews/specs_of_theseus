@@ -1,0 +1,4 @@
+.DS_Store
+
+# PNGs written by bin/build-diagrams alongside the SVGs; the docs use only the SVGs.
+docs/img/*.png

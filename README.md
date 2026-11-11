@@ -65,7 +65,15 @@ claude --plugin-dir /path/to/specs-of-theseus
 
 ## Diagrams
 
-Edit only `docs/src/0_specs_of_theseus.mmd` and `docs/src/6_adopting.mmd`; the stage diagrams are generated. `bin/build-diagrams` splits the overview into one diagram per stage and renders every diagram to `docs/img/`, using `pele-laka export` from a sibling checkout of [pele_preview](../pele_preview).
+Edit only `docs/src/0_specs_of_theseus.mmd` and `docs/src/6_adopting.mmd`; the stage diagrams are generated. `bin/build-diagrams` splits the overview into one diagram per stage and renders every diagram to `docs/img/` with `pele-laka export`, using the stylesheet in `docs/src/pele-noto.css`.
+
+The script looks for `pele-laka` in `PELE`, then on the `PATH`, then in a sibling checkout at `../pele-laka`. To install it once (needs Node 20+):
+
+```sh
+npm install -g github:infews/pele-laka
+```
+
+Google Chrome is optional; the build uses it only for PNG copies, which aren't committed.
 
 ## Ruby
 
