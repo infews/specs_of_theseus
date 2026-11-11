@@ -24,10 +24,10 @@ Specs of Theseus borrows from:
 
 | Stage | Who | Turns | Into |
 |---|---|---|---|
-| [Product Planning](1-product-planning.md) | 🧑🏻‍🎨 🧑🏾‍⚖️ 🧑🏼‍💻 🧞 | An idea | A prioritized backlog |
-| [Updating Evals](2-updating-evals.md) | 🧑🏼‍💻 🧞 | The top story and the current evals | Updated evals |
-| [Redesigning the System](3-redesigning-the-system.md) | 🧑🏼‍💻 🧞 | Updated evals and the code | A story with reviewed tasks |
-| [Development](4-development.md) | 🧑🏼‍💻 🧞 | A story with tasks | A completed, tagged story |
+| [Product Planning](1-product-planning.md) | 🧑🏻‍🎨 🧑🏾‍⚖️ 🧑🏼‍💻 🧞 | Ideas | A prioritized backlog |
+| [Update Evals](2-update-evals.md) | 🧑🏼‍💻 🧞 | The top story and the current evals | Reviewed evals and their failing tests |
+| [Redesign System](3-redesign-system.md) | 🧑🏼‍💻 🧞 | The story, updated evals, failing tests and the code | A story with reviewed tasks |
+| [Development](4-development.md) | 🧑🏼‍💻 🧞 | A story with reviewed tasks | A tagged story |
 | [Acceptance](5-acceptance.md) | 🧑🏾‍⚖️ ⚙ | A tagged story | New functionality in users' hands |
 
 More on the method:
@@ -36,7 +36,7 @@ More on the method:
 - [Subsystems](subsystems.md) — the units underneath the system; an agent modifies, deletes, and regrows the subsystems.
 - [Working Agreements](working-agreements.md) — raising issues, tools, and commits and tags.
 - [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
-- [Adopting an Existing Project](0-adopting.md) — writing the first evals for a project that has none.
+- [Adopting an Existing Project](6_adopting.md) — writing the first evals for a project that has none.
 
 ## Legend
 
@@ -45,4 +45,11 @@ More on the method:
 - 🧑🏼‍💻 a developer
 - 🧞 an agent
 - ⚙ automation, such as CI/CD
-- In the diagrams, boxes are activities and arrows are the artifacts passed between them.
+
+In the diagrams:
+
+- **Boxes are activities; arrows are the artifacts passed between them.** Each box shows who does it, then names the activity with a verb.
+- **Box shapes:** a box with double side borders is a work activity; a plain box is a choice or bookkeeping step, such as Choose Epic or Tag Repo.
+- **Box colors:** green means people and an agent work together; red means an agent works alone; no color means people or automation, without an agent.
+- **Dotted arrows** are returns that happen only sometimes, such as a rejected story or a reviewer's requested changes.
+- **A role on a stage's title** means that person watches the whole stage. On Development, 🧑🏼‍💻 means the agent does the work while the developer oversees, answering issues and reading summaries.

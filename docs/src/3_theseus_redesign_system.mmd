@@ -5,27 +5,26 @@ flowchart TD
 
     classDef hidden display:none
 
-    GT_A:::hidden
-    Dev_P:::hidden
+    UE_Review:::hidden
+    Dev_Pick_Task:::hidden
 
     subgraph RS[Redesign System]
-        RS_RD[[🧞 Redesign System]]
-        RS_ATS[[🧞 Add Tasks to Story]]
-        RS_Review[[🧑🏼‍💻 🧞 Review Tasks]]
-        Repo_2:::hidden
-        Repo_3:::hidden
+        RS_Redesign[[🧞#8194;Redesign System]]
+        RS_Add_Tasks[[🧞#8194;Add Tasks to Story]]
+        RS_Review[[🧑🏼‍💻 🧞#8194;Review Tasks]]
+        RS_Repo:::hidden
     end
 
-    Repo_2-->|Code|RS_RD
-    GT_A-->|Story|RS_RD
-    GT_A-->|Updated \n Invariants|RS_RD
-    GT_A-->|Updated \n Contracts|RS_RD
-    GT_A-->|Updated \n End-to-End \nTests|RS_RD
-    GT_A-->|Updated \n Monitors|RS_RD
-    RS_RD-->|Redesigned \n Subsystems \n Plan|RS_ATS
-    RS_RD-->|Tasks|RS_ATS
-    RS_RD-->|Story|RS_ATS
-    RS_ATS-->|Story w/ Tasks|RS_Review
-    RS_Review --> |Story w/ Tasks| Dev_P
+    RS_Repo-->|Code|RS_Redesign
+    UE_Review-->|Story|RS_Redesign
+    UE_Review-->|Updated Evals|RS_Redesign
+    UE_Review-->|Failing Tests|RS_Redesign
+    RS_Redesign-->|Redesigned \n Subsystems \n Plan|RS_Add_Tasks
+    RS_Redesign-->|Tasks|RS_Add_Tasks
+    RS_Redesign-->|Story|RS_Add_Tasks
+    RS_Add_Tasks-->|Story with \n Tasks|RS_Review
+    RS_Review --> |Story with \n Tasks| Dev_Pick_Task
 
-    class RS_RD,RS_ATS tone-6
+    class RS_Review tone-7
+    class RS_Redesign,RS_Add_Tasks tone-6
+    class RS tone-3

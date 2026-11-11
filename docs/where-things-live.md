@@ -50,7 +50,7 @@ Anything unresolved. Issues raised during epic breakdown go here.
 - [Login form](0001-user-authentication/0010-login-form.md)
 ```
 
-The epic is written in [Product Planning](1-product-planning.md). Epic breakdown adds its stories to **Resulting Stories**, and each is checked off or struck through when it's accepted.
+The epic is written in [Product Planning](1-product-planning.md). Epic breakdown adds its stories to **Resulting Stories**, and each is checked off or struck through when it's accepted — or, for a Characterize story, when its evals are committed.
 
 ### A story
 
@@ -81,18 +81,18 @@ Feature: Login form
 ## Issues
 ````
 
-A story's sections show where it is — there's no separate status to keep in sync. Empty EARS Specifications means not started; an Implementation Plan with unchecked tasks means in Development; a story tag means in Acceptance; checked off in the epic means done.
+A story's sections show where it is — there's no separate status to keep in sync. Empty EARS Specifications means not started; an Implementation Plan with unchecked tasks means in Development; a story tag means in Acceptance; checked off in the epic means done. A ["Characterize …" story](evals.md#characterization) never gets a plan or a tag: it's checked off as soon as its evals are committed. A rejected story's tag is deleted and its EARS Specifications and Implementation Plan are emptied, so it reads as not started again.
 
 Each section is filled in by a different stage:
 
 - **Narrative** and **Acceptance Criteria** — [Product Planning](1-product-planning.md), during epic breakdown.
-- **EARS Specifications** — [Updating Evals](2-updating-evals.md). It lists the IDs of the evals the story adds or changes; the evals themselves live in `docs/evals/`.
-- **Implementation Plan** — [Redesigning the System](3-redesigning-the-system.md). A plain checklist of tasks, checked off during [Development](4-development.md).
+- **EARS Specifications** — [Update Evals](2-update-evals.md). It lists the IDs of the evals the story adds, changes or removes; the evals themselves live in `docs/evals/`.
+- **Implementation Plan** — [Redesign System](3-redesign-system.md). A plain checklist of tasks, checked off during [Development](4-development.md).
 - **Issues** — any stage, when someone gets stuck. See [Issues](working-agreements.md#issues).
 
 ## Evals
 
-Evals live in `docs/evals/`, one file per product area, grouped by kind. Each eval is one list item: its `AREA-KIND-NNN` ID, then its EARS text. Each one is checked by a test in the project's own language, which carries the eval's ID in a `@spec` comment. A monitor that only runs in production points to its configuration instead. See [Evals](evals.md).
+Evals live in `docs/evals/`, one file per product area, grouped by kind. Each eval is one list item: its `AREA-KIND-NNN` ID, then its EARS text. Each one is checked by a test in the project's own language, under its test directory, which carries the eval's ID in a `@spec` comment. A monitor that only runs in production points to its configuration instead. See [Evals](evals.md).
 
 ```markdown
 # Cart
@@ -117,4 +117,4 @@ When an eval is retired, its line and its tests are deleted. IDs are never reuse
 
 ## In git
 
-- **Story tags** mark the commit where a story's evals all pass: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).
+- **Story tags** mark the commit where a story's evals all pass and it's ready for acceptance: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).

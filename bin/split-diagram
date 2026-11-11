@@ -69,8 +69,13 @@ def parse(text)
   diagram
 end
 
+# Mermaid writes characters as #8194; in labels. Turn them back into text.
+def plain(label)
+  label.gsub(/#(\d+);/) { it[1..-2].to_i.chr(Encoding::UTF_8) }
+end
+
 def slug(label)
-  label.downcase.gsub(/[^a-z0-9]+/, "_").gsub(/\A_+|_+\z/, "")
+  plain(label).downcase.gsub(/[^a-z0-9]+/, "_").gsub(/\A_+|_+\z/, "")
 end
 
 def render(diagram, subgraph)
@@ -86,7 +91,7 @@ def render(diagram, subgraph)
   end
 
   base = diagram.title&.split(" - ")&.first
-  title = base ? "#{base} - #{subgraph.label}" : subgraph.label
+  title = base ? "#{base} - #{plain(subgraph.label)}" : plain(subgraph.label)
 
   out = ["---", "title: #{title}", "---", "flowchart TD", ""]
   out += diagram.classdefs.map { "    #{it}" } + [""]

@@ -5,104 +5,111 @@ flowchart TD
 
     classDef hidden display:none
 
+    %% The order of edges below sets the layout. Several are placed to keep edges from
+    %% crossing; re-check the render after moving any.
+
     subgraph Key
-        K["🧑🏻‍🎨 Designer \n 🧑🏾‍⚖️ Product Manager \n 🧑🏼‍💻 Developer \n 🧞 Agent"]
+        Key_Roles["🧑🏻‍🎨#8194;Designer \n 🧑🏾‍⚖️#8194;Product Manager \n 🧑🏼‍💻#8194;Developer \n 🧞#8194;Agent \n ⚙#8194;Automation"]
     end
 
+    %% Box shapes: [[ ]] = a work activity, [ ] = choosing or bookkeeping.
     subgraph Prod["Product Planning"]
-        PP[🧑🏻‍🎨🧑🏾‍⚖️ \n Product Prioritization]
-        CE[🧑🏾‍⚖️ Choose Epic]
-        EB[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 \n Epic Breakdown]]
-        JP[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 Prioritization]]
+        PP_Prioritize_Ideas[🧑🏻‍🎨 🧑🏾‍⚖️#8194;Prioritize Ideas]
+        PP_Choose_Epic[🧑🏾‍⚖️#8194;Choose Epic]
+        PP_Break_Down_Epic[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Break Down Epic]]
+        PP_Prioritize_Stories[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Prioritize Stories]]
     end
 
-    Start:::hidden-->|Idea|PP
-    PP-->|Prioritized Work|CE
-    CE-->|Epic|EB
-    EB-->|Stories|JP
-    JP-->|Prioritized \n Backlog|CS
-    CS-->|Empty \n Backlog|CE
-    CS-->|Story|GT_A
+    PP_Start:::hidden-->|Ideas|PP_Prioritize_Ideas
+    PP_Prioritize_Ideas-->|Prioritized Work|PP_Choose_Epic
+    PP_Choose_Epic-->|Epic|PP_Break_Down_Epic
+    PP_Break_Down_Epic-->|Stories|PP_Prioritize_Stories
+    UE_Choose_Story-->|Empty \n Backlog|PP_Choose_Epic
+    PP_Prioritize_Stories-->|Prioritized \n Backlog|UE_Choose_Story
+    UE_Choose_Story-->|Story|UE_Update_Evals
 
     subgraph Acceptance
-        Deploy[[⚙ Deploy]]
-        AW[[🧑🏾‍⚖️ Acceptance]]
-        RF[[🧑🏾‍⚖️ ⚙ Release]]
+        Acc_Deploy[[⚙#8194;Deploy]]
+        Acc_Accept[[🧑🏾‍⚖️#8194;Accept or Reject]]
+        Acc_Release[[🧑🏾‍⚖️ ⚙#8194;Release]]
     end
 
-    AW-.->|Rejected \n Stories|JP
+    Acc_Accept-.->|Rejected \n Story|PP_Prioritize_Stories
 
     subgraph UE[Update Evals]
-        CS[🧑🏼‍💻 🧞 \n Choose Story from top of Backlog]
-        Repo_1:::hidden
-        GT_A[[🧑🏼‍💻 🧞 Update Evals]]
+        UE_Choose_Story[🧑🏼‍💻 🧞#8194;Choose Story \n from Top of Backlog]
+        UE_Repo:::hidden
+        UE_Update_Evals[[🧑🏼‍💻 🧞#8194;Update Evals]]
+        UE_Review[[🧑🏼‍💻#8194;Review Evals \n & Tests]]
     end
 
-    Repo_1-->|Current \n Invariants|GT_A
-    Repo_1-->|Current \n Contracts|GT_A
-    Repo_1-->|Current \n End-to-End \n Tests|GT_A
-    Repo_1-->|Current \n Monitors|GT_A
-    Repo_2-->|Code|RS_RD
+    UE_Repo-->|Current Evals|UE_Update_Evals
+    RS_Repo-->|Code|RS_Redesign
 
-    GT_A-->|Story|RS_RD
+    UE_Update_Evals-->|Updated Evals|UE_Review
+    UE_Update_Evals-->|Failing Tests|UE_Review
+    UE_Review-.->|Requested \n Changes|UE_Update_Evals
+    UE_Review-->|Story|RS_Redesign
 
     subgraph RS[Redesign System]
-        RS_RD[[🧞 Redesign System]]
-        RS_ATS[[🧞 Add Tasks to Story]]
-        RS_Review[[🧑🏼‍💻 🧞 Review Tasks]]
-        Repo_2:::hidden
-        Repo_3:::hidden
+        RS_Redesign[[🧞#8194;Redesign System]]
+        RS_Add_Tasks[[🧞#8194;Add Tasks to Story]]
+        RS_Review[[🧑🏼‍💻 🧞#8194;Review Tasks]]
+        RS_Repo:::hidden
     end
         
-    GT_A-->|Updated \n Invariants|RS_RD
-    GT_A-->|Updated \n Contracts|RS_RD
-    GT_A-->|Updated \n End-to-End \nTests|RS_RD
-    GT_A-->|Updated \n Monitors|RS_RD
+    UE_Review-->|Updated Evals|RS_Redesign
+    UE_Review-->|Failing Tests|RS_Redesign
     
-    RS_RD-->|Redesigned \n Subsystems \n Plan|RS_ATS
-    RS_RD-->|Tasks|RS_ATS
-    RS_RD-->|Story|RS_ATS
+    RS_Redesign-->|Redesigned \n Subsystems \n Plan|RS_Add_Tasks
+    RS_Redesign-->|Tasks|RS_Add_Tasks
+    RS_Redesign-->|Story|RS_Add_Tasks
 
-    RS_ATS-->|Story w/ Tasks|RS_Review
-    RS_Review --> |Story w/ Tasks| Dev_P
+    RS_Add_Tasks-->|Story with \n Tasks|RS_Review
+    RS_Review --> |Story with \n Tasks| Dev_Pick_Task
 
-    subgraph Dev[🧑🏼‍💻 Development]
-        Dev_P[🧞 Pick next Task]
-        Dev_RGR[[🧞 Red/Green/Refactor \n in Subsystems]]
-        Dev_Prop[[🧞 Migrate to \n Property Testing]]
-        Dev_Mu[[🧞 Mutation Testing]]
-        Dev_IT[[🧞 Run Full \n Eval Suite]]
-        Dev_Checks[[🧞 Run Controls \n & Checks]]
-        Dev_Complete[[🧞 Complete Story]]
-        Tag_Repo[🧞 Tag Repo]
-        Repo_4:::hidden
+    subgraph Dev[🧑🏼‍💻#8194;Development]
+        Dev_Tag_Repo[🧞#8194;Tag Repo]
+        Dev_Repo:::hidden
+        Dev_Pick_Task[🧞#8194;Pick Next Task]
+        Dev_Red_Green_Refactor[[🧞#8194;Red/Green/Refactor \n in Subsystems]]
+        Dev_Property_Tests[[🧞#8194;Migrate to \n Property Testing]]
+        Dev_Run_Evals[[🧞#8194;Run Full \n Eval Suite]]
+        Dev_Complete[🧞#8194;Complete Story]
+        Dev_Mutation_Tests[[🧞#8194;Run Mutation Tests]]
+        Dev_Checks[[🧞#8194;Run Controls \n & Checks]]
     end
 
-    Dev_P-->|Task|Dev_RGR
-    Dev_RGR-->|Subsystems \n Code & Tests|Dev_Prop
-    Dev_Prop-->|Failing \n Property Tests|Dev_RGR
-    Dev_Prop-->|Subsystems \n Code & Tests|Dev_Mu
-    Dev_Mu-->|Survivors|Dev_RGR
-    Dev_Mu-->|Subsystems \n Code & Tests|Dev_Checks
+    %% Declared before Task so the two don't cross.
+    Dev_Run_Evals-->|Passing Evals|Dev_Pick_Task
+    Dev_Pick_Task-->|Task|Dev_Red_Green_Refactor
+    Dev_Red_Green_Refactor-->|Subsystems \n Code & Tests|Dev_Property_Tests
+    Dev_Property_Tests-->|Failing \n Property Tests|Dev_Red_Green_Refactor
+    Dev_Property_Tests-->|Subsystems \n Code & Tests|Dev_Run_Evals
 
-    Dev_Checks-->|Failing Checks|Dev_RGR
-    Dev_Checks-->|Passing Checks|Dev_IT
+    Dev_Run_Evals-->|Failing Evals|Dev_Red_Green_Refactor
 
-    Dev_IT-->|Failing Evals|Dev_RGR
-    Dev_IT-->|Passing Evals|Dev_P
+    Dev_Pick_Task-->|Empty \n Task List|Dev_Complete
 
-    Dev_P-->|Empty \n Task List|Dev_Complete
+    Dev_Complete-->|Story's \n Subsystems|Dev_Mutation_Tests
+    Dev_Mutation_Tests-->|Survivors|Dev_Red_Green_Refactor
+    Dev_Mutation_Tests-->|Subsystems \n Code & Tests|Dev_Checks
 
-    Dev_Complete-->|Completed \n Story|Tag_Repo
-    Repo_4-->|Code|Tag_Repo
-    Tag_Repo-->|Completed \n Story|Deploy
-    Tag_Repo-->|Tagged \n Repo|Repo_5:::hidden
-    Deploy-->|Working \n Software|AW
-    Deploy-->|Empty \n Work \n Queue|CS
-    AW-->|Accepted \n Stories|RF
-    RF-->|New Functionality|Stop:::hidden
+    Dev_Checks-->|Failing Checks|Dev_Red_Green_Refactor
+    Dev_Checks-->|Passing Checks|Dev_Tag_Repo
 
-  class EB,JP,GT_A tone-7
-  class RS_RD,RS_ATS,Dev_RGR,Dev_Prop,Dev_Mu,Dev_IT,Dev_Checks tone-6
-  class Prod tone-2
-  class Dev tone-7
+    Dev_Repo-->|Code|Dev_Tag_Repo
+    Acc_Deploy-->|Empty \n Work \n Queue|UE_Choose_Story
+    Dev_Tag_Repo-->|Tagged \n Story|Acc_Deploy
+    Acc_Deploy-->|Working \n Software|Acc_Accept
+    Acc_Accept-->|Accepted \n Story|Acc_Release
+    Acc_Release-->|New Functionality|Acc_Stop:::hidden
+
+  %% Box colours: tone-7 = people and agent together, tone-6 = agent alone, none = people only.
+  class PP_Break_Down_Epic,PP_Prioritize_Stories,UE_Choose_Story,UE_Update_Evals,RS_Review tone-7
+  class RS_Redesign,RS_Add_Tasks,Dev_Pick_Task,Dev_Red_Green_Refactor,Dev_Property_Tests,Dev_Run_Evals,Dev_Complete,Dev_Mutation_Tests,Dev_Checks,Dev_Tag_Repo tone-6
+  class Prod tone-1
+  class UE tone-2
+  class RS,Key tone-3
+  class Dev tone-8
+  class Acceptance tone-5

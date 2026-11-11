@@ -16,9 +16,9 @@ docs/
 ```
 
 - **Subsystems** are marked in the code with `@subsystem` comments. See `subsystems.md`.
-- **Eval tests** live wherever the project keeps tests, tagged with `@spec`. See `evals.md`.
+- **Eval tests** live under the project's test directory (`test/`, `spec/`, `tests/`…), tagged with `@spec`. Never in a new top-level folder. See `evals.md`.
 - **Tool commands** live in the project's `CLAUDE.md` or `AGENTS.md`. See `working-agreements.md`.
-- **Story tags** live in git: `story/0001-user-authentication/0010-login-form`.
+- **Story tags** live in git: `story/0001-user-authentication/0010-login-form`. A tag means "ready for acceptance"; a rejected story's tag is deleted.
 
 ## Epics
 
@@ -50,7 +50,7 @@ Anything unresolved. Issues raised during epic breakdown go here.
 - [Login form](0001-user-authentication/0010-login-form.md)
 ```
 
-When a story is accepted, check it off or strike it through in **Resulting Stories**.
+When a story is accepted, check it off or strike it through in **Resulting Stories**. A "Characterize …" story is checked off when its evals are committed; it has no plan or tag (see "Characterization" in `evals.md`).
 
 ## Stories
 
@@ -88,8 +88,8 @@ Each section belongs to a stage:
 | Section | Filled in by |
 |---|---|
 | Narrative, Acceptance Criteria | Product Planning (epic breakdown) |
-| EARS Specifications — IDs of the evals the story adds or changes | Updating Evals |
-| Implementation Plan — a plain checklist of tasks | Redesigning the System; checked off in Development |
+| EARS Specifications — IDs of the evals the story adds, changes or removes | Update Evals |
+| Implementation Plan — a plain checklist of tasks | Redesign System; checked off in Development |
 | Issues | any stage |
 
 ## Eval files

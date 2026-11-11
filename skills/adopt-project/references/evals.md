@@ -2,7 +2,7 @@
 
 # Evals
 
-Evals are the system's specification — what survives a rewrite. Code, internal tests and subsystem boundaries can all be thrown away. Evals change only on purpose, as product work, in the Updating Evals stage.
+Evals are the system's specification — what survives a rewrite. Code, internal tests and subsystem boundaries can all be thrown away. Evals change only on purpose, as product work, in the Update Evals stage.
 
 If a quality matters — a behavior, a performance target, a structural rule — it has to be an eval. Otherwise an agent may change it while redesigning.
 
@@ -60,8 +60,22 @@ Whenever possible, an eval is checked by an executable test, written in the proj
 # @spec CART-INV-003
 ```
 
+- **Eval tests live under the project's test directory** (`test/`, `spec/`, `tests/`…), wherever the developer chooses inside it — never in a new top-level folder.
+- **Test names read as sentences.** Where frameworks name tests with strings (`describe`/`it`, `test "…"`), an eval ID in the name goes at the end: `it "shows an empty cart when the last item is removed (CART-E2E-001)"`. The `@spec` comment is the link; the ID in the name is optional.
 - **Eval tests are linked.** Every eval ID has at least one test; every `@spec` tag points to an eval that exists. `scripts/check-eval-links.sh` checks both. The tag is how an agent tells eval tests, which it must keep, from internal tests, which it may delete.
 - **Implementation is not linked.** Never put `@spec` in production code. Code is what gets deleted and regrown, and many evals span several subsystems. A failing eval's test leads to the code.
 - **Internal tests may cite an eval** they serve. They're thrown away with the code they test, so the tag never goes stale. (An internal test with a `@spec` tag still counts as linked — keep that in mind before deleting one.)
+
+## Characterization
+
+Most evals describe behavior a story is adding, so their tests fail until Development makes them pass. Some describe behavior the system **already has** but nobody wrote down. Writing those is **characterizing** an area, and their tests are **characterization tests** — a term from Michael Feathers' *Working Effectively with Legacy Code* (https://en.wikipedia.org/wiki/Characterization_test): run the code, observe what it does, and write a test that expects exactly that, odd parts included.
+
+- A characterization test **passes the first time it runs**. Its job is to catch a change, not to judge whether the behavior is right.
+- A **"Characterize …" story**, such as "Characterize the cart", writes evals and characterization tests for one product area's current behavior. It builds nothing, so it skips Redesign System and Development.
+- If the current behavior looks wrong, the eval still pins it. Raise an issue and offer to record a story to change it; that story's own Update Evals changes the eval later.
+
+## Removing functionality
+
+When a story removes behavior, its evals are retired: delete the eval lines and their tests. Don't keep or add tests that check the old behavior is gone — they protect nothing. The full eval suite still passing is what shows the removal broke nothing else. If the absence itself matters ("the system shall not export card numbers"), that's a new eval.
 
 An eval that can't run as a test — a production-only monitor — has a `Monitor:` line pointing at its configuration instead. See `project-layout.md`.

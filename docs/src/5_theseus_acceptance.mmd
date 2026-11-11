@@ -5,20 +5,22 @@ flowchart TD
 
     classDef hidden display:none
 
-    JP:::hidden
-    Tag_Repo:::hidden
-    CS:::hidden
-    Stop:::hidden
+    PP_Prioritize_Stories:::hidden
+    UE_Choose_Story:::hidden
+    Dev_Tag_Repo:::hidden
+    Acc_Stop:::hidden
 
     subgraph Acceptance
-        Deploy[[⚙ Deploy]]
-        AW[[🧑🏾‍⚖️ Acceptance]]
-        RF[[🧑🏾‍⚖️ ⚙ Release]]
+        Acc_Deploy[[⚙#8194;Deploy]]
+        Acc_Accept[[🧑🏾‍⚖️#8194;Accept or Reject]]
+        Acc_Release[[🧑🏾‍⚖️ ⚙#8194;Release]]
     end
 
-    AW-.->|Rejected \n Stories|JP
-    Tag_Repo-->|Completed \n Story|Deploy
-    Deploy-->|Working \n Software|AW
-    Deploy-->|Empty \n Work \n Queue|CS
-    AW-->|Accepted \n Stories|RF
-    RF-->|New Functionality|Stop:::hidden
+    Acc_Accept-.->|Rejected \n Story|PP_Prioritize_Stories
+    Acc_Deploy-->|Empty \n Work \n Queue|UE_Choose_Story
+    Dev_Tag_Repo-->|Tagged \n Story|Acc_Deploy
+    Acc_Deploy-->|Working \n Software|Acc_Accept
+    Acc_Accept-->|Accepted \n Story|Acc_Release
+    Acc_Release-->|New Functionality|Acc_Stop:::hidden
+
+    class Acceptance tone-5

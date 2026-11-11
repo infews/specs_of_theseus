@@ -5,24 +5,24 @@ flowchart TD
 
     classDef hidden display:none
 
-    Start:::hidden
-    CS:::hidden
-    AW:::hidden
+    PP_Start:::hidden
+    UE_Choose_Story:::hidden
+    Acc_Accept:::hidden
 
     subgraph Prod["Product Planning"]
-        PP[🧑🏻‍🎨🧑🏾‍⚖️ \n Product Prioritization]
-        CE[🧑🏾‍⚖️ Choose Epic]
-        EB[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 \n Epic Breakdown]]
-        JP[[🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞 Prioritization]]
+        PP_Prioritize_Ideas[🧑🏻‍🎨 🧑🏾‍⚖️#8194;Prioritize Ideas]
+        PP_Choose_Epic[🧑🏾‍⚖️#8194;Choose Epic]
+        PP_Break_Down_Epic[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Break Down Epic]]
+        PP_Prioritize_Stories[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Prioritize Stories]]
     end
 
-    Start:::hidden-->|Idea|PP
-    PP-->|Prioritized Work|CE
-    CE-->|Epic|EB
-    EB-->|Stories|JP
-    JP-->|Prioritized \n Backlog|CS
-    CS-->|Empty \n Backlog|CE
-    AW-.->|Rejected \n Stories|JP
+    PP_Start:::hidden-->|Ideas|PP_Prioritize_Ideas
+    PP_Prioritize_Ideas-->|Prioritized Work|PP_Choose_Epic
+    PP_Choose_Epic-->|Epic|PP_Break_Down_Epic
+    PP_Break_Down_Epic-->|Stories|PP_Prioritize_Stories
+    UE_Choose_Story-->|Empty \n Backlog|PP_Choose_Epic
+    PP_Prioritize_Stories-->|Prioritized \n Backlog|UE_Choose_Story
+    Acc_Accept-.->|Rejected \n Story|PP_Prioritize_Stories
 
-    class EB,JP tone-7
-    class Prod tone-2
+    class PP_Break_Down_Epic,PP_Prioritize_Stories tone-7
+    class Prod tone-1

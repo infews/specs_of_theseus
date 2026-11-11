@@ -1,6 +1,6 @@
 ---
 name: specs-of-theseus
-description: Entry point for the Specs of Theseus method — evals as the durable spec, disposable code, and a team of people and agents working through product planning, updating evals, redesign, and development. Use whenever a project has docs/epics/ or docs/evals/, or the user mentions Specs of Theseus, evals, the backlog, the next story, raising an issue, @spec or @subsystem markers, or asks "what's next?" in such a project. Also use when the user wants to start using the method on a project. Figures out which stage the work is in and hands off to the right stage skill.
+description: Entry point for the Specs of Theseus method — evals as the durable spec, disposable code, and a team of people and agents working through Product Planning, Update Evals, Redesign System, and Development. Use whenever a project has docs/epics/ or docs/evals/, or the user mentions Specs of Theseus, evals, the backlog, the next story, raising an issue, @spec or @subsystem markers, or asks "what's next?" in such a project. Also use when the user wants to start using the method on a project. Figures out which stage the work is in and hands off to the right stage skill.
 ---
 
 # Specs of Theseus
@@ -20,14 +20,16 @@ Keep these in mind at every stage; the stage skills assume them.
 
 ## The stages
 
-| Stage | Who | Skill |
+| Stage | Steps (the boxes in the diagram) | Skill |
 |---|---|---|
-| Adopting an existing project (once, before the stages) | developer, agent, PM for intent | `adopt-project` |
-| Product Planning — idea → epic → prioritized stories | PM leads, designer, developer, agent | `product-planning` |
-| Updating Evals — choose the top story, change the evals, write failing eval tests | developer, agent | `update-evals` |
-| Redesigning the System — smallest change, look for something to regrow, tasks | agent, then reviewed with developer | `redesign-system` |
-| Development — the per-task loop, then complete and tag the story | agent, developer oversees | `develop-story` |
-| Acceptance — deploy the tag, PM accepts or rejects, release | automation, PM | none: this depends on the team's own process |
+| Adopting an Existing Project (once per project, to set it up) | Survey Project 🧑🏼‍💻 🧞 → Record Tools 🧑🏼‍💻 🧞 → Mark Subsystems 🧞 → Write Adoption Epic 🧑🏾‍⚖️ 🧑🏼‍💻 🧞; its stories then go through Prioritize Stories and Update Evals (Write Evals ⇄ Run Evals → Review Evals & Tests → Complete Story) | `adopt-project` |
+| Product Planning | Prioritize Ideas 🧑🏻‍🎨 🧑🏾‍⚖️ → Choose Epic 🧑🏾‍⚖️ → Break Down Epic 🧑🏾‍⚖️ 🧑🏼‍💻 🧞 → Prioritize Stories 🧑🏾‍⚖️ 🧑🏼‍💻 🧞 | `product-planning` |
+| Update Evals | Choose Story from Top of Backlog 🧑🏼‍💻 🧞 → Update Evals 🧑🏼‍💻 🧞 → Review Evals & Tests 🧑🏼‍💻 | `update-evals` |
+| Redesign System | Redesign System 🧞 → Add Tasks to Story 🧞 → Review Tasks 🧑🏼‍💻 🧞 | `redesign-system` |
+| Development (🧑🏼‍💻 oversees) | per task: Pick Next Task → Red/Green/Refactor in Subsystems → Migrate to Property Testing → Run Full Eval Suite; then Complete Story → Run Mutation Tests → Run Controls & Checks → Tag Repo — all 🧞 | `develop-story` |
+| Acceptance | Deploy ⚙ → Accept or Reject 🧑🏾‍⚖️ → Release 🧑🏾‍⚖️ ⚙ | none: this depends on the team's own process |
+
+🧑🏻‍🎨 designer · 🧑🏾‍⚖️ product manager · 🧑🏼‍💻 developer · 🧞 agent · ⚙ automation. A step without 🧞 belongs to people: don't do it for them.
 
 ## Find where the work is
 
@@ -36,15 +38,15 @@ Work this out from the project's files rather than asking — the files are the 
 1. **Open issues first.** Look in the `## Issues` section of every story and the `## Open Questions` section of every epic for unchecked items without an answer. If any exist, stop: show them to the person and wait. Nothing else moves while an issue is open.
 2. **No `docs/evals/` but there is code?** The project hasn't been adopted. Use `adopt-project`.
 3. **A story in progress?** A story's sections show its stage — there's no status field to keep in sync:
-   - Checked off or struck through in its epic's **Resulting Stories** → done (accepted, or an adoption story that's finished).
+   - Checked off or struck through in its epic's **Resulting Stories** → done (accepted, or a finished Characterize story).
    - **EARS Specifications** empty → not started.
-   - **EARS Specifications** filled, **Implementation Plan** empty → `redesign-system`.
+   - **EARS Specifications** filled, **Implementation Plan** empty → `redesign-system`. Except a Characterize story (its title starts with "Characterize"; see "Characterization" in `references/evals.md`): it never gets a plan, so it stays in `update-evals` until Complete Story checks it off.
    - **Implementation Plan** has unchecked tasks, or all checked but no `story/<epic>/<story>` git tag yet → `develop-story`.
-   - Tagged → in Acceptance. Nothing for an agent to do until it's accepted or rejected.
-4. **Nothing in progress?** Take the top of the backlog with `update-evals`. The backlog is the stories not yet started, in epic order from `docs/epics/0000-epics.md`, then by story number.
-5. **Backlog empty?** Back to `product-planning` to choose and break down the next epic.
+   - Tagged → in Acceptance. Nothing for an agent to do on it, and it doesn't block the next story: once it's deployed, the work queue is empty. If it's rejected, it goes back to `product-planning` (Prioritize Stories), which deletes its tag.
+4. **No story in Update Evals, Redesign System or Development?** The work queue is empty: take the top of the backlog with `update-evals`. The backlog is the stories not yet started, in epic order from `docs/epics/0000-epics.md`, then by story number.
+5. **Backlog empty?** Back to `product-planning`, at Choose Epic: the product manager chooses the next epic.
 
-Say which stage you found and why, then follow that stage's skill.
+Tell the person which stage you found and why, then invoke that stage's skill by name — "Next: **Update Evals** (`theseus:update-evals`)". Every stage skill announces itself the same way, so the person always knows which one is running.
 
 ## Shared references
 

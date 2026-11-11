@@ -1,39 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="pele pele-flowchart" viewBox="0 0 390 889" width="390" height="889" style="max-width:100%;height:auto;--_bg:var(--pele-bg,#fff);--_fg:var(--pele-fg,#1f1f1f);--_m:var(--pele-muted,#6e6e6e);--_l:var(--pele-line,#1f1f1f);--_s:var(--pele-surface,#f3f3f3);--_a:var(--pele-surface-alt,#e6e6e6);--_b:var(--pele-border,#8a8a8a);--_c:var(--pele-accent,#5b7bd5);color:var(--_fg);--_r:var(--pele-radius,4px);--_tw:var(--pele-title-weight,bold);--_fm:var(--pele-font-mono,monospace);font:16px sans-serif;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;font-family:var(--pele-font,sans-serif)" fill="var(--_fg)" role="graphics-document document" aria-roledescription="flowchart"><style><![CDATA[
+<svg xmlns="http://www.w3.org/2000/svg" class="pele pele-flowchart" viewBox="0 0 414 889" width="414" height="889" style="max-width:100%;height:auto;--_bg:var(--pele-bg,#fff);--_fg:var(--pele-fg,#1f1f1f);--_m:var(--pele-muted,#6e6e6e);--_l:var(--pele-line,#1f1f1f);--_s:var(--pele-surface,#f3f3f3);--_a:var(--pele-surface-alt,#e6e6e6);--_b:var(--pele-border,#8a8a8a);--_c:var(--pele-accent,#5b7bd5);color:var(--_fg);--_r:var(--pele-radius,4px);--_tw:var(--pele-title-weight,bold);--_fm:var(--pele-font-mono,monospace);font:16px sans-serif;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;font-family:var(--pele-font,sans-serif)" fill="var(--_fg)" role="graphics-document document" aria-roledescription="flowchart"><style><![CDATA[
+/* @subsystem PlexTheme */
 /*
  * pele-plex.css — an IBM Plex theme for Pele (https://github.com/obsidianmd/pele)
  *
  * Fonts      IBM Plex Sans for labels, IBM Plex Mono for monospace parts.
- * Schemes    carbon (default), paper, harbor, moss — each with a light and a dark palette.
+ * Colors     IBM Carbon's neutrals and categorical palette, with a light and a dark side.
  * Edge text  ALL CAPS, slightly smaller, tracked out, in a rounded pill.
  * Utility    .hidden { display: none }
  *
- * ── Choosing a scheme ────────────────────────────────────────────────────────────────
- *   <div data-pele-scheme="paper"> …diagram… </div>
- *   Put the attribute on the diagram's container or any ancestor (e.g. <html>).
- *   With no attribute, diagrams use "carbon".
- *
  * ── Light / dark ─────────────────────────────────────────────────────────────────────
  *   By default a diagram follows the OS setting, via @media (prefers-color-scheme: dark).
- *   pele-preview's --scheme light|dark (and its preview toggle) pin the mode by
+ *   pele-preview's --scheme light|dark pins the mode by
  *   rewriting that media query in the embedded copy of this file.
- *   Force a mode with data-pele-mode="light" | "dark" on the container or any ancestor,
- *   or from your own CSS:  html.dark { --plex-mode: dark; }
  *   Switching never needs a re-render: every color is a light-dark() pair that the
  *   browser resolves against the diagram's color-scheme.
  *   Needs light-dark(): Chrome/Edge 123+, Safari 17.5+, Firefox 120+.
  *
  * ── Fonts and measuring ─────────────────────────────────────────────────────────────
- *   Pele measures labels in the font it is given, so:
- *   • mount(): reads --pele-font / --pele-font-mono from CSS (set below) and re-measures
- *     once the web fonts finish loading.
- *   • render(): pass the same family yourself:
- *       render(src, { fontFamily: '"IBM Plex Sans", sans-serif',
- *                     fontFamilyMono: '"IBM Plex Mono", monospace' })
+ *   In a browser, pele's mount() reads --pele-font / --pele-font-mono from CSS (set
+ *   below) and re-measures once the web fonts finish loading.
+ *   Under Node (render(), which pele-preview uses), pele lays labels out from a
+ *   built-in width table at its default size, whatever the family; the edge-label
+ *   rules below scale relative to that size.
  *   Remove the @import below if you self-host Plex (e.g. via @fontsource).
  */
 
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* ─── Utility ────────────────────────────────────────────────────────────────────── */
 
@@ -44,11 +36,11 @@
 
 /* ─── Fonts, weights, knobs ──────────────────────────────────────────────────────── */
 /* Declared on :root so a container sees them before its first render (mount() reads
-   them from there), and so a data-pele-scheme on an ancestor can override them. */
+   them from there), and so your own CSS can override them on any ancestor. */
 
 :root {
-  --pele-font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --pele-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --pele-font: "Noto Sans", "Noto Color Emoji", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pele-font-mono: "Noto Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --pele-title-weight: 600;
   --pele-heading-weight: 600;
   --pele-bold-weight: 600;
@@ -72,21 +64,15 @@
 
 /* Every diagram resolves its light-dark() colors against this. The OS setting is
    read through these two media queries, and nowhere else, so a tool can pin the
-   mode by rewriting them (pele-preview --scheme light|dark does exactly that).
-   --plex-mode, when set, wins over both. */
+   mode by rewriting them (pele-preview --scheme light|dark does exactly that). */
 .pele {
-  color-scheme: var(--plex-mode, light);
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   .pele {
-    color-scheme: var(--plex-mode, dark);
+    color-scheme: dark;
   }
 }
-
-[data-pele-mode="light"] { --plex-mode: light; }
-[data-pele-mode="dark"]  { --plex-mode: dark; }
-[data-pele-mode="auto"]  { --plex-mode: initial; }
-
 
 /* ─── Edges ──────────────────────────────────────────────────────────────────────── */
 
@@ -112,9 +98,9 @@
    with the rect sized to the text it measured. Uppercase + tracking widens text, so
    the text is shrunk to compensate and the rect is grown around its own center. */
 
-.pele .pele-edge-label text,
-.pele text.pele-edge-label {
+.pele .pele-edge-label text {
   text-transform: uppercase;
+  font-family: var(--pele-font-mono);
   letter-spacing: var(--plex-edge-label-tracking);
   font-size: calc(var(--plex-edge-label-scale) * 1em);
   font-weight: var(--plex-edge-label-weight);
@@ -128,6 +114,7 @@
    to give sequence messages the same treatment. */
 .pele.pele-sequence .pele-edge-label text {
   text-transform: none;
+  font-family: inherit;
   letter-spacing: normal;
   font-size: inherit;
   font-weight: inherit;
@@ -164,21 +151,25 @@
      class MySubgraph tone-3       a subgraph, by its id (subgraphs can't take :::)
      D[Alert]:::tone-4             a full-strength fill: add "solid" on its own line,
      class D solid                   as Mermaid takes one class per ::: or class line
-   No classDef is needed; Pele copies the class names onto the SVG. Tones follow the
-   active scheme and light/dark mode because they read --pele-series-1…8. */
+   No classDef is needed; Pele copies the class names onto the SVG. Tones follow
+   light/dark mode because they read --pele-series-1…8. */
 
-.pele .tone-1 { --plex-tone: var(--pele-series-1); }
-.pele .tone-2 { --plex-tone: var(--pele-series-2); }
-.pele .tone-3 { --plex-tone: var(--pele-series-3); }
-.pele .tone-4 { --plex-tone: var(--pele-series-4); }
-.pele .tone-5 { --plex-tone: var(--pele-series-5); }
-.pele .tone-6 { --plex-tone: var(--pele-series-6); }
-.pele .tone-7 { --plex-tone: var(--pele-series-7); }
-.pele .tone-8 { --plex-tone: var(--pele-series-8); }
+/* --plex-tone-on is the text color set on a full-strength tone: near-black or white,
+   whichever reads better on that tone in each mode (at least 4.5:1). */
+.pele .tone-1 { --plex-tone: var(--pele-series-1); --plex-tone-on: var(--pele-fg-on-dark); }
+.pele .tone-2 { --plex-tone: var(--pele-series-2); --plex-tone-on: var(--pele-fg-on-light); }
+.pele .tone-3 { --plex-tone: var(--pele-series-3); --plex-tone-on: light-dark(var(--pele-fg-on-light), var(--pele-fg-on-dark)); }
+.pele .tone-4 { --plex-tone: var(--pele-series-4); --plex-tone-on: light-dark(var(--pele-fg-on-dark), var(--pele-fg-on-light)); }
+.pele .tone-5 { --plex-tone: var(--pele-series-5); --plex-tone-on: var(--pele-fg-on-light); }
+.pele .tone-6 { --plex-tone: var(--pele-series-6); --plex-tone-on: light-dark(var(--pele-fg-on-dark), var(--pele-fg-on-light)); }
+.pele .tone-7 { --plex-tone: var(--pele-series-7); --plex-tone-on: light-dark(var(--pele-fg-on-dark), var(--pele-fg-on-light)); }
+.pele .tone-8 { --plex-tone: var(--pele-series-8); --plex-tone-on: light-dark(var(--pele-fg-on-dark), var(--pele-fg-on-light)); }
 
 :root {
   --plex-tone-node-mix: 18%;     /* how much tone is mixed into a node's fill */
   --plex-tone-cluster-mix: 9%;   /* …and into a subgraph's fill */
+  --plex-tone-title-mix: 75%;    /* how much tone is in a subgraph's title; the rest is
+                                    the foreground, so every title reads at 4.5:1 */
 }
 
 /* Nodes: tinted fill, full-tone outline. Detail lines (cylinder lids, subroutine
@@ -192,7 +183,8 @@
   stroke: var(--plex-tone);
 }
 
-/* Solid: the tone itself as the fill, with background-colored text on it. */
+/* Solid: the tone itself as the fill, with the tone's own text color on it. A solid
+   node with no tone is filled with the accent and keeps background-colored text. */
 .pele .pele-node.solid > :not(text, [fill="none"]) {
   fill: var(--plex-tone, var(--pele-accent));
 }
@@ -200,15 +192,16 @@
   stroke: var(--plex-tone, var(--pele-accent));
 }
 .pele .pele-node.solid > :is(path[fill="none"]) {
-  stroke: var(--pele-bg);
+  stroke: var(--plex-tone-on, var(--pele-bg));
 }
 .pele .pele-node.solid .pele-label {
-  fill: var(--pele-bg);
+  fill: var(--plex-tone-on, var(--pele-bg));
 }
 
 /* Subgraphs: a lighter tint, an opaque fill (Pele draws them at 0.5 opacity), a
-   tone outline and title. A title Pele moves off the box to dodge an edge is drawn
-   outside this group and keeps the default color. */
+   tone outline, and a title in the tone deepened toward the foreground. A title Pele
+   moves off the box to dodge an edge is drawn outside this group and keeps the
+   default color. */
 .pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
   > rect {
   fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-cluster-mix), var(--pele-bg));
@@ -217,16 +210,15 @@
 }
 .pele .pele-cluster:is(.tone-1, .tone-2, .tone-3, .tone-4, .tone-5, .tone-6, .tone-7, .tone-8)
   > .pele-cluster-label {
-  fill: var(--plex-tone);
+  fill: color-mix(in srgb, var(--plex-tone) var(--plex-tone-title-mix), var(--pele-fg));
 }
 
 
-/* ─── Schemes ───────────────────────────────────────────────────────────────────── */
-/* Each color is light-dark(<light>, <dark>). */
+/* ─── Colors ─────────────────────────────────────────────────────────────────────── */
+/* Each color is light-dark(<light>, <dark>). Neutral grays and IBM blue; the series
+   is IBM Carbon's categorical palette. */
 
-/* Carbon — neutral grays and IBM blue; series is IBM's categorical palette. */
-:root,
-[data-pele-scheme="carbon"] {
+:root {
   --pele-bg:          light-dark(#ffffff, #161616);
   --pele-fg:          light-dark(#161616, #f4f4f4);
   --pele-fg-on-light: #161616;
@@ -241,84 +233,31 @@
   --pele-error:       light-dark(#da1e28, #ff8389);
   --pele-series-1:    light-dark(#6929c4, #8a3ffc);
   --pele-series-2:    light-dark(#1192e8, #33b1ff);
-  --pele-series-3:    light-dark(#005d5d, #007d79);
+  --pele-series-3:    light-dark(#009d9a, #007d79);
   --pele-series-4:    light-dark(#9f1853, #ff7eb6);
   --pele-series-5:    light-dark(#fa4d56, #fa4d56);
-  --pele-series-6:    light-dark(#570408, #fff1f1);
+  --pele-series-6:    light-dark(#570408, #ffb3b8);
   --pele-series-7:    light-dark(#198038, #6fdc8c);
   --pele-series-8:    light-dark(#002d9c, #4589ff);
 }
 
-/* Paper — warm off-white and espresso, rust accent. */
-[data-pele-scheme="paper"] {
-  --pele-bg:          light-dark(#fbf8f1, #1c1915);
-  --pele-fg:          light-dark(#2b2620, #ece5d8);
-  --pele-fg-on-light: #2b2620;
-  --pele-fg-on-dark:  #fbf8f1;
-  --pele-muted:       light-dark(#7a7064, #a39889);
-  --pele-line:        light-dark(#5a5045, #b9ae9d);
-  --pele-surface:     light-dark(#f2ecdf, #27231d);
-  --pele-surface-alt: light-dark(#e7dfcf, #332e26);
-  --pele-border:      light-dark(#c4b69e, #5a5045);
-  --pele-accent:      light-dark(#b2541a, #e8935a);
-  --pele-critical:    light-dark(#b3261e, #f07167);
-  --pele-error:       light-dark(#b3261e, #f07167);
-  --pele-series-1:    light-dark(#b2541a, #e8935a);
-  --pele-series-2:    light-dark(#8a6d1c, #d9b450);
-  --pele-series-3:    light-dark(#5d7a2e, #a3c46a);
-  --pele-series-4:    light-dark(#2f6f73, #6cc1bc);
-  --pele-series-5:    light-dark(#3f5b8c, #8aa8de);
-  --pele-series-6:    light-dark(#6b4a8a, #b996d6);
-  --pele-series-7:    light-dark(#9c3d5b, #e584a2);
-  --pele-series-8:    light-dark(#7a5c45, #c9a786);
+/* Moved subgraph titles. When a title would cross an edge, pele draws it in a
+   separate group, <g class="pele-cluster-title" data-id="…">, without the
+   subgraph's tone class. These rules color any moved title, and the halo under
+   it, from --plex-tone. A title with no --plex-tone keeps pele's defaults: the
+   color-mix() below is then invalid, so each var() falls back. */
+.pele .pele-cluster-title {
+  --plex-moved-title: color-mix(in srgb, var(--plex-tone) var(--plex-tone-title-mix), var(--pele-fg));
+  --plex-moved-halo: color-mix(in srgb, var(--plex-tone) var(--plex-tone-cluster-mix), var(--pele-bg));
+}
+.pele .pele-cluster-title > .pele-cluster-label {
+  fill: var(--plex-moved-title, var(--pele-muted));
+}
+.pele .pele-cluster-title > text:not(.pele-cluster-label) {
+  stroke: var(--plex-moved-halo, color-mix(in srgb, var(--pele-surface-alt) 50%, var(--pele-bg)));
 }
 
-/* Harbor — cool blue-grays, teal accent. */
-[data-pele-scheme="harbor"] {
-  --pele-bg:          light-dark(#f7f9fb, #0d1620);
-  --pele-fg:          light-dark(#0f1c2a, #dde6ef);
-  --pele-fg-on-light: #0f1c2a;
-  --pele-fg-on-dark:  #f7f9fb;
-  --pele-muted:       light-dark(#5b6b7c, #8a9bab);
-  --pele-line:        light-dark(#3d5064, #9fb2c4);
-  --pele-surface:     light-dark(#e9eff5, #152230);
-  --pele-surface-alt: light-dark(#dae4ee, #1e2e3e);
-  --pele-border:      light-dark(#98abbf, #3d5267);
-  --pele-accent:      light-dark(#0b7285, #3bc9db);
-  --pele-critical:    light-dark(#c92a2a, #ff6b6b);
-  --pele-error:       light-dark(#c92a2a, #ff6b6b);
-  --pele-series-1:    light-dark(#0b7285, #3bc9db);
-  --pele-series-2:    light-dark(#1864ab, #74c0fc);
-  --pele-series-3:    light-dark(#5f3dc4, #b197fc);
-  --pele-series-4:    light-dark(#a61e4d, #f783ac);
-  --pele-series-5:    light-dark(#c2410c, #ff922b);
-  --pele-series-6:    light-dark(#8a6400, #ffd43b);
-  --pele-series-7:    light-dark(#2b8a3e, #8ce99a);
-  --pele-series-8:    light-dark(#495057, #ced4da);
-}
+/* Per diagram: one line for each moved title of a toned subgraph, by its id. */
+.pele .pele-cluster-title[data-id="RS"] { --plex-tone: var(--pele-series-3); }
 
-/* Moss — soft greens and bark, leaf accent. */
-[data-pele-scheme="moss"] {
-  --pele-bg:          light-dark(#f8faf5, #12170f);
-  --pele-fg:          light-dark(#1b2418, #dfe6d8);
-  --pele-fg-on-light: #1b2418;
-  --pele-fg-on-dark:  #f8faf5;
-  --pele-muted:       light-dark(#637060, #8e9a86);
-  --pele-line:        light-dark(#46533f, #aab8a0);
-  --pele-surface:     light-dark(#ecf1e6, #1a2116);
-  --pele-surface-alt: light-dark(#dee6d5, #242d1f);
-  --pele-border:      light-dark(#a3b298, #46533f);
-  --pele-accent:      light-dark(#3f7a1c, #9ccc65);
-  --pele-critical:    light-dark(#b3261e, #f07167);
-  --pele-error:       light-dark(#b3261e, #f07167);
-  --pele-series-1:    light-dark(#3f7a1c, #9ccc65);
-  --pele-series-2:    light-dark(#2f6f5e, #63c6a8);
-  --pele-series-3:    light-dark(#8a6d1c, #d9b450);
-  --pele-series-4:    light-dark(#a8541e, #e8945a);
-  --pele-series-5:    light-dark(#7a3b5c, #d68aaf);
-  --pele-series-6:    light-dark(#3f5b8c, #8fb0e8);
-  --pele-series-7:    light-dark(#5e4a2e, #c4a27a);
-  --pele-series-8:    light-dark(#5f6b2a, #c9cf8a);
-}
-
-]]></style><text class="pele-title" font-weight="var(--_tw)" text-anchor="middle" xml:space="preserve"><tspan x="195" y="25.6">Specs of Theseus - Product Planning</tspan></text><g class="pele-clusters"><g class="pele-cluster tone-2" data-id="Prod"><rect x="8" y="180" width="373.98" height="565" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="194.99" y="205.6" text-anchor="middle">Product Planning</text></g></g><g class="pele-edges" fill="none" stroke="var(--_l)" stroke-linecap="round"><g class="pele-edge" data-id="L_Start_PP_0"><path d="M221.75,92C221.75,102.25 270.18,102.25 270.18,112.5L270.18,233"/><path class="pele-marker" d="M270.18,240L266.82,232L273.54,232Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_CE_0"><path d="M270.18,306L270.18,372"/><path class="pele-marker" d="M270.18,379L266.82,371L273.54,371Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_CE_EB_0"><path d="M202.63,427L202.63,493"/><path class="pele-marker" d="M202.63,500L199.27,492L205.99,492Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_EB_JP_0"><path d="M202.63,566L202.63,632"/><path class="pele-marker" d="M202.63,639L199.27,631L205.99,631Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_JP_CS_0"><path d="M135.09,705L135.09,809C135.09,815.38 228.4,815.38 228.4,821.75L228.4,826"/><path class="pele-marker" d="M228.4,833L225.04,825L231.76,825Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_CS_CE_0"><path d="M244.4,833L244.4,822.5C244.4,815.75 337.72,815.75 337.72,809L337.72,434"/><path class="pele-marker" d="M337.72,427L341.08,435L334.36,435Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_AW_JP_0"><path d="M115.97,92C115.97,102.25 67.54,102.25 67.54,112.5L67.54,632" stroke-dasharray="3 4"/><path class="pele-marker" d="M67.54,639L64.18,631L70.9,631Z" fill="var(--_l)" stroke="none"/></g></g><g class="pele-edge-labels" font-size="14"><g class="pele-edge-label" data-id="L_Start_PP_0"><rect x="252.55" y="122" width="35.24" height="21" rx="3" fill="var(--_bg)"/><text x="270.18" y="137.4" text-anchor="middle">Idea</text></g><g class="pele-edge-label" data-id="L_PP_CE_0"><rect x="216.78" y="328.5" width="106.78" height="21" rx="3" fill="var(--_bg)"/><text x="270.18" y="343.9" text-anchor="middle">Prioritized Work</text></g><g class="pele-edge-label" data-id="L_CE_EB_0"><rect x="185.02" y="449.5" width="35.23" height="21" rx="3" fill="var(--_bg)"/><text x="202.63" y="464.9" text-anchor="middle">Epic</text></g><g class="pele-edge-label" data-id="L_EB_JP_0"><rect x="176.85" y="588.5" width="51.57" height="21" rx="3" fill="var(--_bg)"/><text x="202.63" y="603.9" text-anchor="middle">Stories</text></g><g class="pele-edge-label" data-id="L_JP_CS_0"><rect x="99.97" y="771" width="70.23" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="135.09" y="784.9">Prioritized</tspan><tspan x="135.09" y="802.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_CS_CE_0"><rect x="308.82" y="771" width="57.8" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="337.72" y="784.9">Empty</tspan><tspan x="337.72" y="802.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_AW_JP_0"><rect x="35.92" y="114.5" width="63.24" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="67.54" y="128.4">Rejected</tspan><tspan x="67.54" y="146.4">Stories</tspan></text></g></g><g class="pele-nodes"><g class="pele-node pele-shape-rect hidden hidden" data-id="Start" transform="translate(221.75,68)"><rect x="-34.9" y="-24" width="69.79" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Start</text></g><g class="pele-node pele-shape-rect hidden" data-id="CS" transform="translate(236.4,857)"><rect x="-29.11" y="-24" width="58.22" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">CS</text></g><g class="pele-node pele-shape-rect hidden" data-id="AW" transform="translate(115.97,68)"><rect x="-30.89" y="-24" width="61.78" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">AW</text></g><g class="pele-node pele-shape-rect" data-id="PP" transform="translate(270.18,273)"><rect x="-91.8" y="-33" width="183.6" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏻‍🎨🧑🏾‍⚖️</tspan><tspan x="0" y="16.1">Product Prioritization</tspan></text></g><g class="pele-node pele-shape-rect" data-id="CE" transform="translate(270.18,403)"><rect x="-86.22" y="-24" width="172.43" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🧑🏾‍⚖️ Choose Epic</text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="EB" transform="translate(202.63,533)"><rect x="-107.09" y="-33" width="214.18" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-99.09,-33V33M99.09,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞</tspan><tspan x="0" y="16.1">Epic Breakdown</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="JP" transform="translate(135.09,672)"><rect x="-107.09" y="-33" width="214.18" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-99.09,-33V33M99.09,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏻‍🎨🧑🏾‍⚖️ 🧑🏼‍💻 🧞</tspan><tspan x="0" y="16.1">Prioritization</tspan></text></g></g></svg>
+]]></style><text class="pele-title" font-weight="var(--_tw)" text-anchor="middle" xml:space="preserve"><tspan x="207" y="25.6">Specs of Theseus - Product Planning</tspan></text><g class="pele-clusters"><g class="pele-cluster tone-1" data-id="Prod"><rect x="8" y="180" width="397.19" height="565" fill="var(--_a)" fill-opacity="0.5" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-cluster-label" fill="var(--_m)" x="206.59" y="205.6" text-anchor="middle">Product Planning</text></g></g><g class="pele-edges" fill="none" stroke="var(--_l)" stroke-linecap="round"><g class="pele-edge" data-id="L_PP_Start_PP_Prioritize_Ideas_0"><path d="M156.51,92C156.51,102.25 128.62,102.25 128.62,112.5L128.62,233"/><path class="pele-marker" d="M128.62,240L125.26,232L131.98,232Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_Prioritize_Ideas_PP_Choose_Epic_0"><path d="M128.62,306L128.62,372"/><path class="pele-marker" d="M128.62,379L125.26,371L131.98,371Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_Choose_Epic_PP_Break_Down_Epic_0"><path d="M198.04,427L198.04,493"/><path class="pele-marker" d="M198.04,500L194.68,492L201.4,492Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_Break_Down_Epic_PP_Prioritize_Stories_0"><path d="M198.04,566L198.04,632"/><path class="pele-marker" d="M198.04,639L194.68,631L201.4,631Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_UE_Choose_Story_PP_Choose_Epic_0"><path d="M131.08,833L131.08,822.5C131.08,815.75 60.3,815.75 60.3,809L60.3,434"/><path class="pele-marker" d="M60.3,427L63.66,435L56.94,435Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_PP_Prioritize_Stories_UE_Choose_Story_0"><path d="M266.35,705L266.35,809C266.35,815.38 195.57,815.38 195.57,821.75L195.57,826"/><path class="pele-marker" d="M195.57,833L192.21,825L198.93,825Z" fill="var(--_l)" stroke="none"/></g><g class="pele-edge" data-id="L_Acc_Accept_PP_Prioritize_Stories_0"><path d="M306.77,92C306.77,102.25 334.66,102.25 334.66,112.5L334.66,632" stroke-dasharray="3 4"/><path class="pele-marker" d="M334.66,639L331.3,631L338.02,631Z" fill="var(--_l)" stroke="none"/></g></g><g class="pele-edge-labels" font-size="14"><g class="pele-edge-label" data-id="L_PP_Start_PP_Prioritize_Ideas_0"><rect x="107.49" y="122" width="42.24" height="21" rx="3" fill="var(--_bg)"/><text x="128.62" y="137.4" text-anchor="middle">Ideas</text></g><g class="pele-edge-label" data-id="L_PP_Prioritize_Ideas_PP_Choose_Epic_0"><rect x="75.22" y="328.5" width="106.78" height="21" rx="3" fill="var(--_bg)"/><text x="128.62" y="343.9" text-anchor="middle">Prioritized Work</text></g><g class="pele-edge-label" data-id="L_PP_Choose_Epic_PP_Break_Down_Epic_0"><rect x="180.42" y="449.5" width="35.23" height="21" rx="3" fill="var(--_bg)"/><text x="198.04" y="464.9" text-anchor="middle">Epic</text></g><g class="pele-edge-label" data-id="L_PP_Break_Down_Epic_PP_Prioritize_Stories_0"><rect x="172.25" y="588.5" width="51.57" height="21" rx="3" fill="var(--_bg)"/><text x="198.04" y="603.9" text-anchor="middle">Stories</text></g><g class="pele-edge-label" data-id="L_UE_Choose_Story_PP_Choose_Epic_0"><rect x="31.41" y="771" width="57.8" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="60.3" y="784.9">Empty</tspan><tspan x="60.3" y="802.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_PP_Prioritize_Stories_UE_Choose_Story_0"><rect x="231.23" y="771" width="70.23" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="266.35" y="784.9">Prioritized</tspan><tspan x="266.35" y="802.9">Backlog</tspan></text></g><g class="pele-edge-label" data-id="L_Acc_Accept_PP_Prioritize_Stories_0"><rect x="303.04" y="114.5" width="63.24" height="36" rx="3" fill="var(--_bg)"/><text text-anchor="middle" xml:space="preserve"><tspan x="334.66" y="128.4">Rejected</tspan><tspan x="334.66" y="146.4">Story</tspan></text></g></g><g class="pele-nodes"><g class="pele-node pele-shape-rect hidden hidden" data-id="PP_Start" transform="translate(156.51,68)"><rect x="-50.02" y="-24" width="100.03" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">PP_Start</text></g><g class="pele-node pele-shape-rect hidden" data-id="UE_Choose_Story" transform="translate(163.33,857)"><rect x="-84.25" y="-24" width="168.5" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">UE_Choose_Story</text></g><g class="pele-node pele-shape-rect hidden" data-id="Acc_Accept" transform="translate(306.77,68)"><rect x="-60.24" y="-24" width="120.48" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">Acc_Accept</text></g><g class="pele-node pele-shape-rect" data-id="PP_Prioritize_Ideas" transform="translate(128.62,273)"><rect x="-100.62" y="-33" width="201.23" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏻‍🎨 🧑🏾‍⚖️ Prioritize</tspan><tspan x="0" y="16.1">Ideas</tspan></text></g><g class="pele-node pele-shape-rect" data-id="PP_Choose_Epic" transform="translate(128.62,403)"><rect x="-88.63" y="-24" width="177.26" height="48" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><text class="pele-label" x="0" y="5.6" text-anchor="middle">🧑🏾‍⚖️ Choose Epic</text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="PP_Break_Down_Epic" transform="translate(198.04,533)"><rect x="-108.62" y="-33" width="217.25" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-100.62,-33V33M100.62,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏾‍⚖️ 🧑🏼‍💻 🧞 Break</tspan><tspan x="0" y="16.1">Down Epic</tspan></text></g><g class="pele-node pele-shape-fr-rect tone-7" data-id="PP_Prioritize_Stories" transform="translate(266.35,672)"><rect x="-118.84" y="-33" width="237.68" height="66" fill="var(--_s)" stroke="var(--_b)" style="rx:var(--_r)"/><path d="M-110.84,-33V33M110.84,-33V33" fill="none" stroke="var(--_b)"/><text class="pele-label" text-anchor="middle" xml:space="preserve"><tspan x="0" y="-4.9">🧑🏾‍⚖️ 🧑🏼‍💻 🧞 Prioritize</tspan><tspan x="0" y="16.1">Stories</tspan></text></g></g></svg>

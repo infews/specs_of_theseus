@@ -13,7 +13,7 @@ When you're stuck, or find a problem you can't settle on your own, raise an issu
 ```markdown
 ## Issues
 
-- [ ] **Redesigning the System** — `CART-INV-003` says a total can't go below zero, but `CART-E2E-007` expects a refund to make it negative. Which is right? I'd keep the invariant and change the refund eval to cap at zero.
+- [ ] **Redesign System** — `CART-INV-003` says a total can't go below zero, but `CART-E2E-007` expects a refund to make it negative. Which is right? I'd keep the invariant and change the refund eval to cap at zero.
   - Answer: _..._
 ```
 
@@ -45,3 +45,5 @@ story/0001-user-authentication/0010-login-form
 ```
 
 The tag marks the commit where all of the story's evals pass. Deploy runs on story tags only, so only tag when everything passes.
+
+The tag means "ready for acceptance", not "accepted" — acceptance is recorded by checking the story off in its epic. If the PM rejects the story, delete the tag (locally and on the remote) when the story goes back into the backlog; Development tags it again when the next pass is green.

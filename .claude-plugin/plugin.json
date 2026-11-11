@@ -1,7 +1,7 @@
 {
   "name": "theseus",
   "description": "Specs of Theseus: a method for people and agents to build software together. Product planning, evals as the durable spec, per-story redesign, and a strict development loop, drawn from Pivotal Labs' XP and Chad Fowler's Phoenix Architecture.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Davis W. Frank"
   }

@@ -1,0 +1,64 @@
+---
+title: Specs of Theseus - Adopting an Existing Project
+---
+flowchart TD
+
+    classDef hidden display:none
+
+    %% Written by hand, not generated from the overview. Same conventions as the
+    %% overview: box shapes [[ ]] = a work activity, [ ] = choosing or bookkeeping;
+    %% box colours tone-7 = people and agent together, tone-6 = agent alone, none = people only.
+
+    subgraph Key
+        Key_Roles["🧑🏾‍⚖️#8194;Product Manager \n 🧑🏼‍💻#8194;Developer \n 🧞#8194;Agent"]
+    end
+
+    subgraph Adopt[Adopt Project]
+        Adopt_Survey[[🧑🏼‍💻 🧞#8194;Survey Project]]
+        Adopt_Tools[[🧑🏼‍💻 🧞#8194;Record Tools]]
+        Adopt_Mark[[🧞#8194;Mark Subsystems]]
+        Adopt_Epic[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Write Adoption Epic]]
+        Adopt_Repo:::hidden
+    end
+
+    Adopt_Repo-->|Code & \n Existing Tests|Adopt_Survey
+    Adopt_Survey-->|Tools Found|Adopt_Tools
+    Adopt_Tools-->|Tool Commands \n in CLAUDE.md|Adopt_Agents_File:::hidden
+    Adopt_Survey-->|Entry Points|Adopt_Mark
+    Adopt_Mark-->|Marked \n Subsystems|Adopt_Epic
+    Adopt_Survey-->|Product Areas \n & Edges|Adopt_Epic
+
+    subgraph Prod["Product Planning"]
+        PP_Prioritize_Stories[[🧑🏾‍⚖️ 🧑🏼‍💻 🧞#8194;Prioritize Stories]]
+    end
+
+    Adopt_Epic-->|Adoption \n Stories|PP_Prioritize_Stories
+    PP_Prioritize_Stories-->|Prioritized \n Backlog|UE_Choose_Story
+
+subgraph UE[Update Evals]
+    UE_Choose_Story[🧑🏼‍💻 🧞#8194;Choose Story \n from Top of Backlog]
+    UE_Write_Evals[[🧑🏼‍💻 🧞#8194;Write Evals]]
+    UE_Run_Evals[[🧞#8194;Run Evals]]
+    UE_Review[[🧑🏼‍💻#8194;Review Evals \n & Tests]]
+    UE_Complete[🧞#8194;Complete Story]
+    UE_Repo:::hidden
+end
+
+UE_Choose_Story-->|Story|UE_Write_Evals
+UE_Repo-->|Code|UE_Write_Evals
+UE_Repo-->|Tests|UE_Write_Evals
+UE_Repo-->|Evals|UE_Write_Evals
+UE_Write_Evals-->|Updated Evals|UE_Run_Evals
+UE_Run_Evals-->|Failing Evals|UE_Write_Evals
+UE_Run_Evals-->|Passing Evals|UE_Review
+UE_Review-.->|Requested \n Changes|UE_Write_Evals
+UE_Review-->|Complete Evals|UE_Complete
+UE_Complete-->|Completed \n Story|UE_Choose_Story
+UE_Choose_Story-->|Empty \n Work Queue|UE_Out_Queue:::hidden
+UE_Choose_Story-->|Adopted \n System|UE_Out_Done:::hidden
+
+  class Adopt_Survey,Adopt_Tools,Adopt_Epic,PP_Prioritize_Stories,UE_Choose_Story,UE_Write_Evals tone-7
+  class Adopt_Mark,UE_Run_Evals,UE_Complete tone-6
+  class Adopt tone-4
+  class Prod tone-1
+  class UE tone-2

@@ -26,7 +26,7 @@ The skills ship as a Claude Code plugin, `theseus`, versioned in `.claude-plugin
 | Skill | Use when |
 | --- | --- |
 | `theseus:specs-of-theseus` | Entry point: the principles, where things live, and working out which stage the work is in |
-| `theseus:adopt-project` | Bringing an existing project into the method and writing its first evals |
+| `theseus:adopt-project` | Bringing an existing project into the method: survey, tools, subsystem markers, and an adoption epic of Characterize stories |
 | `theseus:product-planning` | Writing epics, breaking them into stories, ordering the backlog |
 | `theseus:update-evals` | Taking the top story and changing the evals, with failing tests |
 | `theseus:redesign-system` | Planning the smallest change, looking for something to regrow, writing tasks |
@@ -65,7 +65,7 @@ claude --plugin-dir /path/to/specs-of-theseus
 
 ## Diagrams
 
-Edit only `docs/src/0_specs_of_theseus.mmd`. `bin/build-diagrams` splits it into one diagram per stage and renders every diagram to `docs/img/`, using [pele-preview](../mermaid_preview) from a sibling checkout.
+Edit only `docs/src/0_specs_of_theseus.mmd` and `docs/src/6_adopting.mmd`; the stage diagrams are generated. `bin/build-diagrams` splits the overview into one diagram per stage and renders every diagram to `docs/img/`, using `pele-laka export` from a sibling checkout of [pele_preview](../pele_preview).
 
 ## Ruby
 

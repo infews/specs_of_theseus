@@ -13,7 +13,7 @@ When an agent is stuck, or finds a problem it can't settle on its own, it raises
 ```markdown
 ## Issues
 
-- [ ] **Redesigning the System** — `CART-INV-003` says a total can't go below zero, but `CART-E2E-007` expects a refund to make it negative. Which one is right?
+- [ ] **Redesign System** — `CART-INV-003` says a total can't go below zero, but `CART-E2E-007` expects a refund to make it negative. Which one is right?
   - Answer: _..._
 ```
 
@@ -21,7 +21,7 @@ When an agent is stuck, or finds a problem it can't settle on its own, it raises
 
 Tools depend on the language and the project, so the method doesn't pick them. The commands live in the project's own agent instructions — `CLAUDE.md` or `AGENTS.md` — next to whatever is already there for running tests and linters. 
 
-Specs of Theseus adds a tool requirement for each step of the [Development](4-development.md) loop: test framework(s), property testing, mutation testing, controls and checks, and the full eval suite.
+Specs of Theseus adds a tool requirement for each step of [Development](4-development.md): test framework(s), property testing, mutation testing, controls and checks, and the full eval suite.
 
 When an agent needs to do something and doesn't know how — a missing command, a tool that isn't installed, a step with no tool at all — it asks a person and records the answer in that file. Asking is [raising an issue](#issues): the work waits for the answer. The agent never guesses and never skips the step.
 
@@ -39,5 +39,7 @@ story/0001-user-authentication/0010-login-form
 ```
 
 The tag marks the commit where all of the story's evals pass. Deploy runs on story tags only, never on plain commits. A tag also gives the team a known-good point to roll back to.
+
+The tag means "ready for acceptance", not "accepted" — acceptance is checking the story off in its epic. If the product manager rejects the story, its tag is deleted when it goes back into the backlog, and Development tags it again when the next pass is green.
 
 If several stories are in progress at once, a short-lived branch per story keeps them out of each other's way; the same squash-and-rebase rule applies.

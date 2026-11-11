@@ -5,29 +5,29 @@ flowchart TD
 
     classDef hidden display:none
 
-    JP:::hidden
-    CE:::hidden
-    RS_RD:::hidden
-    Deploy:::hidden
+    PP_Choose_Epic:::hidden
+    PP_Prioritize_Stories:::hidden
+    RS_Redesign:::hidden
+    Acc_Deploy:::hidden
 
     subgraph UE[Update Evals]
-        CS[🧑🏼‍💻 🧞 \n Choose Story from top of Backlog]
-        Repo_1:::hidden
-        GT_A[[🧑🏼‍💻 🧞 Update Evals]]
+        UE_Choose_Story[🧑🏼‍💻 🧞#8194;Choose Story \n from Top of Backlog]
+        UE_Repo:::hidden
+        UE_Update_Evals[[🧑🏼‍💻 🧞#8194;Update Evals]]
+        UE_Review[[🧑🏼‍💻#8194;Review Evals \n & Tests]]
     end
 
-    JP-->|Prioritized \n Backlog|CS
-    CS-->|Empty \n Backlog|CE
-    CS-->|Story|GT_A
-    Repo_1-->|Current \n Invariants|GT_A
-    Repo_1-->|Current \n Contracts|GT_A
-    Repo_1-->|Current \n End-to-End \n Tests|GT_A
-    Repo_1-->|Current \n Monitors|GT_A
-    GT_A-->|Story|RS_RD
-    GT_A-->|Updated \n Invariants|RS_RD
-    GT_A-->|Updated \n Contracts|RS_RD
-    GT_A-->|Updated \n End-to-End \nTests|RS_RD
-    GT_A-->|Updated \n Monitors|RS_RD
-    Deploy-->|Empty \n Work \n Queue|CS
+    UE_Choose_Story-->|Empty \n Backlog|PP_Choose_Epic
+    PP_Prioritize_Stories-->|Prioritized \n Backlog|UE_Choose_Story
+    UE_Choose_Story-->|Story|UE_Update_Evals
+    UE_Repo-->|Current Evals|UE_Update_Evals
+    UE_Update_Evals-->|Updated Evals|UE_Review
+    UE_Update_Evals-->|Failing Tests|UE_Review
+    UE_Review-.->|Requested \n Changes|UE_Update_Evals
+    UE_Review-->|Story|RS_Redesign
+    UE_Review-->|Updated Evals|RS_Redesign
+    UE_Review-->|Failing Tests|RS_Redesign
+    Acc_Deploy-->|Empty \n Work \n Queue|UE_Choose_Story
 
-    class GT_A tone-7
+    class UE_Choose_Story,UE_Update_Evals tone-7
+    class UE tone-2

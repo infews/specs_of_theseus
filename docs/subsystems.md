@@ -28,7 +28,7 @@ The subsystem is the entry point plus everything it uses that doesn't belong to 
 
 ## Boundaries move
 
-Boundaries follow the intent and the evals, and a redesign redraws them in [Redesigning the System](3-redesigning-the-system.md):
+Boundaries follow the intent and the evals, and a redesign redraws them in [Redesign System](3-redesign-system.md):
 
 - **Extract:** code used by more than one subsystem becomes its own shared subsystem.
 - **Fold back:** a shared subsystem used by only one other merges back into it.

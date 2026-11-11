@@ -1,19 +1,33 @@
 ---
 name: product-planning
-description: Specs of Theseus Product Planning — turning ideas into epics, breaking an epic into small stories with Gherkin acceptance criteria, and ordering the backlog, with the product manager in charge. Use whenever the user wants to write or refine an epic, slice an epic into stories, prioritize or reorder the backlog, re-rank a story the product manager rejected, or when the backlog has run out — even if they just say "let's plan the next chunk of work" or "break this feature down".
+description: Specs of Theseus Product Planning — with the product manager in charge — Prioritize Ideas and Choose Epic (people only), then Break Down Epic into small stories with Gherkin acceptance criteria and Prioritize Stories into the backlog. Use whenever the user wants to write or refine an epic, slice an epic into stories, prioritize or reorder the backlog, re-rank a story the product manager rejected, or when the backlog has run out — even if they just say "let's plan the next chunk of work" or "break this feature down".
 ---
 
 # Product Planning
 
-The team needs one prioritized list of work and a person who owns its order. The product manager leads this stage and makes every priority call; a designer helps set product priorities; you help break epics down and suggest an order; developers vet your work.
+The team needs one prioritized list of work and a person who owns its order. The product manager leads this stage and makes every priority call. The stage has four steps, each a box in the Specs of Theseus diagram. You take part in the last two; the first two are for people alone.
 
 Your job is to make the PM's decisions easier and better informed — not to make them. Propose, explain your reasoning, and let them choose.
 
-Read `references/project-layout.md` for the epic and story templates and where the files go.
+**Say which skill is running.** Start by telling the person: "**Specs of Theseus — Product Planning** (`theseus:product-planning`)", and the story or epic you're on. Say so again whenever you hand off to another skill, naming it.
 
-## 1. Choose an epic
+Read `references/project-layout.md` for the epic and story templates and where the files go. If the project has no `docs/epics/` yet, create it, with an empty `0000-epics.md`, the first time you write anything down.
 
-The PM picks the next epic. An epic is a body of work that can be released to customers at once. If it doesn't exist yet, write it from the template with the PM: Vision, Context, Scope, Success Criteria, Dependencies, Open Questions. Number it after the last epic and add it to `docs/epics/0000-epics.md` in the position the PM chooses.
+## 1. Prioritize Ideas 🧑🏻‍🎨 🧑🏾‍⚖️
+
+The designer and the product manager rank ideas into prioritized work — epics, each a body of work that can be released to customers at once. Their order is the order of `docs/epics/0000-epics.md`.
+
+This step is theirs. Don't rank ideas or suggest an order. If they ask, you can write down what they decide: add an entry to `0000-epics.md` for each new epic, in their order.
+
+## 2. Choose Epic 🧑🏾‍⚖️
+
+The product manager picks the next epic to break down. This step is also theirs; it's a business decision. Work comes here when Update Evals finds the backlog empty — tell the PM the backlog is empty and wait for their choice.
+
+## 3. Break Down Epic 🧑🏾‍⚖️ 🧑🏼‍💻 🧞
+
+Now you work with the PM and developers.
+
+**Write the epic** if it doesn't exist yet, from the template, with the PM: Vision, Context, Scope, Success Criteria, Dependencies, Open Questions. Number it after the last epic and link it from `0000-epics.md` where the PM placed it.
 
 Ask questions to reduce ambiguity before breaking it down — a few at a time, grouped by theme:
 
@@ -25,9 +39,9 @@ Ask questions to reduce ambiguity before breaking it down — a few at a time, g
 
 Record the answers in the epic. Unresolved ones go in **Open Questions**.
 
-## 2. Break the epic into stories
+**Check that the areas the epic touches have evals.** List the product areas the epic's stories will touch, and look for each in `docs/evals/` (one file per area). An area with no evals file — or whose edges the epic touches but no eval covers — has behavior nobody has written down, and a redesign there could change it without any eval failing. For each such area, propose a **"Characterize …" story** at the top of the epic, before the stories that change that area. Its acceptance criteria describe what the area does today at its edges. See "Characterization" in `references/evals.md`. The PM decides whether to keep them.
 
-Slice vertically: each story is independently deliverable, accepted on its own on working software, and small enough for one focused pass through the later stages. Thin slices from the user's side, not layers of the system ("show the login form" — not "add the users table").
+**Slice it into stories** vertically: each story is independently deliverable, accepted on its own on working software, and small enough for one focused pass through the later stages. Thin slices from the user's side, not layers of the system ("show the login form" — not "add the users table").
 
 For each story, write:
 
@@ -38,13 +52,26 @@ Leave **EARS Specifications** and **Implementation Plan** empty; later stages fi
 
 Present all the proposed stories to the PM and developers before writing the files. They may split, merge, reorder or cut. Then create them in `docs/epics/<epic>/`, numbered in steps of 10, and link each from the epic's **Resulting Stories**.
 
-## 3. Prioritize
+## 4. Prioritize Stories 🧑🏾‍⚖️ 🧑🏼‍💻 🧞
 
-Order the stories with the PM. Story numbers are the order within an epic, and the order of `0000-epics.md` is the order of epics. Suggest an order — risky or foundational stories early, dependencies before the stories that need them — and say why. The PM decides.
+Order the stories into the backlog with the PM. Story numbers are the order within an epic. Suggest an order — risky or foundational stories early, dependencies before the stories that need them — and say why. The PM decides. The prioritized backlog goes to Update Evals (`theseus:update-evals`).
+
+Stories also arrive here from outside Break Down Epic:
+
+- **Adoption stories** from `adopt-project`, one per product area. Suggest adopting first the areas upcoming stories will touch.
+- **Stories for unintended behavior**, rarely, when characterizing an area turned up behavior the PM wants changed.
+- **Rejected stories** from Acceptance — below.
 
 ### Rejected stories
 
-When the PM rejects a story at acceptance, it comes back here and is ranked again against all planned work. Help the PM work out why it was rejected. Usually the evals didn't capture what they wanted — so the fix is to sharpen the acceptance criteria, and the story will get new evals when it's picked up again. Renumber it if its priority changed.
+A story the PM rejected in Acceptance comes back here and is ranked again against all planned work. Help the PM work out why it was rejected. Usually the evals didn't capture what they wanted — so the fix is to sharpen the acceptance criteria, and the story will get new evals when it's picked up again.
+
+Then put it back in the backlog so the stages run again:
+
+1. **Delete its story tag**, locally and on the remote (`git tag -d <tag>`, `git push --delete origin <tag>`). The tag says "ready for acceptance", and this commit wasn't accepted. Development tags the story again when the new pass is green.
+2. **Empty its EARS Specifications and Implementation Plan.** The story now reads as not started. The evals themselves stay in `docs/evals/`, and git history keeps the old plan.
+3. **Add a note under its Acceptance Criteria** saying why it was rejected, so the next pass through Update Evals sees it.
+4. Renumber it if its priority changed.
 
 ## Raise an issue
 

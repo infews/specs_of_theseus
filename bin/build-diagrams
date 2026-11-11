@@ -2,18 +2,19 @@
 # frozen_string_literal: true
 
 # Splits the overview into one diagram per stage, then renders every
-# docs/src/*.mmd to docs/img/<same name>.svg with pele-preview. Any arguments
-# are passed through to pele-preview.
+# docs/src/*.mmd to docs/img/<same name>.svg with pele-laka export (which also
+# writes a PNG when Google Chrome is installed). Any arguments are passed
+# through to pele-laka export.
 #
-# Override the renderer with PELE=/path/to/pele-preview and the stylesheet
+# Override the renderer with PELE=/path/to/pele-laka and the stylesheet
 # with PELE_CSS=/path/to/style.css.
 #
 # Needs Ruby 4 (see .ruby-version). Where chruby doesn't load — CI, editor
 # tasks, non-interactive shells — run: chruby-exec ruby-4.0 -- bin/build-diagrams
 
 root = File.expand_path("..", __dir__)
-pele = ENV.fetch("PELE", File.join(root, "../mermaid_preview/bin/pele-preview"))
-css = ENV.fetch("PELE_CSS", File.join(File.dirname(pele), "../pele-plex.css"))
+pele = ENV.fetch("PELE", File.join(root, "../pele_preview/bin/pele-laka"))
+css = ENV.fetch("PELE_CSS", File.join(File.dirname(pele), "../pele-noto.css"))
 src = File.join(root, "docs/src")
 img = File.join(root, "docs/img")
 
@@ -26,5 +27,5 @@ run RbConfig.ruby, File.join(__dir__, "split-diagram"), File.join(src, "0_specs_
     "--prefix", "theseus_", "--order", "Prod,UE,RS,Dev,Acceptance"
 
 Dir[File.join(src, "*.mmd")].sort.each do |diagram|
-  run pele, diagram, css, "-o", File.join(img, "#{File.basename(diagram, '.mmd')}.svg"), *ARGV
+  run pele, "export", "--css", css, "--output", img, *ARGV, diagram
 end
