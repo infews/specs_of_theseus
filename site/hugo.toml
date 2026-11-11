@@ -19,7 +19,7 @@ disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
 [markup.highlight]
   noClasses = false
 
-# Mounting replaces Hugo's default content and static folders.
+# Mounting replaces Hugo's default content, static and assets folders, so site/assets is mounted again below.
 [[module.mounts]]
   source = "../docs/index.md"
   target = "content/_index.md"
@@ -31,6 +31,14 @@ disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
   source = "../docs/img"
   target = "static/img"
   files = ["! **.png"]
+# Also as assets, so the image render hook can put each diagram's SVG into the page.
+[[module.mounts]]
+  source = "../docs/img"
+  target = "assets/img"
+  files = ["**.svg"]
+[[module.mounts]]
+  source = "assets"
+  target = "assets"
 
 # The sidebar, in reading order. Prev/next links at the foot of each page follow it too.
 [[menus.main]]

@@ -1,15 +1,29 @@
-{{- /* The docs reference diagrams as img/<name>.svg, relative to docs/. On the site
-     every page has its own folder, so point them at the site root instead. A
-     diagram is a figure that opens full size when clicked. On the overview the
-     full diagram is too tall to read in place, so it's a thumbnail beside the
-     text that opens in a new tab. */ -}}
+{{- /* The docs reference diagrams as img/<name>.svg, relative to docs/.
+
+     A diagram's SVG goes straight into the page rather than through <img>: an SVG
+     loaded as an image can't fetch anything, so its @import of the Noto fonts would
+     be skipped and it would fall back to system fonts. Inline, its own <style>
+     loads them. Its rules are all scoped to .pele, apart from --pele-/--plex-
+     variables on :root and a .hidden utility, neither of which the site uses.
+
+     Clicking a diagram opens the SVG file full size. On the overview the full
+     diagram is too tall to read in place, so it's a thumbnail beside the text that
+     opens in a new tab. */ -}}
 {{- $u := urls.Parse .Destination -}}
 {{- $src := .Destination -}}
 {{- if not $u.IsAbs }}{{ $src = relURL (strings.TrimPrefix "./" $u.Path) }}{{ end -}}
-{{- if and (strings.HasPrefix $u.Path "img/") .PageInner.IsHome -}}
-<a class="diagram thumb" href="{{ $src }}" target="_blank" rel="noopener" title="Open the full diagram in a new tab"><img src="{{ $src }}" alt="{{ .PlainText }}"><span>Open full diagram ↗</span></a>
-{{- else if strings.HasPrefix $u.Path "img/" -}}
-<a class="diagram" href="{{ $src }}" title="Open the diagram full size"><img src="{{ $src }}" alt="{{ .PlainText }}" loading="lazy"></a>
+{{- $svg := "" -}}
+{{- if and (not $u.IsAbs) (strings.HasSuffix $u.Path ".svg") -}}
+  {{- with resources.Get $u.Path -}}
+    {{- $svg = replace .Content "<svg " (printf "<svg aria-label=%q " $.PlainText) 1 -}}
+  {{- else -}}
+    {{- warnf "%s: missing diagram %s" $.PageInner.File.Path $.Destination -}}
+  {{- end -}}
+{{- end -}}
+{{- if and $svg .PageInner.IsHome -}}
+<a class="diagram thumb" href="{{ $src }}" target="_blank" rel="noopener" title="Open the full diagram in a new tab">{{ $svg | safeHTML }}<span>Open full diagram ↗</span></a>
+{{- else if $svg -}}
+<a class="diagram" href="{{ $src }}" title="Open the diagram full size">{{ $svg | safeHTML }}</a>
 {{- else -}}
 <img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
 {{- end -}}

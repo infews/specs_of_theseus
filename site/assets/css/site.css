@@ -13,7 +13,7 @@
   --code-bg: #f1ece0;
   --sidebar-w: 17rem;
   --measure: 46rem;
-  --sans: "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "Noto Sans", "Noto Color Emoji", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif: "Noto Serif", Georgia, serif;
   --mono: "Noto Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
   color-scheme: light dark;
@@ -196,7 +196,7 @@ pre {
   display: block;
   margin: 1.5rem 0 2rem;
   padding: 1.25rem;
-  background: #fff;
+  background: var(--pele-bg, #fff); /* the diagram's own background, light or dark */
   border: 1px solid var(--rule);
   border-radius: 10px;
   text-align: center;
@@ -219,7 +219,7 @@ pre {
 .prose a.diagram.thumb span {
   display: block;
   margin-top: 0.5rem;
-  color: #1f5f8b; /* the card stays white in dark mode too */
+  color: var(--accent);
   font-size: 0.8rem;
   font-weight: 600;
 }
