@@ -202,6 +202,29 @@ pre {
   text-align: center;
 }
 .prose a.diagram img { max-width: 100%; height: auto; }
+
+/* The overview's thumbnail floats beside the opening sections. */
+.prose a.diagram.thumb {
+  float: right;
+  width: 13rem;
+  margin: 0.4rem 0 1.5rem 2rem;
+  padding: 0.75rem;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.prose a.diagram.thumb:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.08);
+}
+.prose a.diagram.thumb span {
+  display: block;
+  margin-top: 0.5rem;
+  color: #1f5f8b; /* the card stays white in dark mode too */
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+/* Headings beside the thumbnail stop short of it instead of running their rule under it. */
+.prose h2 { display: flow-root; }
 .prose img { max-width: 100%; }
 
 /* ─── Pager ──────────────────────────────────────────────────────── */
@@ -258,5 +281,6 @@ pre {
   .sidebar .brand { display: none; }
   .nav-toggle:checked ~ .layout .sidebar { display: flex; }
   main { padding: 1.75rem 1rem 3rem; }
+  .prose a.diagram.thumb { float: none; width: 11rem; margin: 1rem auto 1.5rem; }
   .prose h1 { font-size: 1.9rem; }
 }

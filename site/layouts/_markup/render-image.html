@@ -1,10 +1,14 @@
 {{- /* The docs reference diagrams as img/<name>.svg, relative to docs/. On the site
      every page has its own folder, so point them at the site root instead. A
-     diagram is a figure that opens full size when clicked. */ -}}
+     diagram is a figure that opens full size when clicked. On the overview the
+     full diagram is too tall to read in place, so it's a thumbnail beside the
+     text that opens in a new tab. */ -}}
 {{- $u := urls.Parse .Destination -}}
 {{- $src := .Destination -}}
 {{- if not $u.IsAbs }}{{ $src = relURL (strings.TrimPrefix "./" $u.Path) }}{{ end -}}
-{{- if strings.HasPrefix $u.Path "img/" -}}
+{{- if and (strings.HasPrefix $u.Path "img/") .PageInner.IsHome -}}
+<a class="diagram thumb" href="{{ $src }}" target="_blank" rel="noopener" title="Open the full diagram in a new tab"><img src="{{ $src }}" alt="{{ .PlainText }}"><span>Open full diagram ↗</span></a>
+{{- else if strings.HasPrefix $u.Path "img/" -}}
 <a class="diagram" href="{{ $src }}" title="Open the diagram full size"><img src="{{ $src }}" alt="{{ .PlainText }}" loading="lazy"></a>
 {{- else -}}
 <img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
