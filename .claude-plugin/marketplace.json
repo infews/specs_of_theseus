@@ -1,0 +1,14 @@
+{
+  "name": "specs-of-theseus",
+  "description": "The Specs of Theseus method as a Claude Code plugin: evals as the durable spec, disposable code.",
+  "owner": {
+    "name": "Davis W. Frank"
+  },
+  "plugins": [
+    {
+      "name": "theseus",
+      "source": "./",
+      "description": "Specs of Theseus: a method for people and agents to build software together. Product planning, evals as the durable spec, per-story redesign, and a strict development loop."
+    }
+  ]
+}

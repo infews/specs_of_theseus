@@ -42,6 +42,7 @@ More on the method:
 - [Subsystems](subsystems.md) — the units underneath the system; an agent modifies, deletes, and regrows the subsystems.
 - [Working Agreements](working-agreements.md) — raising issues, tools, and commits with tags.
 - [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
+- [Usage](usage.md) — installing the `theseus` Claude Code plugin and working with its skills.
 - [Adopting an Existing Project](6_adopting.md) — writing the first evals for a project that has none.
 - [About](about.md) — who wrote this, and where to find more.
 

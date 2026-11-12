@@ -23,6 +23,14 @@ Each is explained in [docs/index.md](docs/index.md#principles).
 
 The skills ship as a Claude Code plugin, `theseus`, versioned in `.claude-plugin/plugin.json`.
 
+Install it in Claude Code with:
+
+```
+/plugin install theseus --marketplace infews/specs_of_theseus
+```
+
+[docs/usage.md](docs/usage.md) covers installing for a whole team, updating, and how the skills run day to day. The repo is its own marketplace, `specs-of-theseus`, defined in `.claude-plugin/marketplace.json`.
+
 | Skill | Use when |
 | --- | --- |
 | `theseus:specs-of-theseus` | Entry point: the principles, where things live, and working out which stage the work is in |

@@ -111,9 +111,13 @@ enableInlineShortcodes = false
   [menus.sidebar.params]
     type = "separator"
 [[menus.sidebar]]
+  name = "Usage"
+  pageRef = "/usage"
+  weight = 31
+[[menus.sidebar]]
   name = "Adopting an Existing Project"
   pageRef = "/6_adopting"
-  weight = 31
+  weight = 32
 [[menus.sidebar]]
   name = " "
   weight = 40
@@ -223,6 +227,13 @@ enableInlineShortcodes = false
   editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/where-things-live.md"
   [cascade.target]
     path = "/where-things-live"
+
+[[cascade]]
+  title = "Usage"
+  weight = 95
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/usage.md"
+  [cascade.target]
+    path = "/usage"
 
 [[cascade]]
   title = "Adopting an Existing Project"
