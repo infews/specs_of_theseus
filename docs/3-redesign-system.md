@@ -1,5 +1,8 @@
 # Redesign System
 
+This step is all about an agent looking at the requested new work and doing a deeper consideration of how the subsystems (classes, functions, modules, etc.) could change. These then turn into tasks for the story. 
+
+
 ![Redesign System](img/3_theseus_redesign_system.svg)
 
 **Why:** Each story is a chance to reconsider the design, not just extend it. Without this step, a codebase grows by patches. With it, any subsystem can be deleted and regrown while the evals keep the system correct.

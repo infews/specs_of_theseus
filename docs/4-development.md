@@ -1,5 +1,7 @@
 # Development
 
+And now it's time to write software, and validate that the work solves the business problem while not disrupting existing functionality.
+
 ![Development](img/4_theseus_development.svg)
 
 **Why:** Each task gets the same fast loop, and the finished story gets the slower checks. A failure anywhere sends the work back to Red/Green/Refactor, so nothing moves on until it's solid.

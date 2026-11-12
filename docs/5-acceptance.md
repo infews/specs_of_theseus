@@ -18,7 +18,7 @@
 
 A rejected story goes back to Prioritize Stories. Usually it means the evals didn't capture what the product manager wanted — fix the evals, not just the code. When it goes back into the backlog its story tag is deleted, its EARS Specifications and Implementation Plan are emptied, and a note says why it was rejected. It runs through the stages again and is tagged again when it's green.
 
-## Your team's process
+## Your Team's Process
 
 Specs of Theseus has no skill for this stage. How a team deploys, where the product manager tries a story, and how releases reach users all depend on the product, the team and the technology — a web app with continuous delivery, a mobile app behind app-store review, and a CLI published as a package each do it differently.
 

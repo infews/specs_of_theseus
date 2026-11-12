@@ -73,6 +73,8 @@ Hextra is a git submodule at `site/themes/hextra`, pinned to a release. Clone wi
 hugo server --source site     # http://localhost:1313/specs_of_theseus/
 ```
 
+[PUBLISHING.md](PUBLISHING.md) has the full steps for editing pages, adding one, and publishing.
+
 ## Diagrams
 
 Edit only `docs/src/0_specs_of_theseus.mmd` and `docs/src/6_adopting.mmd`; the stage diagrams are generated. `bin/build-diagrams` splits the overview into one diagram per stage and renders every diagram to `docs/img/` with `pele-laka export`, using the stylesheet in `docs/src/pele-noto.css`.

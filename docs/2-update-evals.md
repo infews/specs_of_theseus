@@ -1,8 +1,10 @@
 # Update Evals
 
+Evals. Tests by another name. Specifically they are types of tests that verify that the system is working as expected. Since we care about test-driven-development, evals are updated early and run often throughout the work on a story. 
+
 ![Update Evals](img/2_theseus_update_evals.svg)
 
-**Why:** The evals are the spec, so a new requirement starts by changing them — before any design or code. This is test-first development applied to the whole system rather than one function.
+**Why:** The [evals](evals.md) are the runnable specs, so a new requirement starts by changing them — before any design or code. This is test-first development applied to the whole system rather than one function.
 
 **Who:** 🧑🏼‍💻 a developer and 🧞 an agent, together. The developer owns what the evals say; the agent helps draft them and spots what a story touches.
 

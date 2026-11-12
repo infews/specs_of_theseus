@@ -2,14 +2,20 @@
 
 A way for a team of people and agents to build software together. People decide what to build and whether it's done. Agents decide how. The evals — the system's specs — are what lasts; the code can be replaced, plank by plank, like the ship of Theseus.
 
+## Why Another System?
+
+The short answer is because this works for me. Your mileage _will_ vary.
+
+However, I was looking for a system that was built on known, working principles. Yet could adapt to agents alone or in some variant of agentic software factories. And in such a system, I expect that software developers will be applying _more_ rigor in the craft, but at higher levels of abstraction. 
+
 ![Specs of Theseus overview](img/0_specs_of_theseus.svg)
 
 ## Roots
 
 Specs of Theseus borrows from:
 
-- **[Pivotal Labs' flavor of Extreme Programming (XP)](https://labspractices.com/guides/tanzu-labs-engineer-faq/)** — a product manager who owns a prioritized backlog, small stories, test-driven development, and acceptance of every story on working software.
-- **[Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/)** — durable specifications, disposable code. Any part of the system can be deleted and regrown, as long as the specs still hold.
+- **[Pivotal Labs' flavor of Extreme Programming (XP)](https://labspractices.com/guides/tanzu-labs-engineer-faq/)** — a product manager who owns a prioritized backlog, small stories, coding using test-driven development, and acceptance of every story before shipping working software.
+- **[Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/)** — software is defined with durable specifications, but implemented with disposable code. Any part of the system can be deleted and regrown, as long as the evals still hold.
 
 ## Principles
 
@@ -20,7 +26,7 @@ Specs of Theseus borrows from:
 5. **People decide what gets built and whether it's done; agents decide how.** People own prioritization, evals and acceptance.
 6. **Anyone can stop the line.** At any step, an agent can raise an issue and hand the work back to a person. An open [issue](working-agreements.md#issues) blocks the work until a person answers it.
 
-## The stages
+## The Stages
 
 | Stage | Who | Turns | Into |
 |---|---|---|---|
@@ -34,7 +40,7 @@ More on the method:
 
 - [Evals](evals.md) — the four kinds, how they're written, and how they link to tests.
 - [Subsystems](subsystems.md) — the units underneath the system; an agent modifies, deletes, and regrows the subsystems.
-- [Working Agreements](working-agreements.md) — raising issues, tools, and commits and tags.
+- [Working Agreements](working-agreements.md) — raising issues, tools, and commits with tags.
 - [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
 - [Adopting an Existing Project](6_adopting.md) — writing the first evals for a project that has none.
 - [About](about.md) — who wrote this, and where to find more.

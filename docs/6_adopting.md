@@ -1,8 +1,8 @@
 # Adopting an Existing Project
 
-![Adopting an Existing Project](img/6_adopting.svg)
+What if you haven't started using Specs of Theseus for a project, how do you start? You adopt the project. An existing project has behavior but no written spec, so its first work is to infer evals out of the existing tests.
 
-The stages assume evals already exist and only change them. An existing project has behavior but no written spec, so its first evals are read out of what the system already does.
+![Adopting an Existing Project](img/6_adopting.svg)
 
 **Who:** 🧑🏼‍💻 a developer and 🧞 an agent do most of the work. 🧑🏾‍⚖️ the product manager helps write the adoption epic, ranks its stories, and decides whether surprising behavior is intended.
 
@@ -32,7 +32,7 @@ The adoption stories then join the normal flow — `product-planning` for step 5
 9. **Review Evals & Tests** 🧑🏼‍💻 — the developer reviews the evals and tests, as for any story. Requested changes go back to Write Evals. Once the developer is satisfied, the evals and tests are committed and go to Complete Story.
 10. **Complete Story** 🧞 — once the eval-link check passes, the story is checked off in its epic. An adoption story builds nothing, so it skips Redesign System and Development. The completed story goes back to Choose Story for the next one.
 
-## While adoption is under way
+## While Adoption Is Under Way
 
 Until a product area is adopted, some of the system's behavior isn't written down as evals. A regrow could change it and no eval would fail.
 

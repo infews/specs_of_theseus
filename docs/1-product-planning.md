@@ -1,12 +1,14 @@
 # Product Planning
 
+Product planning is the stage at the front where ideas are taken, sorted, discussed, and then prioritized as work that goes into the main system.
+
 ![Product Planning](img/1_theseus_product_planning.svg)
 
 **Why:** The team needs one prioritized list of work and a person who owns its order. This is the Pivotal Labs or XP planning loop, with an agent helping to break epics down.
 
-**Who:** 🧑🏾‍⚖️ the product manager leads. 🧑🏻‍🎨 a designer helps set product priorities. 🧞 an agent helps break down epics and suggest an order, and 🧑🏼‍💻 developers vet its work.
+**Who:** 🧑🏾‍⚖️ the product manager leads. 🧑🏻‍🎨 a designer helps set product priorities. 🧞 an agent helps break down epics into an ordered list of stories, and 🧑🏼‍💻 developers vet its work.
 
-**In:** Ideas. Stories rejected at [Acceptance](5-acceptance.md). While a project is being [adopted](6_adopting.md), its adoption stories, and rarely a story to change behavior that adoption found unintended.
+**In:** Ideas. Stories rejected at [Acceptance](5-acceptance.md). While a project is being [adopted](6_adopting.md), its adoption stories to move 
 
 **Out:** A prioritized backlog of stories - the ideas vetted and turned into intent.
 

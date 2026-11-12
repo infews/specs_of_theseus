@@ -24,6 +24,8 @@ enableInlineShortcodes = false
     width = "normal"
   [params.footer]
     displayPoweredBy = false
+  # Each page sets its own editURL in its cascade below; the theme would otherwise
+  # build it from the mounted docs folder's full local path.
   [params.editURL]
     enable = true
     base = "https://github.com/infews/specs_of_theseus/edit/main/docs"
@@ -154,6 +156,7 @@ enableInlineShortcodes = false
 
 [[cascade]]
   title = "Specs of Theseus"
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/index.md"
   [cascade.target]
     path = "/"
     kind = "home"
@@ -161,66 +164,77 @@ enableInlineShortcodes = false
 [[cascade]]
   title = "Product Planning"
   weight = 10
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/1-product-planning.md"
   [cascade.target]
     path = "/1-product-planning"
 
 [[cascade]]
   title = "Update Evals"
   weight = 20
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/2-update-evals.md"
   [cascade.target]
     path = "/2-update-evals"
 
 [[cascade]]
   title = "Redesign System"
   weight = 30
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/3-redesign-system.md"
   [cascade.target]
     path = "/3-redesign-system"
 
 [[cascade]]
   title = "Development"
   weight = 40
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/4-development.md"
   [cascade.target]
     path = "/4-development"
 
 [[cascade]]
   title = "Acceptance"
   weight = 50
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/5-acceptance.md"
   [cascade.target]
     path = "/5-acceptance"
 
 [[cascade]]
   title = "Evals"
   weight = 60
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/evals.md"
   [cascade.target]
     path = "/evals"
 
 [[cascade]]
   title = "Subsystems"
   weight = 70
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/subsystems.md"
   [cascade.target]
     path = "/subsystems"
 
 [[cascade]]
   title = "Working Agreements"
   weight = 80
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/working-agreements.md"
   [cascade.target]
     path = "/working-agreements"
 
 [[cascade]]
   title = "Where Things Live"
   weight = 90
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/where-things-live.md"
   [cascade.target]
     path = "/where-things-live"
 
 [[cascade]]
   title = "Adopting an Existing Project"
   weight = 100
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/6_adopting.md"
   [cascade.target]
     path = "/6_adopting"
 
 [[cascade]]
   title = "About"
   weight = 110
+  editURL = "https://github.com/infews/specs_of_theseus/edit/main/docs/about.md"
   [cascade.target]
     path = "/about"
 
