@@ -16,6 +16,21 @@
 {{- if and (not $u.IsAbs) (strings.HasSuffix $u.Path ".svg") -}}
   {{- with resources.Get $u.Path -}}
     {{- $svg = replace .Content "<svg " (printf "<svg aria-label=%q " $.PlainText) 1 -}}
+    {{- /* The page heading already names the diagram, so the inline copy drops
+         the diagram's own title and the 36px band it sits in. The SVG file
+         that opens full size keeps its title. */ -}}
+    {{- with findRESubmatch `<text class="pele-title"[^>]*>[\s\S]*?</text>` $svg 1 -}}
+      {{- $svg = replace $svg (index . 0 0) "" -}}
+      {{- with findRESubmatch `viewBox="0 0 ([\d.]+) ([\d.]+)" width="([\d.]+)" height="([\d.]+)"` $svg 1 -}}
+        {{- $m := index . 0 -}}
+        {{- $band := 36 -}}
+        {{- $vh := sub (float (index $m 2)) $band -}}
+        {{- $h := sub (float (index $m 4)) $band -}}
+        {{- $svg = replace $svg (index $m 0) (printf `viewBox="0 %d %s %v" width="%s" height="%v"` $band (index $m 1) $vh (index $m 3) $h) -}}
+      {{- else -}}
+        {{- warnf "%s: can't trim the title band of %s" $.PageInner.File.Path $.Destination -}}
+      {{- end -}}
+    {{- end -}}
   {{- else -}}
     {{- warnf "%s: missing diagram %s" $.PageInner.File.Path $.Destination -}}
   {{- end -}}

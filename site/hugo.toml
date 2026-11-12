@@ -1,25 +1,128 @@
-# Builds docs/ into the GitHub Pages site. The docs stay plain Markdown that
-# reads well on GitHub too: this site mounts them as its content, and the
-# render hooks in layouts/_markup turn their .md links into site links.
+# Builds docs/ into the GitHub Pages site with the Hextra theme (themes/hextra).
+# The docs stay plain Markdown with no front matter: titles and sidebar order
+# come from the [[cascade]] blocks below, and the render hooks in layouts/_markup
+# turn .md links into site links and put the diagrams' SVGs into the page.
 #
-#   hugo server --source site     # preview at http://localhost:1313/specs_of_theseus/
-#   hugo --source site            # build into site/public
+#   hugo server --source site
 
 baseURL = "https://dwf.bigpencil.net/specs_of_theseus/"
 title = "Specs of Theseus"
 locale = "en-US"
-disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
+theme = "hextra"
+disableKinds = ["taxonomy", "term", "rss", "sitemap"]
+enableInlineShortcodes = false
 
 [params]
   description = "A way for a team of people and agents to build software together. The evals are what lasts; the code can be replaced, plank by plank."
-  repo = "https://github.com/infews/specs_of_theseus"
+  [params.navbar]
+    displayTitle = true
+    displayLogo = false
+  [params.theme]
+    default = "system"
+    displayToggle = true
+  [params.page]
+    width = "normal"
+  [params.footer]
+    displayPoweredBy = false
+  [params.editURL]
+    enable = true
+    base = "https://github.com/infews/specs_of_theseus/edit/main/docs"
+  [params.search]
+    enable = true
+    type = "flexsearch"
+    [params.search.flexsearch]
+      index = "content"
 
-[markup.goldmark.renderer]
-  unsafe = false
 [markup.highlight]
   noClasses = false
 
-# Mounting replaces Hugo's default content, static and assets folders, so site/assets is mounted again below.
+[[menus.main]]
+  name = "About"
+  pageRef = "/about"
+  weight = 1
+[[menus.main]]
+  name = "Search"
+  weight = 2
+  [menus.main.params]
+    type = "search"
+[[menus.main]]
+  name = "GitHub"
+  url = "https://github.com/infews/specs_of_theseus"
+  weight = 3
+  [menus.main.params]
+    icon = "github"
+
+# The sidebar, in reading order, with section headings (layouts/_partials/sidebar.html).
+[[menus.sidebar]]
+  name = "Overview"
+  pageRef = "/"
+  weight = 1
+[[menus.sidebar]]
+  name = "The Stages"
+  weight = 10
+  [menus.sidebar.params]
+    type = "separator"
+[[menus.sidebar]]
+  name = "Product Planning"
+  pageRef = "/1-product-planning"
+  weight = 11
+[[menus.sidebar]]
+  name = "Update Evals"
+  pageRef = "/2-update-evals"
+  weight = 12
+[[menus.sidebar]]
+  name = "Redesign System"
+  pageRef = "/3-redesign-system"
+  weight = 13
+[[menus.sidebar]]
+  name = "Development"
+  pageRef = "/4-development"
+  weight = 14
+[[menus.sidebar]]
+  name = "Acceptance"
+  pageRef = "/5-acceptance"
+  weight = 15
+[[menus.sidebar]]
+  name = "The Method"
+  weight = 20
+  [menus.sidebar.params]
+    type = "separator"
+[[menus.sidebar]]
+  name = "Evals"
+  pageRef = "/evals"
+  weight = 21
+[[menus.sidebar]]
+  name = "Subsystems"
+  pageRef = "/subsystems"
+  weight = 22
+[[menus.sidebar]]
+  name = "Working Agreements"
+  pageRef = "/working-agreements"
+  weight = 23
+[[menus.sidebar]]
+  name = "Where Things Live"
+  pageRef = "/where-things-live"
+  weight = 24
+[[menus.sidebar]]
+  name = "Getting Started"
+  weight = 30
+  [menus.sidebar.params]
+    type = "separator"
+[[menus.sidebar]]
+  name = "Adopting an Existing Project"
+  pageRef = "/6_adopting"
+  weight = 31
+[[menus.sidebar]]
+  name = " "
+  weight = 40
+  [menus.sidebar.params]
+    type = "separator"
+[[menus.sidebar]]
+  name = "About"
+  pageRef = "/about"
+  weight = 41
+
+# Mounting replaces Hugo's default content, static and assets folders.
 [[module.mounts]]
   source = "../docs/index.md"
   target = "content/_index.md"
@@ -31,7 +134,6 @@ disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
   source = "../docs/img"
   target = "static/img"
   files = ["! **.png"]
-# Also as assets, so the image render hook can put each diagram's SVG into the page.
 [[module.mounts]]
   source = "../docs/img"
   target = "assets/img"
@@ -39,77 +141,86 @@ disableKinds = ["taxonomy", "term", "rss", "sitemap", "section"]
 [[module.mounts]]
   source = "assets"
   target = "assets"
+# The favicons (the Noto Color Emoji sailboat) and web manifest, replacing Hextra's.
+[[module.mounts]]
+  source = "static"
+  target = "static"
 
-# The sidebar, in reading order. Prev/next links at the foot of each page follow it too.
-[[menus.main]]
-  identifier = "overview"
-  name = "Overview"
-  pageRef = "/"
-  weight = 1
-[[menus.main]]
-  identifier = "stages"
-  name = "The Stages"
+# Every page is a docs page, so it gets the sidebar.
+[[cascade]]
+  type = "docs"
+  [cascade.target]
+    path = "{/,/**}"
+
+[[cascade]]
+  title = "Specs of Theseus"
+  [cascade.target]
+    path = "/"
+    kind = "home"
+
+[[cascade]]
+  title = "Product Planning"
   weight = 10
-[[menus.main]]
-  parent = "stages"
-  name = "Product Planning"
-  pageRef = "/1-product-planning"
-  weight = 11
-[[menus.main]]
-  parent = "stages"
-  name = "Update Evals"
-  pageRef = "/2-update-evals"
-  weight = 12
-[[menus.main]]
-  parent = "stages"
-  name = "Redesign System"
-  pageRef = "/3-redesign-system"
-  weight = 13
-[[menus.main]]
-  parent = "stages"
-  name = "Development"
-  pageRef = "/4-development"
-  weight = 14
-[[menus.main]]
-  parent = "stages"
-  name = "Acceptance"
-  pageRef = "/5-acceptance"
-  weight = 15
-[[menus.main]]
-  identifier = "method"
-  name = "The Method"
+  [cascade.target]
+    path = "/1-product-planning"
+
+[[cascade]]
+  title = "Update Evals"
   weight = 20
-[[menus.main]]
-  parent = "method"
-  name = "Evals"
-  pageRef = "/evals"
-  weight = 21
-[[menus.main]]
-  parent = "method"
-  name = "Subsystems"
-  pageRef = "/subsystems"
-  weight = 22
-[[menus.main]]
-  parent = "method"
-  name = "Working Agreements"
-  pageRef = "/working-agreements"
-  weight = 23
-[[menus.main]]
-  parent = "method"
-  name = "Where Things Live"
-  pageRef = "/where-things-live"
-  weight = 24
-[[menus.main]]
-  identifier = "adopting"
-  name = "Getting Started"
+  [cascade.target]
+    path = "/2-update-evals"
+
+[[cascade]]
+  title = "Redesign System"
   weight = 30
-[[menus.main]]
-  parent = "adopting"
-  name = "Adopting an Existing Project"
-  pageRef = "/6_adopting"
-  weight = 31
-[[menus.main]]
-  identifier = "about"
-  name = "About"
-  pageRef = "/about"
+  [cascade.target]
+    path = "/3-redesign-system"
+
+[[cascade]]
+  title = "Development"
   weight = 40
+  [cascade.target]
+    path = "/4-development"
+
+[[cascade]]
+  title = "Acceptance"
+  weight = 50
+  [cascade.target]
+    path = "/5-acceptance"
+
+[[cascade]]
+  title = "Evals"
+  weight = 60
+  [cascade.target]
+    path = "/evals"
+
+[[cascade]]
+  title = "Subsystems"
+  weight = 70
+  [cascade.target]
+    path = "/subsystems"
+
+[[cascade]]
+  title = "Working Agreements"
+  weight = 80
+  [cascade.target]
+    path = "/working-agreements"
+
+[[cascade]]
+  title = "Where Things Live"
+  weight = 90
+  [cascade.target]
+    path = "/where-things-live"
+
+[[cascade]]
+  title = "Adopting an Existing Project"
+  weight = 100
+  [cascade.target]
+    path = "/6_adopting"
+
+[[cascade]]
+  title = "About"
+  weight = 110
+  [cascade.target]
+    path = "/about"
+

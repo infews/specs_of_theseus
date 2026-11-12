@@ -1,0 +1,8 @@
+{{- /* One line on every page, with the theme credit added on the About page. */ -}}
+{{- $page := .context -}}
+<div class="sot-footer">
+  <p>© {{ now.Year }} <a href="https://dwf.bigpencil.net/about_me/">Davis W. Frank</a></p>
+  {{- if eq $page.File.ContentBaseName "about" }}
+  <p>Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> and <a href="https://github.com/imfing/hextra" target="_blank" rel="noopener">Hextra</a></p>
+  {{- end }}
+</div>

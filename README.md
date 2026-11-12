@@ -65,7 +65,9 @@ claude --plugin-dir /path/to/specs-of-theseus
 
 ## Docs site
 
-`docs/` is published to GitHub Pages at <https://dwf.bigpencil.net/specs_of_theseus/> by `.github/workflows/pages.yml` on every push to main that touches `docs/` or `site/`. The site is built with [Hugo](https://gohugo.io/); its config, templates and theme live in `site/`, which mounts `docs/` as its content, so the docs stay plain Markdown that reads on GitHub too. To preview it (`brew install hugo`):
+`docs/` is published to GitHub Pages at <https://dwf.bigpencil.net/specs_of_theseus/> by `.github/workflows/pages.yml` on every push to main that touches `docs/` or `site/`. The site is built with [Hugo](https://gohugo.io/) and the [Hextra](https://github.com/imfing/hextra) theme. `site/` holds the config and the overrides; it mounts `docs/` as its content, so the docs stay plain Markdown that reads on GitHub too, with no front matter — page titles and sidebar order are set in `site/hugo.toml`.
+
+Hextra is a git submodule at `site/themes/hextra`, pinned to a release. Clone with `--recurse-submodules`, or run `git submodule update --init` in an existing checkout. To preview the site (`brew install hugo`):
 
 ```sh
 hugo server --source site     # http://localhost:1313/specs_of_theseus/

@@ -1,1 +1,9 @@
-<h{{ .Level }} id="{{ .Anchor }}">{{ .Text }}{{ if ge .Level 2 }} <a class="anchor" href="#{{ .Anchor }}" aria-label="Link to this section">#</a>{{ end }}</h{{ .Level }}>
+{{- /* Hextra's heading hook, minus the docs' own "# Title": Hextra prints the page
+     title itself. */ -}}
+{{- if gt .Level 1 -}}
+<h{{ .Level }} data-hextra-search-id="{{ .Anchor | safeURL }}" {{- with .Attributes.class }} class="{{ . }}" {{- end }}>
+  {{- .Text | safeHTML -}}
+  <span class="hx:absolute hx:-mt-20" id="{{ .Anchor | safeURL }}"></span>
+  <a href="#{{ .Anchor | safeURL }}" class="subheading-anchor" aria-label="{{ (T "permalinkLabel") | default "Permalink for this section" }}"></a>
+</h{{ .Level }}>
+{{- end -}}

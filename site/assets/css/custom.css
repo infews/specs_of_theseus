@@ -1,0 +1,91 @@
+/* Specs of Theseus additions to Hextra. */
+
+/* The diagrams pick light or dark from the OS; Hextra's toggle sets a class on
+   <html> instead. Follow the toggle. */
+html.light .pele { color-scheme: light !important; }
+html.dark .pele { color-scheme: dark !important; }
+
+/* Diagrams sit on a card in their own background colour. */
+.content a.diagram {
+  display: block;
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem;
+  background: var(--pele-bg, #fff);
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+}
+html.dark .content a.diagram { border-color: rgb(255 255 255 / 0.1); }
+
+/* The overview's thumbnail floats beside the opening sections. */
+.content a.diagram.thumb {
+  float: right;
+  width: 13rem;
+  margin: 0.4rem 0 1.5rem 2rem;
+  padding: 0.75rem;
+}
+.content a.diagram.thumb span {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.content h2 { display: flow-root; }
+@media (max-width: 860px) {
+  .content a.diagram.thumb { float: none; width: 11rem; margin: 1rem auto 1.5rem; }
+}
+
+/* ─── Type ────────────────────────────────────────────────────────────
+   Noto, to match the diagrams: Noto Sans for text, Noto Serif for headings,
+   on a smaller scale than Hextra's. The fonts load in layouts/_partials/custom/head-end.html. */
+:root {
+  --hx-font-sans: "Noto Sans", "Noto Color Emoji", system-ui, sans-serif;
+  --hx-font-mono: "Noto Sans Mono", ui-monospace, Menlo, monospace;
+  --sot-font-serif: "Noto Serif", Georgia, serif;
+}
+
+/* Text is 16px. Spacing is in em so it follows the text size, instead of
+   Hextra's fixed 28px lines and 24px gaps. */
+.content { font-size: 1rem; line-height: 1.6; }
+.content p { line-height: 1.6; margin-top: 0.9em; }
+.content p:first-child { margin-top: 0; }
+.content :is(ul, ol) { margin-top: 0.9em; margin-bottom: 0.9em; }
+.content li { line-height: 1.6; margin-top: 0.3em; }
+.content table { font-size: 0.875rem; line-height: 1.45; }
+
+.content h1, main h1, .content h2, .content h3, .content h4 {
+  font-family: var(--sot-font-serif);
+  letter-spacing: -0.01em;
+}
+main h1 { font-size: 2rem; line-height: 1.2; font-weight: 700; }
+.content h2 { font-size: 1.45rem; line-height: 1.3; font-weight: 600; margin-top: 2em; }
+.content h3 { font-size: 1.2rem; line-height: 1.35; font-weight: 600; margin-top: 1.6em; }
+.content h4 { font-size: 1.05rem; line-height: 1.4; font-weight: 600; margin-top: 1.4em; }
+
+/* Sidebar section headings, as small capitals. */
+.sot-sidebar-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b4532a; /* rust, from the sailboat's sails */
+}
+html.dark .sot-sidebar-heading { color: #e59a6f; }
+
+/* Dark mode: light text on dark looks heavier than it is, so regular and bold
+   drift together. Regular text goes a touch lighter and softer grey; bold stays
+   700 and near-white, so it stands out by brightness as well as weight. */
+html.dark .content { color: #c9cdd3; font-weight: 370; }
+html.dark .content :is(strong, b) { color: #f8fafc; font-weight: 700; }
+html.dark .content :is(h1, h2, h3, h4, th) { color: #f1f5f9; }
+
+/* Footer: a single quiet line, plus the theme credit on the About page. */
+.sot-footer { padding: 2rem 0; font-size: 0.85rem; }
+.sot-footer p + p { margin-top: 0.35rem; }
+.sot-footer a { color: inherit; font-weight: 600; }
+.sot-footer a:hover { color: #b4532a; }
+html.dark .sot-footer a:hover { color: #e59a6f; }
+
+/* Links aren't underlined; their colour marks them. */
+.content a, .sot-footer a { text-decoration: none; }
