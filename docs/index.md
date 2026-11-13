@@ -2,13 +2,15 @@
 
 A process for a team of people and agents to build software together. People decide what to build. Agents decide how. People and agents work together on specifications and evals. Agents write the tests and code. People decide when the work is done. Code can be redesigned, thrown away, and re-written in the service of new work. But the specs and tests are what lasts. The system can be replaced plank by plank like the ship of Theseus.
 
+![Specs of Theseus overview](img/0_specs_of_theseus.svg "This is a complicated diagram.")
+
+*Figure 1: All of the stages in one diagram. It's a lot.*
+
 ## Why Another System?
 
 The short answer is because this works for me. Your mileage _will_ vary.
 
 However, I was looking for a system that was built on known, working principles. Yet could adapt to agents alone or in some variant of agentic software factories. And in such a system, I expect that software developers will be applying _more_ rigor in the craft, but at higher levels of abstraction. 
-
-![Specs of Theseus overview](img/0_specs_of_theseus.svg)
 
 ## Roots
 
@@ -41,9 +43,9 @@ More on the method:
 - [Evals](evals.md) — the four kinds, how they're written, and how they link to tests.
 - [Subsystems](subsystems.md) — the units underneath the system; an agent modifies, deletes, and regrows the subsystems.
 - [Working Agreements](working-agreements.md) — raising issues, tools, and commits with tags.
-- [Where Things Live](where-things-live.md) — how epics, stories and evals are written and stored.
+- [Where Things Live](where-things-live.md) — writing epics, stories, and evals then storing them in the repo.
 - [Usage](usage.md) — installing the `theseus` Claude Code plugin and working with its skills.
-- [Adopting an Existing Project](6_adopting.md) — writing the first evals for a project that has none.
+- [Adopting an Existing Project](6_adopting.md) — preparing the project and then writing the first evals for a project that has none. 
 - [About](about.md) — who wrote this, and where to find more.
 
 ## Legend
