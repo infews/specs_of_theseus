@@ -20,7 +20,7 @@ A rejected story goes back to Prioritize Stories. Usually it means the evals did
 
 ## Your Team's Process
 
-Specs of Theseus has no skill for this stage. How a team deploys, where the product manager tries a story, and how releases reach users all depend on the product, the team and the technology — a web app with continuous delivery, a mobile app behind app-store review, and a CLI published as a package each do it differently.
+Specs of Theseus has no skill for this stage. How a team deploys, where the product manager tries a story, and how releases reach users all depend on the product, the team and the technology. A web app with continuous delivery, a mobile app behind app-store review, and a CLI published as a package each can handle deploying differently.
 
 The method asks only three things of whatever process the team uses:
 
@@ -30,4 +30,4 @@ The method asks only three things of whatever process the team uses:
 
 ## Raising Issues
 
-Automation should raise an issue when a deploy fails, or when a monitor that can only run in production fails after release. Fixing these issues should start at Product Planning.
+Automation should raise an issue when a deployment fails, or when a monitor that can only run in production fails after release. Fixing these issues should start at Product Planning.

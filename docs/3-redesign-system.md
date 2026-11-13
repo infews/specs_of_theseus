@@ -9,7 +9,7 @@ This step is all about an agent looking at the requested new work and doing a de
 
 **Who:** 🧞 an agent plans the redesign and writes the tasks. It doesn't need permission to rewrite a subsystem — the evals are the guardrails, and coding-style skills (such as the superpowers plugins) shape what good code looks like. 🧑🏼‍💻 a developer then reviews the tasks with the agent.
 
-**In:** The story. The updated [evals](evals.md) — invariants, contracts, end-to-end tests and monitors — and their failing tests. The current code.
+**In:** The story. The updated [evals](evals.md) (the invariants, contracts, end-to-end tests, and monitors) and their failing tests. The current code.
 
 **Out:** A story with reviewed tasks, sent to [Development](4-development.md).
 
@@ -24,7 +24,7 @@ This step is all about an agent looking at the requested new work and doing a de
 2. **Add Tasks to Story** 🧞 — write the tasks into the story. Each task is small enough for one pass through the Development loop.
 3. **Review Tasks** 🧑🏼‍💻 🧞 — the developer and agent check that the tasks cover the evals, are small enough, and come in a sensible order. The story with its tasks goes on to [Development](4-development.md).
 
-Internal, subsystem boundaries are not fixed. The agent can redraw them as long as no eval breaks: extract code that several subsystems share into a subsystem of its own, or fold a shared subsystem back into its only user. Entry-point subsystems — commands, controllers — have surfaces pinned by evals, so the biggest redesigns tend to happen in shared subsystems, whose interfaces are internal. See [Subsystems](subsystems.md) for what a subsystem is and how it's marked. Contract tests between subsystems go with the code they test.
+Internal, subsystem boundaries are not fixed. The agent can redraw them as long as no eval breaks: extract code that several subsystems share into a subsystem of its own, or fold a shared subsystem back into its only user. Entry-point subsystems (e.g., commands, controllers) have surfaces pinned by evals, so the biggest redesigns tend to happen in shared subsystems, whose interfaces are internal. See [Subsystems](subsystems.md) for what a subsystem is and how it's marked. Contract tests between subsystems go with the code they test.
 
 ## Raising Issues
 

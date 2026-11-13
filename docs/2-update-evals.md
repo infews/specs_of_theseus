@@ -10,7 +10,7 @@ Evals. Tests by another name. Specifically they are types of tests that verify t
 
 **In:** The prioritized backlog. The current [evals](evals.md): invariants, contracts, end-to-end tests and monitors.
 
-**Out:** The story, its updated evals — invariants, contracts, end-to-end tests and monitors — and a failing test for each new or changed eval, reviewed by the developer and sent to [Redesign System](3-redesign-system.md).
+**Out:** The story, its updated evals (the invariants, contracts, end-to-end tests, and monitors) and a failing test for each new or changed eval, reviewed by the developer and sent to [Redesign System](3-redesign-system.md).
 
 ## How
 
@@ -33,4 +33,4 @@ The new or changed evals will fail at this point. That's expected — the next t
 
 ## Raising Issues
 
-Developers and Agents can raise an issue when the top story depends on work that hasn't been done yet, when the story conflicts with an existing invariant, or when it needs a contract changed with a system the team doesn't own.
+Developers and Agents can raise an issue when it detects a problem. For example, when the top story depends on work that hasn't been completed or when the story conflicts with an existing eval.

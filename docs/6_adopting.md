@@ -8,7 +8,7 @@ What if you haven't started using Specs of Theseus for a project, how do you sta
 
 **In:** A working project's code and existing tests, with no evals.
 
-**Out:** An adopted system — evals and passing tests for every product area — and an empty work queue for the normal flow. No behavior changes.
+**Out:** An adopted system, evals and passing tests for every product area, and an empty work queue for the normal flow. No behavior changes.
 
 ## How
 

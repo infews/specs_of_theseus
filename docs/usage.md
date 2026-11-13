@@ -17,7 +17,7 @@ That needs Claude Code 2.1.275 or later. On an older version, add the marketplac
 /plugin install theseus@specs-of-theseus
 ```
 
-Start a new session afterwards so the skills load.
+Then start a new session so the skills load.
 
 **For the whole team:** install from a terminal with project scope. The plugin is then recorded in the project's `.claude/settings.json`, and everyone who opens the project in Claude Code is offered it.
 

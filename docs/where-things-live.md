@@ -17,7 +17,7 @@ docs/
 
 ## Epics and Stories
 
-Epics and stories are markdown files in `docs/epics/`.
+Epics and stories are Markdown files in `docs/epics/`.
 
 - **Epics** are named with a 4-digit number and a short slug: `0001-user-authentication.md`. Each new epic is linked from the index, `0000-epics.md`.
 - **Stories** live in a folder named after their epic: `0001-user-authentication/`. They are numbered in steps of 10 — `0010`, `0020`, `0030` — so stories split out or discovered later can slot in between. The numbering reflects the prioritization from the Product Planning stage.
@@ -117,4 +117,4 @@ When an eval is retired, its line and its tests are deleted. IDs are never reuse
 
 ## In git
 
-- **Story tags** mark the commit where a story's evals all pass and it's ready for acceptance: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).
+- **Story tags** mark the commit where a story's evals all pass; then it's ready for acceptance: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).

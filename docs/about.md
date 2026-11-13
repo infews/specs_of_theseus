@@ -8,7 +8,7 @@ Davis writes about software engineering and leadership at **[DWF's Journal](http
 
 ## Why This Method?
 
-Specs of Theseus brings the Pivotal Labs way of working — a product manager who owns the backlog, small stories, test-driven development, acceptance on working software — to a team where agents write most of the code. It pairs that with [Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/): durable specifications, disposable code. See the [overview](index.md) for how the pieces fit.
+Specs of Theseus brings the Pivotal Labs flavor of software development to a team where agents write most, if not all, of the code. It pairs that with [Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/): durable specifications, disposable code. See the [overview](index.md) for how the pieces fit together.
 
 ## This Project
 

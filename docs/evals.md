@@ -2,7 +2,7 @@
 
 Evals are the specification of the system. They are what survives a rewrite. Code, internal tests and subsystem boundaries can all be thrown away. Evals can only be changed on purpose, as part of product work, in the [Update Evals](2-update-evals.md) stage.
 
-If a quality matters — a behavior, a performance target, a structural rule — it has to be an eval. Otherwise an agent may change it while redesigning.
+If a quality matters (a behavior, a performance target, a structural rule) it has to be an eval. Otherwise, an agent may change it while redesigning.
 
 The idea comes from Chad Fowler's [Evaluations Are the Real Codebase](https://aicoding.leaflet.pub/3mb526js42k26): evaluations "encode what the system must do, independent of how any particular implementation does it." Each eval type is discussed below.
 
@@ -34,7 +34,7 @@ Whenever possible, an eval is checked by an executable test. That test carries t
 - **Implementation is not linked.** Code is what gets deleted and regrown, and many evals span several subsystems. When an eval fails, its test leads to the code.
 - **Internal tests may cite an eval.** They are thrown away along with the code they test, so the tag never goes stale.
 
-An eval that can't run as a test — a monitor that only exists in production — points to the monitor's configuration instead.
+An eval that can't run as a test, such as a monitor that only exists in production, points to the monitor's configuration instead.
 
 When a story removes functionality, its evals are retired and their tests deleted. Tests that check old behavior is gone protect nothing; the rest of the evals still passing shows the removal broke nothing. If the absence itself matters, that's a new eval.
 

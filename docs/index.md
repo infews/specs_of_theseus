@@ -1,6 +1,6 @@
 # Specs of Theseus
 
-A way for a team of people and agents to build software together. People decide what to build and whether it's done. Agents decide how. The evals — the system's specs — are what lasts; the code can be replaced, plank by plank, like the ship of Theseus.
+A process for a team of people and agents to build software together. People decide what to build. Agents decide how. People and agents work together on specifications and evals. Agents write the tests and code. People decide when the work is done. Code can be redesigned, thrown away, and re-written in the service of new work. But the specs and tests are what lasts. The system can be replaced plank by plank like the ship of Theseus.
 
 ## Why Another System?
 
@@ -14,8 +14,8 @@ However, I was looking for a system that was built on known, working principles.
 
 Specs of Theseus borrows from:
 
-- **[Pivotal Labs' flavor of Extreme Programming (XP)](https://labspractices.com/guides/tanzu-labs-engineer-faq/)** — a product manager who owns a prioritized backlog, small stories, coding using test-driven development, and acceptance of every story before shipping working software.
-- **[Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/)** — software is defined with durable specifications, but implemented with disposable code. Any part of the system can be deleted and regrown, as long as the evals still hold.
+- **[Pivotal Labs flavor of Extreme Programming (XP)](https://labspractices.com/guides/tanzu-labs-engineer-faq/)** — a product manager who owns a prioritized backlog, small stories, coding using test-driven development, and acceptance of every story before shipping working software.
+- **[Chad Fowler's Phoenix Architecture](https://aicoding.leaflet.pub/)** — software is defined with durable specifications, but implemented with all disposable code. Any part of the system can be deleted and regrown, as long as the evals still hold.
 
 ## Principles
 
@@ -56,7 +56,7 @@ More on the method:
 
 In the diagrams:
 
-- **Boxes are activities; arrows are the artifacts passed between them.** Each box shows who does it, then names the activity with a verb.
+- **Boxes are activities; arrows are the artifacts passed between them.** Each box shows the actor(s), then names the activity with a verb.
 - **Box shapes:** a box with double side borders is a work activity; a plain box is a choice or bookkeeping step, such as Choose Epic or Tag Repo.
 - **Box colors:** green means people and an agent work together; red means an agent works alone; no color means people or automation, without an agent.
 - **Dotted arrows** are returns that happen only sometimes, such as a rejected story or a reviewer's requested changes.
