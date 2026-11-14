@@ -6,7 +6,7 @@ How the team of people and agents works together across every stage.
 
 When an agent is stuck, or finds a problem it can't settle on its own, it raises an issue: it writes the issue down, stops, and tells the person in the session.
 
-- **Where:** in an `## Issues` section of the story the agent is working on. Issues raised before a story exists — during epic breakdown — go in the epic's `## Open Questions` section.
+- **Where:** in an `## Issues` section of the story the agent is working on. Issues raised before a story exists (during epic breakdown) go in the epic's `## Open Questions` section.
 - **What:** the stage, what the agent was doing, what's wrong, and the question a person has to answer.
 - **Blocking:** an open issue stops the work. No agent continues the story, or the epic, until a person writes an answer under the issue and marks it resolved.
 
@@ -30,7 +30,7 @@ When an agent needs to do something and doesn't know how, it asks a person and r
 Teams choose their own workflow, but trunk-based development leads to better outcomes, so the method aims for a linear history on main, in git:
 
 - **By default, commit straight to main.**
-- **If work-in-progress commits help** — a complex story, an experiment — use a short-lived branch. Before it lands, squash it, rebase it onto main, and fast-forward main. No merge commits.
+- **If work-in-progress commits help** when there is a complex story or task, or an experiment, use a short-lived branch. Before the task is complete, squash it, rebase it onto main, and fast-forward main. Avoid merge commits.
 
 Completing a story tags the final commit with the story's path:
 
@@ -42,4 +42,4 @@ The tag marks the commit where all of the story's evals pass. Deploy runs on sto
 
 The tag means "ready for acceptance", not "accepted" — acceptance is checking the story off in its epic. If the product manager rejects the story, its tag is deleted when it goes back into the backlog, and Development tags it again when the next pass is green.
 
-If several stories are in progress at once, a short-lived branch per story keeps them out of each other's way; the same squash-and-rebase rule applies.
+If several stories are in progress at once, a short-lived branch per story keeps them out of each other's way. The same squash-and-rebase rule applies.

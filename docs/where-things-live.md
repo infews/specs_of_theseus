@@ -50,7 +50,7 @@ Anything unresolved. Issues raised during epic breakdown go here.
 - [Login form](0001-user-authentication/0010-login-form.md)
 ```
 
-The epic is written in [Product Planning](1-product-planning.md). Epic breakdown adds its stories to **Resulting Stories**, and each is checked off or struck through when it's accepted — or, for a Characterize story, when its evals are committed.
+The epic is written in [Product Planning](1-product-planning.md). Epic breakdown adds its stories to **Resulting Stories**, and each is checked off or struck through when it's accepted — or, for a "Characterize story," when its evals are committed.
 
 ### A story
 
@@ -81,7 +81,14 @@ Feature: Login form
 ## Issues
 ````
 
-A story's sections show where it is — there's no separate status to keep in sync. Empty EARS Specifications means not started; an Implementation Plan with unchecked tasks means in Development; a story tag means in Acceptance; checked off in the epic means done. A ["Characterize …" story](evals.md#characterization) never gets a plan or a tag: it's checked off as soon as its evals are committed. A rejected story's tag is deleted and its EARS Specifications and Implementation Plan are emptied, so it reads as not started again.
+A story's sections show where it is. There's no separate status to keep in sync. 
+
+- Empty EARS Specifications means not started
+- An Implementation Plan with unchecked tasks means in Development
+- A story tag means in Acceptance
+- A checked-off story in its epic means done. 
+- A ["Characterize …" story](evals.md#characterization) never gets a plan or a tag: it's checked off as soon as its evals are committed. 
+- A rejected story's tag is deleted and its EARS Specifications and Implementation Plan are emptied, so it reads as not started again.
 
 Each section is filled in by a different stage:
 
@@ -92,7 +99,7 @@ Each section is filled in by a different stage:
 
 ## Evals
 
-Evals live in `docs/evals/`, one file per product area, grouped by kind. Each eval is one list item: its `AREA-KIND-NNN` ID, then its EARS text. Each one is checked by a test in the project's own language, under its test directory, which carries the eval's ID in a `@spec` comment. A monitor that only runs in production points to its configuration instead. See [Evals](evals.md).
+Evals live in `docs/evals/`, one file per product area, grouped by kind. Each eval is one list item: its `AREA-KIND-NNN` ID, then its EARS text. Each one is checked by a test in the project's own language. The tests always live in the project's test directory. They have the eval's ID in a `@spec` comment. A monitor that only runs in production points to its configuration instead. See [Evals](evals.md).
 
 ```markdown
 # Cart
@@ -117,4 +124,4 @@ When an eval is retired, its line and its tests are deleted. IDs are never reuse
 
 ## In git
 
-- **Story tags** mark the commit where a story's evals all pass; then it's ready for acceptance: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).
+- **Story tags** mark the commit where a story's evals all pass. Then it's ready for acceptance: `story/0001-user-authentication/0010-login-form`. See [Commits and tags](working-agreements.md#commits-and-tags).

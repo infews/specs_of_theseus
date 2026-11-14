@@ -1,6 +1,6 @@
 # Subsystems
 
-Evals are what lasts; subsystems are what gets regrown. A subsystem is a unit an agent could delete and regrow in one task: an interface with one or more units of implementation behind it.
+Evals are what lasts. Subsystems are what gets regrown. A subsystem is a unit an agent could delete and regrow in one task: an interface with one or more units of implementation behind it.
 
 - **Small enough** to rewrite from its interface and checked by the evals within one story.
 - **Big enough** that its inside has room to be redesigned.
@@ -10,7 +10,7 @@ Subsystems usually follow the system's entry points, not its layers. Some exampl
 - **A CLI:** one subsystem per command. Classes that several commands share become a subsystem of their own.
 - **A Rails app:** one subsystem per RESTful controller — the controller and the views, helpers and models only it uses. A message queue and its background jobs are subsystems too.
 
-Subsystems should start with the System's entry points - e.g., commands, controllers, or background job handlers. Their interfaces are pinned by evals: CLI syntax, routes, message formats. Their insides can be regrown freely; their surface changes only when an eval does.
+Subsystems should start with the System's entry points - e.g., commands, controllers, or background job handlers. Their interfaces are pinned by evals: CLI syntax, routes, message formats. Their insides can be regrown freely.
 
 Shared subsystems may develop over time. This would be code that multiple subsystems depend on. Their interfaces are internal, so a redesign can reshape them and their contract tests freely.
 

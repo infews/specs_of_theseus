@@ -16,13 +16,20 @@
 2. **Accept or Reject** 🧑🏾‍⚖️ — the product manager tries the working software against the story's acceptance criteria and accepts or rejects it.
 3. **Release** 🧑🏾‍⚖️ ⚙ — accepted stories go out to users.
 
-A rejected story goes back to Prioritize Stories. Usually it means the evals didn't capture what the product manager wanted — fix the evals, not just the code. When it goes back into the backlog its story tag is deleted, its EARS Specifications and Implementation Plan are emptied, and a note says why it was rejected. It runs through the stages again and is tagged again when it's green.
+A rejected story goes back to Prioritize Stories. Usually it means the evals didn't capture what the product manager requested. Fix the evals, not just the code. When a story is rejected:
+
+- It goes back into the backlog
+- Its story tag is deleted
+- Its EARS Specifications and Implementation Plan are emptied
+- The story adds a note says why it was rejected
+
+When the story is reprioritized and started, it runs through the stages again and is tagged again when it's green.
 
 ## Your Team's Process
 
-Specs of Theseus has no skill for this stage. How a team deploys, where the product manager tries a story, and how releases reach users all depend on the product, the team and the technology. A web app with continuous delivery, a mobile app behind app-store review, and a CLI published as a package each can handle deploying differently.
+Specs of Theseus has no skill for Acceptance. How a team deploys, where the product manager tries a story, and how releases reach users all depend on the product, the team and the technology. A web app with continuous delivery, a mobile app behind app-store review, and a CLI published as a package each can handle deploying and Acceptance differently.
 
-The method asks only three things of whatever process the team uses:
+The method requires three things of whatever process the team uses:
 
 - **Deploy story tags, and only story tags.**
 - **A person accepts or rejects each story** against its acceptance criteria, on working software.

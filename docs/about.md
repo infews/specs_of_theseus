@@ -12,7 +12,7 @@ Specs of Theseus brings the Pivotal Labs flavor of software development to a tea
 
 ## This Project
 
-The method, its diagrams, and the `theseus` Claude Code plugin live at [github.com/infews/specs_of_theseus](https://github.com/infews/specs_of_theseus). It's a work in progress; issues and stories from trying it on real projects are welcome.
+The method, its diagrams, and the `theseus` Claude Code plugin live at [github.com/infews/specs_of_theseus](https://github.com/infews/specs_of_theseus). Specs of Theseus is a work in progress. Issues and stories from trying it on real projects are welcome.
 
 ## Projects Using Specs of Theseus
 

@@ -46,18 +46,22 @@ claude plugin update theseus@specs-of-theseus
 
 [Acceptance](5-acceptance.md) has no skill. It's your team's own deploy and review process.
 
-## How the Skills Run
+## How to Use the Skills
 
 - **You don't have to name them.** Say what you want, such as "break the checkout epic into stories" or "let's start the next story", and Claude picks the matching skill.
-- **You can name one** to be explicit: `/theseus:update-evals`.
-- **When in doubt, ask "what's next?"** The entry skill reads the project's files, says which stage the work is in and why, and hands off: "Next: **Update Evals** (`theseus:update-evals`)". Every skill announces itself this way, so you always know which one is running.
-- **The files are the record.** Progress lives in the epic and story files under `docs/` and in git tags, not in the chat. You can stop at any point and pick up in a new session. See [Where Things Live](where-things-live.md).
+- **You _can_ name one** to be explicit: `/theseus:update-evals`.
+- **When in doubt, ask "what's next?"** 
+  - The entry skill reads the project's files, says which stage the work is in and why, and hands off to the next skill.
+  - "Next: **Update Evals** (`theseus:update-evals`)". The skill announces this way, so you always know which one is running.
+- **The files are the record.** 
+  - Progress lives in the epic and story files under `docs/` and in git tags, not in the chat. 
+  - You can stop at any point and pick up in a new session. See [Where Things Live](where-things-live.md).
 
 ## Getting Going
 
-**A new project:** start with Product Planning. 🧑🏾‍⚖️ The product manager chooses the first epic; then ask Claude to write it up and break it into stories.
+**A new project:** start with Product Planning. 🧑🏾‍⚖️ The product manager chooses the first epic. Then can work with Claude to write it up and break it into stories.
 
-**An existing project with code but no evals:** say "adopt this project". `adopt-project` surveys the code, records the project's tools, marks subsystems, and writes an adoption epic with the product manager. See [Adopting an Existing Project](6_adopting.md).
+**An existing project with code but no evals:** say "adopt this project". The `adopt-project` skill surveys the code, records the project's tools, marks subsystems, and writes an adoption epic with the product manager. See [Adopting an Existing Project](6_adopting.md).
 
 **Tools:** the [Development](4-development.md) loop needs a command for each step (tests, property tests, mutation tests, controls and checks). They live in the project's `CLAUDE.md` or `AGENTS.md`. If one is missing, the agent asks and records your answer there. See [Tools](working-agreements.md#tools).
 
@@ -69,10 +73,10 @@ claude plugin update theseus@specs-of-theseus
 | Update Evals | "What's next?" | Takes the top story, writes or changes its evals as EARS requirements, and writes a failing test for each. | 🧑🏼‍💻 The developer to review the evals and tests. |
 | Redesign System | "Plan it." | Plans the smallest change, looks for a subsystem worth regrowing, and writes tasks. | 🧑🏼‍💻 The developer to review the tasks. |
 | Development | "Go." | Works through the tasks test-first, runs the full eval suite, mutation tests and checks, then tags the story `story/<epic>/<story>`. | Nothing, unless it raises an issue. 🧑🏼‍💻 The developer oversees. |
-| Acceptance | — | — | 🧑🏾‍⚖️ The product manager accepts or rejects the story on working software. |
+| Acceptance | n/a| n/a | 🧑🏾‍⚖️ The product manager accepts or rejects the story on working software according to team practices. |
 
 If the product manager rejects a story, tell Claude why ("the product manager rejected the login story: it should remember the email"). It goes back to Product Planning to be re-ranked, and usually its evals get fixed.
 
-## When the Agent Stops the Line
+## The Agent Can Stop and Ask for Help
 
-When the agent is stuck, or finds something it can't settle on its own, it raises an issue. It writes the issue into the story's `## Issues` section (or the epic's `## Open Questions`), stops, and tells you in the session. Nothing on that story moves until a person writes an answer under the issue and marks it resolved. You can answer in the file, or tell Claude the answer and have it write it down. See [Issues](working-agreements.md#issues).
+When the agent is stuck, or finds something it can't settle on its own, it raises an issue. It writes the issue into the story's `## Issues` section (or the epic's `## Open Questions`), stops, and tells you in the session. Work on that story stops until a person writes an answer under the issue and marks it resolved. You can answer in the file, or tell Claude the answer and have it write it down. See [Issues](working-agreements.md#issues).
