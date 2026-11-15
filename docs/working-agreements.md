@@ -31,6 +31,7 @@ Teams choose their own workflow, but trunk-based development leads to better out
 
 - **By default, commit straight to main.**
 - **If work-in-progress commits help** when there is a complex story or task, or an experiment, use a short-lived branch. Before the task is complete, squash it, rebase it onto main, and fast-forward main. Avoid merge commits.
+- **Commit messages for a story start with its short ID**, `e<epic>.s<story>`, from the four-digit numbers in the story's path: `e0001.s0010: add the login form`. A commit for a whole epic starts with `e<epic>` alone.
 
 Completing a story tags the final commit with the story's path:
 

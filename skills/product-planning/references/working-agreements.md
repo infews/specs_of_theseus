@@ -39,6 +39,7 @@ Aim for a linear history on main.
 
 - **By default, commit straight to main.**
 - **If work-in-progress commits help** — a complex story, an experiment — use a short-lived branch. Before it lands, squash it, rebase onto main, and fast-forward main. No merge commits.
+- **A commit for a story starts with the story's short ID**, `e<epic>.s<story>`, using the four-digit numbers from the story's path: `e0001.s0010: add the login form`. A commit for a whole epic uses `e<epic>` alone: `e0001: done`.
 
 Completing a story tags its final commit with the story's path:
 
