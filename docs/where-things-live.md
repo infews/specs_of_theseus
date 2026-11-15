@@ -108,12 +108,21 @@ Evals live in `docs/evals/`, one file per product area, grouped by kind. Each ev
 - `CART-INV-003`: The system shall never allow a cart total below zero.
 
 ## End-to-end
+
+### Removing items
 - `CART-E2E-001`: When a shopper removes the last item, the system shall show an empty cart.
+- `CART-E2E-004`: When a shopper removes an item, the system shall update the total.
+
+### Checkout errors
+- `CART-E2E-002`: If the shopper's card is declined, then the system shall show:
+  `Your card was declined. Try another card or contact your bank.`
 
 ## Monitors
 - `CART-MON-001`: The system shall add an item to a cart within 200 ms at p95.
   - Monitor: `config/monitors/cart.yml`
 ```
+
+A kind with many evals is split into groups under `###` headings, one per command, flow or situation, so a reader can find the evals for a situation by skimming. Groups don't change IDs: the next number is always the highest so far plus one, wherever the new eval goes. A long exact message goes on its own line, indented under its eval.
 
 When an eval is retired, its line and its tests are deleted. IDs are never reused.
 

@@ -106,11 +106,24 @@ One markdown file per product area in `docs/evals/`, grouped by kind. Each eval 
 - `CART-CON-001`: When the payments API returns a decline, the system shall leave the order unpaid.
 
 ## End-to-end
+
+### Removing items
 - `CART-E2E-001`: When a shopper removes the last item, the system shall show an empty cart.
+- `CART-E2E-004`: When a shopper removes an item, the system shall update the total.
+
+### Checkout errors
+- `CART-E2E-002`: If the shopper's card is declined, then the system shall show:
+  `Your card was declined. Try another card or contact your bank.`
 
 ## Monitors
 - `CART-MON-001`: The system shall add an item to a cart within 200 ms at p95.
   - Monitor: `config/monitors/cart.yml`
 ```
 
-When an eval is retired, delete its line and its tests. Never reuse an ID.
+**Group a long kind by situation.** Once a kind has more than about eight evals, split it with `###` headings named for the command, flow or situation the evals share: "Removing items", "Name collisions", "When the source is missing". A reader should find the evals for a situation by skimming headings. Put a new eval in the group it belongs to, or start a group when none fits. Regroup when a group grows past about a dozen evals or stops making sense. Moving evals between groups doesn't change their IDs.
+
+**Numbers follow the ID, not the page.** With groups, evals aren't in number order down the page, so the next number is the highest in the area and kind plus one, wherever the new eval goes. Search the file for the highest; don't read it off the last line.
+
+**Put a long quoted message on its own line.** When an eval ends with an exact message longer than about 60 characters, end the eval's line with `:` and put the message on the next line, indented two spaces and in backticks, as `CART-E2E-002` does. Nothing else continues onto a second line: the condition and response stay on the eval's line, so a search for the ID still shows what the eval says. When you search for an eval by ID, include the line after it (`grep -A1`) so you don't miss its message.
+
+When an eval is retired, delete its line (and its message line, if it has one) and its tests. Never reuse an ID.

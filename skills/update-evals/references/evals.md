@@ -25,7 +25,7 @@ Each eval is one EARS requirement with an ID `AREA-KIND-NNN`:
 
 - **AREA** — a product area, such as `CART` or `AUTH`. Never a subsystem name: subsystems get redrawn, and the ID must outlive them.
 - **KIND** — `INV`, `CON`, `E2E` or `MON`.
-- **NNN** — the next unused number in that area and kind. IDs are never reused.
+- **NNN** — the next unused number in that area and kind: the highest so far plus one, wherever the eval goes in the file. IDs are never reused.
 
 The five EARS patterns:
 

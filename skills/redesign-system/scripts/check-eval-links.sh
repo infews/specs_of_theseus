@@ -6,7 +6,8 @@
 #
 # Fails if an eval in docs/evals/ has no test tagged with its @spec ID (a
 # production-only monitor may have a "Monitor:" line instead), or if a @spec
-# tag anywhere in the project names an eval that doesn't exist.
+# tag anywhere in the project names an eval that doesn't exist. Also fails if
+# an eval's message line isn't indented under it.
 set -euo pipefail
 
 root="${1:-.}"
@@ -29,6 +30,13 @@ monitored_ids=$(find "$evals_dir" -name '*.md' -exec awk '
   /^[^[:space:]]/ { current = "" }
 ' {} + | grep -E "^$id$" | sort -u || true)
 
+# An eval's message line must be indented, or Markdown joins it to the eval
+# and the Monitor: lookup above loses track of the eval.
+unindented=$(find "$evals_dir" -name '*.md' -exec awk '
+  after_eval && /^`/ { print FILENAME ":" FNR }
+  { after_eval = /^[[:space:]]*- `[A-Z]/ }
+' {} + || true)
+
 # @spec tags anywhere outside docs/ and dependency folders.
 tagged=$(grep -rhoE "@spec[[:space:]]+$id" "$root" \
   --exclude-dir=.git --exclude-dir=docs --exclude-dir=node_modules --exclude-dir=vendor \
@@ -47,6 +55,11 @@ fi
 if [ -n "$dangling" ]; then
   echo "@spec tags naming evals that don't exist:"
   echo "$dangling" | sed 's/^/  /'
+  status=1
+fi
+if [ -n "$unindented" ]; then
+  echo "Eval message lines not indented two spaces:"
+  echo "$unindented" | sed 's/^/  /'
   status=1
 fi
 [ $status -eq 0 ] && echo "Eval links OK: $(echo "$defined" | grep -c . || true) evals, all linked."

@@ -40,7 +40,7 @@ Then look for qualities the story relies on that aren't evals yet. Say them out 
 
 **Check for contradictions** between the new and changed evals, and against every existing invariant. A contradiction here is cheap; found during development it's expensive.
 
-**Write the evals** in the product area's file in `docs/evals/` (create the folder and file if they don't exist yet) (format in `references/project-layout.md`). Use the next unused number for each area and kind. Retired evals: delete the line and their tests; never reuse an ID. List the IDs the story adds, changes or removes in its **EARS Specifications** section.
+**Write the evals** in the product area's file in `docs/evals/` (create the folder and file if they don't exist yet) (format in `references/project-layout.md`), in the group it belongs to. Use the next unused number for each area and kind: the highest in the file plus one, not the last one on the page. Retired evals: delete the line, its message line if it has one, and their tests; never reuse an ID. List the IDs the story adds, changes or removes in its **EARS Specifications** section.
 
 **Write a failing test for each** new or changed eval, tagged `@spec <ID>`, using the test frameworks the project already uses. An invariant is a rule, so its test is a property test.
 
