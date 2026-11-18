@@ -55,10 +55,21 @@ Writing the eval tests here, with the developer, means the agent in Development 
 
 Stop. This step is the developer's: they review the updated evals and, above all, the failing tests. The tests matter most — from here on they are the gate, and a weak test lets wrong code through.
 
-Hand them what they need: each eval next to its test, what each test checks and how it fails now, and anything you weren't sure of. Then wait.
+**Ask how they want to review**, unless the project's `CLAUDE.md` or `AGENTS.md` records a default:
 
-- **Requested changes** go back to step 2. Make them, rerun the tests, and return here for another review.
-- **Once the developer is satisfied,** commit the evals and tests. The story, its updated evals and the failing tests go on to `redesign-system`.
+- **All at once** — a summary of every eval next to its test, what each test checks and how it fails now, and anything you weren't sure of. Then wait.
+- **One at a time** — a walk-through that makes the developer look at each eval and its test before anything is approved. Offer this one first when the story adds or changes more than a handful of evals.
+
+**One at a time.** Go through the story's **EARS Specifications** in order. For each added, changed or removed eval:
+
+1. **Show it in the session:** the eval's ID and full text (for a changed eval, the old text too), each test tagged with its `@spec` as a path and line, the test's code, and the failure output from the last run. For a removed eval, show the deleted line and the deleted tests.
+2. **Open it in the developer's editor:** the test at its line, and the eval file at the eval's line, using the "open a file at a line" command in the project's agent instructions. If there isn't one, ask which editor they use and record the command (see Tools in `references/working-agreements.md`). If they'd rather review in the session only, skip this step for the rest of the review.
+3. **Ask for a decision on this eval alone:** **approve**, **request a change** (with what to change), or **stop the review**. Wait for the answer, then go to the next eval. Don't offer to approve the rest in one go, and don't treat silence or "looks fine" about an earlier eval as approval of this one.
+
+At the end, list each eval with its decision.
+
+- **Requested changes** go back to step 2. Make them, rerun the tests, and return here for another review. In a one-at-a-time review, the next round covers only the evals that changed.
+- **Once the developer has approved every eval** (in a one-at-a-time review) **or is satisfied** (all at once), commit the evals and tests. The story, its updated evals and the failing tests go on to `redesign-system`.
 
 ## Characterize stories
 

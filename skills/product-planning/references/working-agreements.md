@@ -31,6 +31,8 @@ The method doesn't choose tools; the project does. Commands live in the project'
 - controls and checks — linters, type checks, security scanners, dependency audits
 - the full eval suite
 
+Update Evals uses one more if the developer reviews evals one at a time: opening a file at a line in their editor, such as `code -g path:line` or `idea --line N path`. The same file can record their default review style, all at once or one at a time.
+
 **When you need to do something and don't know how** — a missing command, a tool that isn't installed, a step with no tool at all — ask the person and record the answer in that file. Asking is raising an issue: the work waits. Don't guess a command and don't skip the step; a skipped step is a gate that silently stopped guarding.
 
 ## Commits and story tags

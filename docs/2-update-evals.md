@@ -21,7 +21,11 @@ Evals. Tests by another name. Specifically they are types of tests that verify t
    - Write down any quality the story depends on that isn't an eval yet. If it isn't written down, an agent may change it later.
    - Check that the updated evals don't contradict each other or existing invariants.
    - Write a failing test for each new or changed eval, tagged with its `@spec` ID. Use the test frameworks the project already uses, under the project's test directory. The developer and agent decide where. An invariant is a rule (e.g., "never", "always") so its test is a property test.
-3. **Review Evals & Tests** 🧑🏼‍💻 — the agent stops and the developer reviews the updated evals and their failing tests. This sets up test-driven developer later in the process. Requested changes go back to Update Evals. Once the developer is satisfied, the evals and tests are committed, and the story, its updated evals and failing tests go on to [Redesign System](3-redesign-system.md).
+3. **Review Evals & Tests** 🧑🏼‍💻 — the agent stops and the developer reviews the updated evals and their failing tests. This sets up test-driven developer later in the process. The developer chooses how:
+   - **All at once:** the agent summarizes every eval next to its test and how the test fails now.
+   - **One at a time:** the agent shows each eval with its test code and failure in the session, opens the test and the eval in the developer's editor, and waits for the developer to approve that eval or ask for a change before moving to the next. Nothing is approved in bulk, so every eval and test gets a person's attention.
+
+   Requested changes go back to Update Evals. Once the developer is satisfied, or has approved every eval one at a time, the evals and tests are committed, and the story, its updated evals and failing tests go on to [Redesign System](3-redesign-system.md).
 
 Writing and reviewing the eval tests here means the agent never writes the tests that grade its own work in Development.
 

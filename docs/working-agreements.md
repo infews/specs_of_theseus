@@ -21,7 +21,7 @@ When an agent is stuck, or finds a problem it can't settle on its own, it raises
 
 Tools depend on the language and the project, so the method doesn't pick them. The commands live in the project's own agent instructions ( `CLAUDE.md` or `AGENTS.md`) next to whatever is already there for running tests and linters. 
 
-Specs of Theseus adds a tool requirement for each step of [Development](4-development.md): test framework(s), property testing, mutation testing, controls and checks, and the full eval suite.
+Specs of Theseus adds a tool requirement for each step of [Development](4-development.md): test framework(s), property testing, mutation testing, controls and checks, and the full eval suite. A developer who reviews evals [one at a time](2-update-evals.md#how) also records the command that opens a file at a line in their editor, and can record that review style as their default.
 
 When an agent needs to do something and doesn't know how, it asks a person and records the answer in that file. Asking is [raising an issue](#issues): the work waits for the answer. The agent never guesses and never skips the step.
 
