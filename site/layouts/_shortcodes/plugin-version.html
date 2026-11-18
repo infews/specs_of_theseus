@@ -1,0 +1,7 @@
+{{- /* The theseus plugin's version, read from .claude-plugin/plugin.json (mounted
+     as assets/plugin.json in hugo.toml), so the docs never carry a copy of it. */ -}}
+{{- with resources.Get "plugin.json" -}}
+  {{- (. | transform.Unmarshal).version -}}
+{{- else -}}
+  {{- errorf "%s: plugin-version can't find plugin.json" $.Page.File.Path -}}
+{{- end -}}

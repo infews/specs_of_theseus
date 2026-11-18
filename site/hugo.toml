@@ -144,6 +144,10 @@ enableInlineShortcodes = false
   source = "../docs/img"
   target = "assets/img"
   files = ["**.svg"]
+# The plugin manifest, so the plugin-version shortcode can read its version.
+[[module.mounts]]
+  source = "../.claude-plugin/plugin.json"
+  target = "assets/plugin.json"
 [[module.mounts]]
   source = "assets"
   target = "assets"

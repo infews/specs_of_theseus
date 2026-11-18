@@ -12,7 +12,7 @@ Specs of Theseus brings the Pivotal Labs flavor of software development to a tea
 
 ## This Project
 
-The method, its diagrams, and the `theseus` Claude Code plugin live at [github.com/infews/specs_of_theseus](https://github.com/infews/specs_of_theseus). Specs of Theseus is a work in progress. Issues and stories from trying it on real projects are welcome.
+The method, its diagrams, and the `theseus` Claude Code plugin live at [github.com/infews/specs_of_theseus](https://github.com/infews/specs_of_theseus). The current version of the plugin is **{{< plugin-version >}}**. Specs of Theseus is a work in progress. Issues and stories from trying it on real projects are welcome.
 
 Specs of Theseus is released under the [MIT License](https://github.com/infews/specs_of_theseus/blob/main/LICENSE). You're free to use, change and share the method, the docs and the plugin, including in commercial work.
 
