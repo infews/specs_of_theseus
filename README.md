@@ -106,3 +106,7 @@ chruby-exec ruby-4.0 -- bin/build-diagrams
 ## History
 
 This version is a clean-sheet rewrite, started in November 2026. Earlier versions were built around a spec manifest with binding tests, and later added epic, capability and system layers. That work, and the design documents behind it, are in the git history before commit `32d871f`.
+
+## License
+
+[MIT](LICENSE) © 2026 Davis W. Frank
