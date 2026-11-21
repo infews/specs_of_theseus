@@ -5,8 +5,9 @@
 html.light .pele { color-scheme: light !important; }
 html.dark .pele { color-scheme: dark !important; }
 
-/* Diagrams sit on a card in their own background colour. */
-.content a.diagram {
+/* Diagrams sit on a card in their own background colour: a <figure> when the
+   diagram is on a line of its own, with its caption on the card too. */
+.content .diagram {
   display: block;
   margin: 1.5rem 0 2rem;
   padding: 1.25rem;
@@ -14,26 +15,36 @@ html.dark .pele { color-scheme: dark !important; }
   border: 1px solid rgb(0 0 0 / 0.1);
   border-radius: 10px;
   text-align: center;
-  text-decoration: none;
 }
-html.dark .content a.diagram { border-color: rgb(255 255 255 / 0.1); }
+html.dark .content .diagram { border-color: rgb(255 255 255 / 0.1); }
+.content .diagram a { display: block; text-decoration: none; }
+/* Hextra makes every svg a block, which text-align can't centre. */
+.content .diagram svg { margin-inline: auto; }
+.content .diagram figcaption {
+  margin-top: 0.75rem;
+  color: var(--pele-muted, #6e6e6e);
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.4;
+}
 
 /* The overview's thumbnail floats beside the opening sections. */
-.content a.diagram.thumb {
+.content .diagram.thumb {
   float: right;
   width: 13rem;
   margin: 0.4rem 0 1.5rem 2rem;
   padding: 0.75rem;
 }
-.content a.diagram.thumb span {
+.content .diagram.thumb a span {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.8rem;
   font-weight: 600;
 }
+.content .diagram.thumb figcaption { margin-top: 0.5rem; font-size: 0.8rem; }
 .content h2 { display: flow-root; }
 @media (max-width: 860px) {
-  .content a.diagram.thumb { float: none; width: 11rem; margin: 1rem auto 1.5rem; }
+  .content .diagram.thumb { float: none; width: 11rem; margin: 1rem auto 1.5rem; }
 }
 
 /* ─── Type ────────────────────────────────────────────────────────────

@@ -38,6 +38,11 @@ enableInlineShortcodes = false
 [markup.highlight]
   noClasses = false
 
+# An image on a line of its own reaches the render hook unwrapped, so a diagram
+# can become a <figure> (layouts/_markup/render-image.html).
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false
+
 [[menus.main]]
   name = "About"
   pageRef = "/about"

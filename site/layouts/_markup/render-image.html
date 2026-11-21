@@ -35,10 +35,22 @@
     {{- warnf "%s: missing diagram %s" $.PageInner.File.Path $.Destination -}}
   {{- end -}}
 {{- end -}}
+{{- $link := "" -}}
 {{- if and $svg .PageInner.IsHome -}}
-<a class="diagram thumb" href="{{ $src }}" target="_blank" rel="noopener" title="Open the full diagram in a new tab">{{ $svg | safeHTML }}<span>Open full diagram ↗</span></a>
+  {{- $link = printf `<a href="%s" target="_blank" rel="noopener" title="Open the full diagram in a new tab">%s<span>Open full diagram ↗</span></a>` $src $svg -}}
 {{- else if $svg -}}
-<a class="diagram" href="{{ $src }}" title="Open the diagram full size">{{ $svg | safeHTML }}</a>
+  {{- $link = printf `<a href="%s" title="Open the diagram full size">%s</a>` $src $svg -}}
+{{- end -}}
+{{- /* A diagram on a line of its own becomes a figure, with the image's title
+     (the quoted text after the path) as its caption. hugo.toml stops such images being
+     wrapped in a paragraph, which can't hold a figure. */ -}}
+{{- if and $svg .IsBlock -}}
+<figure class="diagram{{ if .PageInner.IsHome }} thumb{{ end }}">
+  {{- $link | safeHTML -}}
+  {{- with .Title }}<figcaption>{{ . | markdownify }}</figcaption>{{ end -}}
+</figure>
+{{- else if $svg -}}
+<span class="diagram">{{ $link | safeHTML }}</span>
 {{- else -}}
 <img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
 {{- end -}}
