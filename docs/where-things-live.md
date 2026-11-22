@@ -15,6 +15,8 @@ docs/
     cart.md
 ```
 
+None of these files wrap lines. Each paragraph, list item and eval is one line, however long, and editors and viewers wrap it to fit the screen. Newlines separate paragraphs, list items, headings, table rows and code, never the words of one sentence.
+
 ## Epics and Stories
 
 Epics and stories are Markdown files in `docs/epics/`.

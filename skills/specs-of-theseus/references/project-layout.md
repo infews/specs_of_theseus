@@ -20,6 +20,8 @@ docs/
 - **Tool commands** live in the project's `CLAUDE.md` or `AGENTS.md`. See `working-agreements.md`.
 - **Story tags** live in git: `story/0001-user-authentication/0010-login-form`. A tag means "ready for acceptance"; a rejected story's tag is deleted.
 
+**Don't wrap lines.** In every file you write under `docs/` (epics, stories, evals, issues, notes), each paragraph, list item and eval is one line, however long. Never insert newlines to fit text to a column width: editors and viewers wrap text to fit the screen. Newlines only separate paragraphs, list items, headings, table rows and code. When you edit a paragraph that is already hard-wrapped, join it back into one line. An eval's long message on the line below it is not wrapping; it's a separate line by design (see Eval files).
+
 ## Epics
 
 Named with a 4-digit number and a short slug: `0001-user-authentication.md`. Each new epic is added as a link to the list in `0000-epics.md`; the order of that list is the order of the epics.
