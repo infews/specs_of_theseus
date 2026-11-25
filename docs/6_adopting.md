@@ -4,7 +4,7 @@ What if you haven't started using Specs of Theseus for a project, how do you sta
 
 ![Adopting an Existing Project](img/6_adopting.svg)
 
-**Who:** a developer and an agent do most of the work. The product manager helps write the adoption epic, prirorizies its stories, and decides whether any surprising behavior is intended.
+**Who:** a developer and an agent do most of the work. The product manager helps write the adoption epic, prioritizes its stories, and decides whether any surprising behavior is intended.
 
 **In:** a working project's code and existing tests, with no evals.
 
